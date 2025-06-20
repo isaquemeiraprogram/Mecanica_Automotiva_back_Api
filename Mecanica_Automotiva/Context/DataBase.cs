@@ -11,23 +11,23 @@ namespace Mecanica_Automotiva.Context
         public DataBase(DbContextOptions<DataBase> options):base(options){}
 
         //Dadoscliente
-        DbSet<Cliente> Clientes { get; set; }
-        DbSet<Endereco> Enderecos { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Endereco> Enderecos { get; set; }
 
         //DadosPeca
-        DbSet<ClassePeca> ClassePecas { get; set; }
-        DbSet<SubClassePeca> SubClassePecas { get; set; }
-        DbSet<TipoPeca> TipoPeca { get; set; }
+        public DbSet<ClassePeca> ClassePecas { get; set; }
+        public DbSet<SubClassePeca> SubClassePecas { get; set; }
+        public DbSet<TipoPeca> TipoPeca { get; set; }
 
         //DadosVeiculo
-        DbSet<Marca> Marcas { get; set; }
-        DbSet<Modelo> Modelos { get; set; }
-        DbSet<TipoVeiculo> TipoVeiculos { get; set; }
+        public DbSet<Marca> Marcas { get; set; }
+        public DbSet<Modelo> Modelos { get; set; }
+        public DbSet<TipoVeiculo> TipoVeiculos { get; set; }
 
         //outros
-        DbSet<Agendar> Agendamentos { get; set; }
-        DbSet<Pecas> Pecas { get; set; }
-        DbSet<Servico> Servicos { get; set; }
-        DbSet<Veiculo> Veiculos { get; set; }
+        public DbSet<Agendar> Agendamentos { get; set; }
+        public DbSet<Pecas> Pecas { get; set; }
+        public DbSet<Servico> Servicos { get; set; }
+        public DbSet<Veiculo> Veiculos { get; set; }
     }
 }

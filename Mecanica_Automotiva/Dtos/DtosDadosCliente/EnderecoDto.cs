@@ -1,10 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Mecanica_Automotiva.Models.DadosCliente
+namespace Mecanica_Automotiva.Dtos.DtoCliente
 {
-    public class Endereco
+    public class EnderecoDto
     {
-        public Guid Id { get; set; }
         public string Cep { get; set; }
         public string Estado { get; set; }
         public string Cidade { get; set; }
@@ -13,6 +12,6 @@ namespace Mecanica_Automotiva.Models.DadosCliente
         public string Numero { get; set; }
 
         [JsonIgnore]
-        public Cliente Cliente { get; set; }
+        public Guid ClienteId { get; set; }
     }
 }

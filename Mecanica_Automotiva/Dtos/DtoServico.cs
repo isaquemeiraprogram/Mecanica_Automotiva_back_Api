@@ -1,0 +1,16 @@
+﻿using Mecanica_Automotiva.Models;
+using System.Text.Json.Serialization;
+
+namespace Mecanica_Automotiva.Dtos
+{
+    public class DtoServico
+    {
+        public string Descricao { get; set; }
+        public double Valor { get; set; }
+        public TimeOnly Duracao { get; set; }
+
+        [JsonIgnore]
+        public Guid AgendarId { get; set; }
+        public List<Guid> PecasId { get; set; } = new List<Guid>();
+    }
+}

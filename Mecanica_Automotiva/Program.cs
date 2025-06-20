@@ -1,4 +1,5 @@
 using Mecanica_Automotiva.Context;
+using Mecanica_Automotiva.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,9 @@ builder.Services.AddSwaggerGen();
 var conectSql = builder.Configuration.GetConnectionString("LinkSql");
 builder.Services.AddDbContext<DataBase>(options=>
     options.UseMySql(conectSql,ServerVersion.AutoDetect(conectSql)));
+
+builder.Services.AddScoped<ClienteService>();
+builder.Services.AddScoped<EnderecoService>();
 
 var app = builder.Build();
 
