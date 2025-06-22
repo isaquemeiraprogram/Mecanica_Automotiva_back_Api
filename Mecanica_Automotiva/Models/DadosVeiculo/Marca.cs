@@ -4,5 +4,7 @@
     {
         public Guid ID { get; set; }
         public string Nome { get; set; }
+        ICollection< Modelo> Modelo { get; set; } = new List<Modelo>();
+
     }
 }

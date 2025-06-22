@@ -4,5 +4,6 @@
     {
         public Guid ID { get; set; }
         public string Nome { get; set; }
+        Marca Marca { get; set; }
     }
 }

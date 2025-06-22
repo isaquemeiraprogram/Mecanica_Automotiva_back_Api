@@ -11,7 +11,6 @@ namespace Mecanica_Automotiva.Dtos.DtoCliente
         public string Rua { get; set; }
         public string Numero { get; set; }
 
-        [JsonIgnore]
         public Guid ClienteId { get; set; }
     }
 }

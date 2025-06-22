@@ -15,8 +15,8 @@ namespace Mecanica_Automotiva.Context
         public DbSet<Endereco> Enderecos { get; set; }
 
         //DadosPeca
-        public DbSet<ClassePeca> ClassePecas { get; set; }
-        public DbSet<SubClassePeca> SubClassePecas { get; set; }
+        public DbSet<CategoriaPeca> ClassePecas { get; set; }
+        public DbSet<SubCategoriaPeca> SubClassePecas { get; set; }
         public DbSet<TipoPeca> TipoPeca { get; set; }
 
         //DadosVeiculo

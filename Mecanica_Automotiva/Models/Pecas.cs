@@ -1,4 +1,5 @@
 ﻿using Mecanica_Automotiva.Models.Produtos;
+using System.Text.Json.Serialization;
 
 namespace Mecanica_Automotiva.Models
 {
@@ -9,8 +10,9 @@ namespace Mecanica_Automotiva.Models
         public string Img { get; set; }
         public string Nome { get; set; }
         public string Preco { get; set; }
-        public TipoPeca Tipo { get; set; }
-        public ClassePeca ClassePeca { get; set; }
-        public SubClassePeca SubClassePeca { get; set; }
+        public CategoriaPeca CategoriaPeca { get; set; }
+
+        [JsonIgnore]
+        public Servico Servico { get; set; }
     }
 }
