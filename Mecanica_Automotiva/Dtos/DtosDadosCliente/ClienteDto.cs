@@ -6,6 +6,6 @@ namespace Mecanica_Automotiva.Dtos.DtoCliente
     {
         public string Nome { get; set; }
         public string Cpf { get; set; }
-        public Guid EnderecoId { get; set; }
+        public List<Guid> EnderecosIds { get; set; }
     }
 }

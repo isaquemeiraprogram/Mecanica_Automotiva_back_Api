@@ -33,7 +33,12 @@ namespace Mecanica_Automotiva.Services
 
         public async Task<string> AddCliente(ClienteDto dto)
         {
-            Endereco endereco = await _context.Enderecos.FindAsync(dto.EnderecoId);
+            var endereco = await _context.Enderecos
+                 .Where(e => dto.EnderecosIds
+                 .Contains(e.Id))
+                 .ToListAsync();
+
+
             if (endereco == null) throw new Exception("Endereço não encontrado");
 
             Cliente cliente = new Cliente
@@ -49,13 +54,16 @@ namespace Mecanica_Automotiva.Services
 
             return $"Cliente {cliente} adicionado com sucesso";
         }
-    
+
         public async Task<string> UpdateCliente(Guid id, ClienteDto dto)
         {
-            Cliente cliente = await _context.Clientes.FindAsync(id);
+            var cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null) throw new Exception("Cliente não encontrado");
 
-            Endereco endereco = await _context.Enderecos.FindAsync(dto.EnderecoId);
+            var endereco = await _context.Enderecos
+                .Where(e => dto.EnderecosIds
+                .Contains(e.Id))
+                .ToListAsync();
             if (endereco == null) throw new Exception("Endereço não encontrado");
 
             cliente.Nome = dto.Nome;
@@ -68,7 +76,7 @@ namespace Mecanica_Automotiva.Services
 
         public async Task<string> DeleteCliente(Guid id)
         {
-           Cliente cliente = await _context.Clientes.FindAsync(id);
+            Cliente cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null) throw new Exception("Cliente não encontrado");
 
             _context.Clientes.Remove(cliente);
@@ -76,6 +84,6 @@ namespace Mecanica_Automotiva.Services
             await _context.SaveChangesAsync();
             return $"Cliente {cliente} removido com sucesso";
         }
-    
+
     }
 }

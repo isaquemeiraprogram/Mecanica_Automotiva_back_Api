@@ -10,6 +10,7 @@ namespace Mecanica_Automotiva.Models
         public string Img { get; set; }
         public string Nome { get; set; }
         public string Preco { get; set; }
+
         public CategoriaPeca CategoriaPeca { get; set; }
 
         [JsonIgnore]

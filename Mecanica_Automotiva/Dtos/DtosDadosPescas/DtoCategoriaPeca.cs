@@ -3,11 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace Mecanica_Automotiva.Dtos.DtosDadosPescas
 {
-    public class DtoClassePeca
+    public class DtoCategoriaPeca
     {
         public string Nome { get; set; }
-
-        [JsonIgnore]
-        public List<Guid> ClassesId { get; set; } = new List<Guid>();
     }
 }

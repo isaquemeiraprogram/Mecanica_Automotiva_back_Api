@@ -10,7 +10,10 @@ namespace Mecanica_Automotiva.Models.Produtos
         public string Nome { get; set; }
 
         [JsonIgnore]
-        public ICollection<SubCategoriaPeca> SubClasses { get; set; } = new List<SubCategoriaPeca>();
+        public ICollection<SubCategoriaPeca> SubCategoria { get; set; } = new List<SubCategoriaPeca>();
+
+        [JsonIgnore]
+        public ICollection<Pecas> Pecas { get; set; } = new List<Pecas>();
 
         //mecanica
         //eletrica
