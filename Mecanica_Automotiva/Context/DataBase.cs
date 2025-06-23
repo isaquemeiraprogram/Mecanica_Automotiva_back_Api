@@ -14,7 +14,7 @@ namespace Mecanica_Automotiva.Context
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }
 
-        //DadosPeca
+        //DadosPeca //futuramente da pra trocar por enun talves
         public DbSet<CategoriaPeca> CategoriaPeca { get; set; }
         public DbSet<SubCategoriaPeca> SubCategoriaPeca { get; set; }
 

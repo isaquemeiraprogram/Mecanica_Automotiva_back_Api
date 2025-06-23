@@ -33,26 +33,17 @@ namespace Mecanica_Automotiva.Services
 
         public async Task<string> AddCliente(ClienteDto dto)
         {
-            var endereco = await _context.Enderecos
-                 .Where(e => dto.EnderecosIds
-                 .Contains(e.Id))
-                 .ToListAsync();
-
-
-            if (endereco == null) throw new Exception("Endereço não encontrado");
-
             Cliente cliente = new Cliente
             {
                 Id = Guid.NewGuid(),
                 Nome = dto.Nome,
-                Cpf = dto.Cpf,
-                Endereco = endereco
+                Cpf = dto.Cpf
             };
 
             await _context.Clientes.AddAsync(cliente);
             await _context.SaveChangesAsync();
 
-            return $"Cliente {cliente} adicionado com sucesso";
+            return $"Cliente {cliente.Nome} adicionado com sucesso";
         }
 
         public async Task<string> UpdateCliente(Guid id, ClienteDto dto)
@@ -60,20 +51,14 @@ namespace Mecanica_Automotiva.Services
             var cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null) throw new Exception("Cliente não encontrado");
 
-            var endereco = await _context.Enderecos
-                .Where(e => dto.EnderecosIds
-                .Contains(e.Id))
-                .ToListAsync();
-            if (endereco == null) throw new Exception("Endereço não encontrado");
-
             cliente.Nome = dto.Nome;
             cliente.Cpf = dto.Cpf;
-            cliente.Endereco = endereco;
 
             await _context.SaveChangesAsync();
-            return $"Cliente {cliente} atualizado com sucesso";
+            return $"Cliente {cliente.Nome} atualizado com sucesso";
         }
 
+        //quando for deletar cliente deleta endereco tambem
         public async Task<string> DeleteCliente(Guid id)
         {
             Cliente cliente = await _context.Clientes.FindAsync(id);
@@ -82,7 +67,7 @@ namespace Mecanica_Automotiva.Services
             _context.Clientes.Remove(cliente);
 
             await _context.SaveChangesAsync();
-            return $"Cliente {cliente} removido com sucesso";
+            return $"Cliente {cliente.Nome} removido com sucesso";
         }
 
     }

@@ -15,25 +15,30 @@ namespace Mecanica_Automotiva.Services
         }
         public async Task<List<Endereco>> GetAllEndereco()
         {
-            return await _context.Enderecos.Include(e=> e.Cliente).ToListAsync(); 
+            return await _context.Enderecos.Include(e => e.Cliente).ToListAsync();
         }
 
         public async Task<Endereco> GetEnderecoById(Guid id)
         {
-            Endereco endereco = await _context.Enderecos
-                .Include(e=>e.Cliente)
+            var endereco = await _context.Enderecos
+                .Include(e => e.Cliente)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             if (endereco == null) throw new Exception("Endereço não encontrado");
 
             return endereco;
         }
-    
-        public async Task<string> AddEndereco(EnderecoDto dto)
+
+        //so se ele tiver mais de um
+        public async Task<string> AddEndereco(EnderecoDto dto, Guid id)
         {
+            Cliente cliente = await _context.Clientes.FindAsync(id);
+            if (cliente == null) throw new Exception("cliente nao encontrado");
+
+            
             Endereco endereco = new Endereco
             {
-                Id = Guid.NewGuid(),
+                Id = cliente.Id,
                 Cep = dto.Cep,
                 Estado = dto.Estado,
                 Cidade = dto.Cidade,
