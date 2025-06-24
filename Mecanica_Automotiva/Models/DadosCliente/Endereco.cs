@@ -4,6 +4,7 @@ namespace Mecanica_Automotiva.Models.DadosCliente
 {
     public class Endereco
     {
+        //pra entrega de veiculo
         public Guid Id { get; set; }
         public string Cep { get; set; }
         public string Estado { get; set; }

@@ -17,12 +17,6 @@ namespace Mecanica_Automotiva.Controllers
             this._service = _service;
         }
 
-        [HttpGet]
-        public async Task<List<Endereco>> GetAllEndereco()
-        {
-            return await _service.GetAllEndereco();
-        }
-
         [HttpGet("{id}")]
         public async Task<Endereco> GetEnderecoById(Guid id)
         {
@@ -30,9 +24,9 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpPost]
-        public async Task<string> AddEndereco(EnderecoDto dto, Guid id)
+        public async Task<string> AddEndereco(EnderecoDto dto)
         {
-            return await _service.AddEndereco(dto,id);
+            return await _service.AddEndereco(dto);
         }
 
         [HttpPut("{id}")]
