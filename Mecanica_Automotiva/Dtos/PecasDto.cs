@@ -2,7 +2,7 @@
 
 namespace Mecanica_Automotiva.Dtos
 {
-    public class DtoPecas
+    public class PecasDto
     {
         public string Img { get; set; }
         public string Nome { get; set; }

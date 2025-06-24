@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Mecanica_Automotiva.Dtos
 {
-    public class DtoServico
+    public class ServicoDto
     {
         public string Descricao { get; set; }
         public double Valor { get; set; }

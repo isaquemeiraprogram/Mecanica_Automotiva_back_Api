@@ -13,6 +13,7 @@ namespace Mecanica_Automotiva.Services
         {
             this._context = _context;
         }
+
         public async Task<List<Cliente>> GetAllClintes()
         {
             return await _context.Clientes

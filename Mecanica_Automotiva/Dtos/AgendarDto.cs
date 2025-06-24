@@ -3,7 +3,7 @@ using Mecanica_Automotiva.Models.DadosCliente;
 
 namespace Mecanica_Automotiva.Dtos
 {
-    public class DtoAgendar
+    public class AgendarDto
     {
         public DateOnly Data { get; set; }
         public TimeOnly Hora { get; set; }

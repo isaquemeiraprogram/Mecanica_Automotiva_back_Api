@@ -1,6 +1,6 @@
 ﻿namespace Mecanica_Automotiva.Dtos.DtosDadosVeiculo
 {
-    public class DtoModelo
+    public class MarcaDto
     {
         public string Nome { get; set; }
     }

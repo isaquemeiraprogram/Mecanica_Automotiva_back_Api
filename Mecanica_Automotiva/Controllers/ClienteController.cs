@@ -17,6 +17,7 @@ namespace Mecanica_Automotiva.Controllers
             this._service = _service;
         }
 
+
         [HttpGet]
         public async Task<List<Cliente>> GetAllClintes()
         {

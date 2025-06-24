@@ -2,7 +2,7 @@
 
 namespace Mecanica_Automotiva.Dtos
 {
-    public class DtoVeiculo
+    public class VeiculoDto
     {
         public int Nome { get; set; }
         public Guid MarcaId { get; set; }

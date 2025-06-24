@@ -14,16 +14,7 @@ namespace Mecanica_Automotiva.Services
             this._context = _context;
         }
 
-        public async Task<Endereco> GetEnderecoById(Guid id)
-        {
-            var endereco = await _context.Enderecos
-                .Include(e => e.Cliente)
-                .FirstOrDefaultAsync(e => e.Id == id);
-
-            if (endereco == null) throw new Exception("Endereço não encontrado");
-
-            return endereco;
-        }
+        
         public async Task<string> AddEndereco(EnderecoDto dto)
         {
             var cliente = await _context.Clientes.FindAsync(dto.ClienteId);
