@@ -23,12 +23,26 @@ builder.Services.AddScoped<SubCategoriaService>();
 
 var app = builder.Build();
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyMethod() //acesso aos methodos
+              .AllowAnyHeader(); // permite enviar dados(cabecalho)
+    });
+});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+app.UseCors("AllowAngular");
 
 app.UseHttpsRedirection();
 
