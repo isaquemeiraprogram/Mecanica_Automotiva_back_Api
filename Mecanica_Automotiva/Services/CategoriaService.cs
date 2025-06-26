@@ -38,7 +38,7 @@ namespace Mecanica_Automotiva.Services
             await _context.CategoriasPecas.AddAsync(categoria);
 
             await _context.SaveChangesAsync();
-            return $"Categoria {categoria.Nome}adicionada com sucesso";
+            return $"Categoria {categoria.Nome} adicionada com sucesso";
         }
         public async Task<string> UpdateCategoria(Guid id, CategoriaPecaDto dto)
         {

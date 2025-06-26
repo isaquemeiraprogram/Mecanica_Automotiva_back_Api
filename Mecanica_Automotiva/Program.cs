@@ -17,6 +17,9 @@ builder.Services.AddDbContext<DataBase>(options=>
 
 builder.Services.AddScoped<ClienteService>();
 builder.Services.AddScoped<EnderecoService>();
+builder.Services.AddScoped<CategoriaService>();
+builder.Services.AddScoped<SubCategoriaService>();
+
 
 var app = builder.Build();
 
