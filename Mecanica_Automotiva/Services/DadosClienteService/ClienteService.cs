@@ -3,7 +3,7 @@ using Mecanica_Automotiva.Dtos.DtoCliente;
 using Mecanica_Automotiva.Models.DadosCliente;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mecanica_Automotiva.Services
+namespace Mecanica_Automotiva.Services.DadosClienteService
 {
     public class ClienteService
     {
@@ -23,7 +23,7 @@ namespace Mecanica_Automotiva.Services
 
         public async Task<Cliente> GetClienteById(Guid id)
         {
-            Cliente cliente = await _context.Clientes
+            var cliente = await _context.Clientes
                 .Include(c => c.Endereco)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
@@ -47,7 +47,7 @@ namespace Mecanica_Automotiva.Services
             return $"Cliente {cliente.Nome} adicionado com sucesso";
         }
 
-        public async Task<string> UpdateCliente(Guid id, ClienteDto dto)
+        public async Task<string> UpdateCliente( ClienteDto dto, Guid id)
         {
             var cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null) throw new Exception("Cliente não encontrado");
@@ -58,11 +58,9 @@ namespace Mecanica_Automotiva.Services
             await _context.SaveChangesAsync();
             return $"Cliente {cliente.Nome} atualizado com sucesso";
         }
-
-        //quando for deletar cliente deleta endereco tambem
         public async Task<string> DeleteCliente(Guid id)
         {
-            Cliente cliente = await _context.Clientes.FindAsync(id);
+            var cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null) throw new Exception("Cliente não encontrado");
 
             _context.Clientes.Remove(cliente);

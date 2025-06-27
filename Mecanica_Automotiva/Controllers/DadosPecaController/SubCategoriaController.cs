@@ -1,10 +1,10 @@
 ﻿using Mecanica_Automotiva.Dtos.DtosDadosPescas;
 using Mecanica_Automotiva.Models.Produtos;
-using Mecanica_Automotiva.Services;
+using Mecanica_Automotiva.Services.DadosPecaService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Mecanica_Automotiva.Controllers
+namespace Mecanica_Automotiva.Controllers.DadosPecaController
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -18,15 +18,15 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpGet]
-        public async Task<List<SubCategoriaPeca>> GetAllAsync()
+        public async Task<List<SubCategoriaPeca>> GetAllSubCategoria()
         {
-            return await _Service.GetAllAsync();
+            return await _Service.GetAllSubCategoria();
         }
 
         [HttpGet("{id}")]
-        public async Task<SubCategoriaPeca> GetByIdAsync(Guid id)
+        public async Task<SubCategoriaPeca> GetByIdSubCategoria(Guid id)
         {
-            return await _Service.GetByIdAsync(id);
+            return await _Service.GetByIdSubCategoria(id);
         }
 
         [HttpGet("/Categoria/{id}")]//o nome da rota tem que ser igual no parametro

@@ -1,11 +1,11 @@
 ﻿using Mecanica_Automotiva.Dtos.DtosDadosPescas;
 using Mecanica_Automotiva.Models.Produtos;
-using Mecanica_Automotiva.Services;
+using Mecanica_Automotiva.Services.DadosPecaService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mecanica_Automotiva.Controllers
+namespace Mecanica_Automotiva.Controllers.DadosPecaController
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -32,15 +32,15 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpPost]
-        public async Task<string> AddCategoria(CategoriaPecaDto dto)
+        public async Task<string> AddCategoria([FromBody] CategoriaPecaDto dto)
         {
             return await _service.AddCategoria(dto);
         }
 
         [HttpPut("{id}")]
-        public async Task<string> UpdateCategoria(Guid id, CategoriaPecaDto dto)
+        public async Task<string> UpdateCategoria([FromBody] CategoriaPecaDto dto, Guid id)
         {
-            return await _service.UpdateCategoria(id, dto);
+            return await _service.UpdateCategoria(dto,id);
         }
 
         [HttpDelete("{id}")]

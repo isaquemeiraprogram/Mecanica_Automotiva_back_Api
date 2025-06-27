@@ -13,6 +13,6 @@ namespace Mecanica_Automotiva.Models
         public Agendar Agendar { get; set; }
 
         public Veiculo Veiculo { get; set; }
-        public ICollection<Pecas> Pecas { get; set; } = new List<Pecas>();
+        public ICollection<Peca> Pecas { get; set; } = new List<Peca>();
     }
 }

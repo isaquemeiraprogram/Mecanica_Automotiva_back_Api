@@ -1,5 +1,7 @@
 using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Services;
+using Mecanica_Automotiva.Services.DadosClienteService;
+using Mecanica_Automotiva.Services.DadosPecaService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,19 +13,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//conect sql
 var conectSql = builder.Configuration.GetConnectionString("LinkSql");
 builder.Services.AddDbContext<DataBase>(options=>
     options.UseMySql(conectSql,ServerVersion.AutoDetect(conectSql)));
 
+//services
 builder.Services.AddScoped<ClienteService>();
 builder.Services.AddScoped<EnderecoService>();
 builder.Services.AddScoped<CategoriaService>();
 builder.Services.AddScoped<SubCategoriaService>();
+builder.Services.AddScoped<PecasService>();
 
 
-var app = builder.Build();
 
-
+//conect front
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>
@@ -33,6 +37,8 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader(); // permite enviar dados(cabecalho)
     });
 });
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

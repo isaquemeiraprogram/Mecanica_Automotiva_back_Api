@@ -1,10 +1,10 @@
 ﻿using Mecanica_Automotiva.Dtos.DtoCliente;
 using Mecanica_Automotiva.Models.DadosCliente;
-using Mecanica_Automotiva.Services;
+using Mecanica_Automotiva.Services.DadosClienteService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Mecanica_Automotiva.Controllers
+namespace Mecanica_Automotiva.Controllers.DadosClienteController
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -31,15 +31,15 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpPost]
-        public async Task<string> AddCliente(ClienteDto dto)
+        public async Task<string> AddCliente([FromBody] ClienteDto dto)
         {
             return await _service.AddCliente(dto);
         }
 
         [HttpPut("{id}")]
-        public async Task<string> UpdateCliente(Guid id, ClienteDto dto)
+        public async Task<string> UpdateCliente([FromBody] ClienteDto dto, Guid id)
         {
-            return await _service.UpdateCliente(id, dto);
+            return await _service.UpdateCliente(dto,id);
         }
 
         [HttpDelete("{id}")]

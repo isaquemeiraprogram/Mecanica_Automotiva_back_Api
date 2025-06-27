@@ -4,7 +4,7 @@ using Mecanica_Automotiva.Models.Produtos;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace Mecanica_Automotiva.Services
+namespace Mecanica_Automotiva.Services.DadosPecaService
 {
     public class SubCategoriaService
     {
@@ -12,23 +12,23 @@ namespace Mecanica_Automotiva.Services
 
         public SubCategoriaService(DataBase context)
         {
-           this._context = context;
+           _context = context;
         }
 
-        public async Task<List<SubCategoriaPeca>> GetAllAsync()
+        public async Task<List<SubCategoriaPeca>> GetAllSubCategoria()
         {
             return await _context.SubCategoriasPecas.Include(subcategoria => subcategoria.CategoriaPeca).ToListAsync();
         }
 
-        public async Task<SubCategoriaPeca> GetByIdAsync(Guid id)
+        public async Task<SubCategoriaPeca> GetByIdSubCategoria(Guid id)
         {
             var subCategoria = await _context.SubCategoriasPecas.FindAsync(id);
-            if (id == null) throw new Exception("SubCategoria não encontrada");
+            if (subCategoria == null) throw new Exception("SubCategoria não encontrada");
 
             return subCategoria;
         }
 
-        //filtro
+        //filtro entrada:um id de categoria saida : lista de subcategorias que pertencem a categoriaid
         public async Task<List<SubCategoriaPeca>> GetSubcategoriaPorCategoria(Guid CategoriaId)
         {
             var categoria = await _context.CategoriasPecas.FindAsync(CategoriaId);
@@ -40,7 +40,7 @@ namespace Mecanica_Automotiva.Services
 
         public async Task<string> AddSubCategoria(SubCategoriaPecaDto dto)
         {
-            CategoriaPeca categoria = await _context.CategoriasPecas.FindAsync(dto.CategoriaId);
+            var categoria = await _context.CategoriasPecas.FindAsync(dto.CategoriaId);
             if(categoria == null) throw new Exception("Categoria não encontrada");
             
             SubCategoriaPeca subCategoriaPeca = new SubCategoriaPeca

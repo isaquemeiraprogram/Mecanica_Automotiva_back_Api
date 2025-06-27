@@ -1,9 +1,13 @@
-﻿namespace Mecanica_Automotiva.Models.DadosVeiculo
+﻿using System.Text.Json.Serialization;
+
+namespace Mecanica_Automotiva.Models.DadosVeiculo
 {
     public class Marca
     {
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         public string Nome { get; set; }
+
+        [JsonIgnore]
         ICollection< Modelo> Modelo { get; set; } = new List<Modelo>();
 
     }

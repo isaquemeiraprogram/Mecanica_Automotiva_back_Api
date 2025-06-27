@@ -3,7 +3,7 @@ using Mecanica_Automotiva.Dtos.DtoCliente;
 using Mecanica_Automotiva.Models.DadosCliente;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mecanica_Automotiva.Services
+namespace Mecanica_Automotiva.Services.DadosClienteService
 {
     public class EnderecoService
     {

@@ -8,6 +8,9 @@ namespace Mecanica_Automotiva.Models.Produtos
         public string Nome { get; set; }
 
         public CategoriaPeca CategoriaPeca { get; set; }
+
+        [JsonIgnore]
+        public ICollection<Peca> Pecas { get; set; } = new List<Peca>();
         //mecanica -> motor, transmissão, suspensão, freios, direção
         //eletrica -> bateria, alternador, motor de partida, faróis, lanternas
         //fluidos/hidraulica -> óleo, fluido de freio, fluido de direção, refrigerante

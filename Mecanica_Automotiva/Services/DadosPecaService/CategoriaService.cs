@@ -4,7 +4,7 @@ using Mecanica_Automotiva.Models.Produtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mecanica_Automotiva.Services
+namespace Mecanica_Automotiva.Services.DadosPecaService
 {
     public class CategoriaService
     {
@@ -40,7 +40,7 @@ namespace Mecanica_Automotiva.Services
             await _context.SaveChangesAsync();
             return $"Categoria {categoria.Nome} adicionada com sucesso";
         }
-        public async Task<string> UpdateCategoria(Guid id, CategoriaPecaDto dto)
+        public async Task<string> UpdateCategoria(CategoriaPecaDto dto, Guid id)
         {
             var categoria = await _context.CategoriasPecas.FindAsync(id);
             if (categoria == null) throw new Exception("Categoria não encontrada");

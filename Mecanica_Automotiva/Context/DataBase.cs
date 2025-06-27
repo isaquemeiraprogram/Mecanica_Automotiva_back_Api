@@ -24,7 +24,7 @@ namespace Mecanica_Automotiva.Context
 
         //outros
         public DbSet<Agendar> Agendamentos { get; set; }
-        public DbSet<Pecas> Pecas { get; set; }
+        public DbSet<Peca> Pecas { get; set; }
         public DbSet<Servico> Servicos { get; set; }
         public DbSet<Veiculo> Veiculos { get; set; }
     }

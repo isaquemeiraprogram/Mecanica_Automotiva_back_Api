@@ -1,10 +1,10 @@
 ﻿using Mecanica_Automotiva.Dtos.DtoCliente;
 using Mecanica_Automotiva.Models.DadosCliente;
-using Mecanica_Automotiva.Services;
+using Mecanica_Automotiva.Services.DadosClienteService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Mecanica_Automotiva.Controllers
+namespace Mecanica_Automotiva.Controllers.DadosClienteController
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,7 +19,7 @@ namespace Mecanica_Automotiva.Controllers
 
 
         [HttpPost]
-        public async Task<string> AddEndereco(EnderecoDto dto)
+        public async Task<string> AddEndereco([FromBody] EnderecoDto dto)
         {
             return await _service.AddEndereco(dto);
         }

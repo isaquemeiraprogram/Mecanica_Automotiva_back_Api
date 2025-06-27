@@ -11,6 +11,9 @@ namespace Mecanica_Automotiva.Models
         public Modelo Modelo { get; set; }
 
         [JsonIgnore]
+        public ICollection<Peca> Pecas { get; set; } = new List<Peca>();
+
+        [JsonIgnore]
         public ICollection<Servico> Servico { get; set; } = new List<Servico>();
     }
 }
