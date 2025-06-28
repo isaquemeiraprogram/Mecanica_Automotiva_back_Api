@@ -19,15 +19,15 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             return await _context.Marcas.ToListAsync();
         }
 
-        public async Task<(Marca,CodigoResult)> GetByIdAsync(Guid id)
+        public async Task<Marca> GetByIdAsync(Guid id)
         {
             var marca = await _context.Marcas.FindAsync(id);
-            if (marca == null) return(null, CodigoResult.MarcaNaoEncontrada);
+            if (marca == null) return null;
 
-            return (marca,CodigoResult.Sucesso);
+            return marca;
         }
 
-        public async Task<(Marca,CodigoResult)> AddAsync(MarcaDto dto)
+        public async Task<Marca> AddAsync(MarcaDto dto)
         {
             Marca marca = new Marca
             {
@@ -38,13 +38,13 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             await _context.Marcas.AddAsync(marca);
 
             await _context.SaveChangesAsync();
-            return (marca,CodigoResult.Sucesso);
+            return marca;
         }
 
         public async Task<Marca> UpdateAsync(MarcaDto dto, Guid id)
         {
             var marca = await _context.Marcas.FindAsync(id);
-            if (marca == null) throw new Exception("Marca não encontrada");
+            if (marca == null) return null;
 
             marca.Nome = dto.Nome;
 
@@ -52,15 +52,15 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             return (marca);
         }
 
-        public async Task<string> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var marca = await _context.Marcas.FindAsync(id);
-            if (marca == null) throw new Exception("Marca não encontrada");
+            if (marca == null) return false;
 
             _context.Marcas.Remove(marca);
 
             await _context.SaveChangesAsync();
-            return $"Marca {marca.Nome} deletada com sucesso";
+            return true;
         }
     }
 }

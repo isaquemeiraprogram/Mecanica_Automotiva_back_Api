@@ -1,6 +1,7 @@
 ﻿using Mecanica_Automotiva.Dtos;
 using Mecanica_Automotiva.Models;
 using Mecanica_Automotiva.Services;
+using Mecanica_Automotiva.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,33 +19,53 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Peca>> GetPecasAsync()
+        public async Task<ActionResult<List<Peca>>> GetAllAsync()
         {
-            return await _service.GetPecasAsync();
+            var pecaList = await _service.GetAllAsync();
+            return Ok(pecaList);
         }
 
         [HttpGet("{id}")]
-        public async Task<Peca> GetPecaByIdAsync(Guid id)
+        public async Task<ActionResult<Peca>> GetByIdAsync(Guid id)
         {
-            return await _service.GetPecaByIdAsync(id);
+            var peca = await _service.GetByIdAsync(id);
+            if (peca == null) return NotFound("Peça não encontrada.");
+
+            return Ok(peca);
         }
 
         [HttpPost]
-        public async Task<string> AddPeca([FromBody] PecasDto dto)
+        public async Task<ActionResult<Peca>> AddAsync(PecasDto dto)
         {
-            return await _service.AddPeca(dto);
+            var peca = await _service.AddAsync(dto);
+            if (peca == null) return NotFound("Subcategoria não encontrada.");
+
+            return Ok(peca);
         }
 
         [HttpPut("{id}")]
-        public async Task<string> UpdatePeca([FromBody] PecasDto dto, Guid id)
+        public async Task<ActionResult<(Peca, CodigoResult)>> UpdateAsync(PecasDto dto, Guid id)
         {
-            return await _service.UpdatePeca(dto, id);
+            var (peca, codigo) = await _service.UpdateAsync(dto, id);
+
+            switch (codigo)
+            {
+                case CodigoResult.PecaNaoEncontrada:
+                    return NotFound("Peça não encontrada.");
+                case CodigoResult.SubCategoriaNaoEncontrada:
+                    return NotFound("Subcategoria da peca não encontrada.");
+            }
+
+            return Ok(peca);
         }
 
         [HttpDelete("{id}")]
-        public async Task<string> DeletePeca(Guid id)
+        public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
-            return await _service.DeletePeca(id);
+            var peca = await _service.DeleteAsync(id);
+            if (peca) return NotFound("Peça não encontrada.");
+
+            return true;
         }
     }
 }

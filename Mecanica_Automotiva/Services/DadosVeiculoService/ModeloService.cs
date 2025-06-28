@@ -1,6 +1,7 @@
 ﻿using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtosDadosVeiculo;
 using Mecanica_Automotiva.Models.DadosVeiculo;
+using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services.DadosVeiculoService
@@ -14,26 +15,29 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             this._context = _context;
         }
         //fazer filtro
-        public async Task<List<Modelo>> GetAllModelo()
+        public async Task<List<Modelo>> GetAllAsync()
         {
-            return await _context.Modelos.Include(m => m.Marca).ToListAsync();
+            var modelosList = await _context.Modelos
+                                    .Include(m => m.Marca)
+                                    .ToListAsync();
+            return modelosList;
         }
 
-        public async Task<Modelo> GetModeloById(Guid id)
+        public async Task<Modelo> GetByIdAsync(Guid id)
         {
             var modelo = await _context.Modelos
                 .Include(m => m.Marca)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (modelo == null) throw new Exception("Modelo not found");
+            if (modelo == null) return null;
 
             return modelo;
         }
 
-        public async Task<string> AddModelo(ModeloDto dto)
+        public async Task<Modelo> AddAsync(ModeloDto dto)
         {
             var marca = await _context.Marcas.FindAsync(dto.MarcaId);
-            if (marca == null) throw new Exception("Marca nao encontrada");
+            if (marca == null) return null;
 
             var modelo = new Modelo
             {
@@ -45,33 +49,33 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             await _context.Modelos.AddAsync(modelo);
 
             await _context.SaveChangesAsync();
-            return $"Modelo {modelo.Nome} adicionado com sucesso";
+            return modelo;
         }
 
-        public async Task<string> UpdateModelo(ModeloDto dto, Guid id)
+        public async Task<(Modelo,CodigoResult)> UpdateAsync(ModeloDto dto, Guid id)
         {
             var modelo = await _context.Modelos.FindAsync(id);
-            if (modelo == null) throw new Exception("Modelo not found");
+            if (modelo == null) return (null,CodigoResult.ModeloNaoEncontrado);
 
             var marca = await _context.Marcas.FindAsync(dto.MarcaId);
-            if (marca == null) throw new Exception("Marca nao encontrada");
+            if (marca == null) return (null, CodigoResult.MarcaNaoEncontrada);
 
             modelo.Nome = dto.Nome;
             modelo.Marca = marca;
 
             await _context.SaveChangesAsync();
-            return $"Modelo {modelo.Nome} atualizado com sucesso";
+            return (modelo,CodigoResult.Sucesso);
         }
 
-        public async Task<string> DeleteModelo(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var modelo = await _context.Modelos.FindAsync(id);
-            if (modelo == null) throw new Exception("Modelo não encontrado");
+            if (modelo == null) return false;
 
             _context.Modelos.Remove(modelo);
 
             await _context.SaveChangesAsync();
-            return $"Modelo {modelo.Nome} removido com sucesso";
+            return true;
         }
     }
 }

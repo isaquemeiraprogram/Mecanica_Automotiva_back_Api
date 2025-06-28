@@ -2,6 +2,7 @@ using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Services;
 using Mecanica_Automotiva.Services.DadosClienteService;
 using Mecanica_Automotiva.Services.DadosPecaService;
+using Mecanica_Automotiva.Services.DadosVeiculoService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,7 +24,10 @@ builder.Services.AddScoped<ClienteService>();
 builder.Services.AddScoped<EnderecoService>();
 builder.Services.AddScoped<CategoriaService>();
 builder.Services.AddScoped<SubCategoriaService>();
+builder.Services.AddScoped<MarcaService>();
+builder.Services.AddScoped<ModeloService>();
 builder.Services.AddScoped<PecasService>();
+builder.Services.AddScoped<VeiculoService>();
 
 
 

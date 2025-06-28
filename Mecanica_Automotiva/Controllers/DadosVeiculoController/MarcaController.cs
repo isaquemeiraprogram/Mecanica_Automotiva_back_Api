@@ -18,33 +18,44 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
         }
 
         [HttpGet]
-        public async Task<List<Marca>> GetAllMarcas()
+        public async Task<ActionResult<List<Marca>>> GetAllAsync()
         {
-            return await _service.GetAllMarcas();
+            var marcaList = await _service.GetAllAsync();
+            return Ok(marcaList);
         }
 
         [HttpGet("{id}")]
-        public async Task<Marca> GetMarcaById(Guid id)
+        public async Task<ActionResult<Marca>> GetByIdAsync(Guid id)
         {
-            return await _service.GetMarcaById(id);
+            var marca = await _service.GetByIdAsync(id);
+            if (marca == null) return NotFound("Marca Não Encontrada"); 
+
+            return Ok(marca);
         }
 
         [HttpPost]
-        public async Task<string> AddMarca( [FromBody] MarcaDto dto)
+        public async Task<ActionResult<Marca>> AddAsync([FromBody] MarcaDto dto)
         {
-            return await _service.AddMarca(dto);
+            var marca = await _service.AddAsync(dto);
+            return Ok(marca);
         }
 
         [HttpPut("{id}")]
-        public async Task<string> UpdateMarca([FromBody] MarcaDto dto, Guid id)
+        public async Task<ActionResult<Marca>> UpdateAsync([FromBody] MarcaDto dto, Guid id)
         {
-            return await _service.UpdateMarca(dto, id);
+            var marca = await _service.UpdateAsync(dto, id);
+            if (marca == null) return NotFound("Marca Não Encontrada");
+
+            return Ok(marca);
         }
 
         [HttpDelete("{id}")]
-        public async Task<string> DeleteMarca(Guid id)
+        public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
-            return await _service.DeleteMarca(id);
+            var marca = await _service.DeleteAsync(id);
+            if (marca == false) return NotFound("Marca Não Encontrada");
+
+            return true;
         }
     }
 }

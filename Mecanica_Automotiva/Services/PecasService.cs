@@ -1,6 +1,7 @@
 ﻿using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos;
 using Mecanica_Automotiva.Models;
+using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services
@@ -16,23 +17,25 @@ namespace Mecanica_Automotiva.Services
 
         public async Task<List<Peca>> GetAllAsync()
         {
-            return await _context.Pecas
+            var pecaList = await _context.Pecas
                 .Include(p => p.SubCategoriaPeca)
                 .ToListAsync();
+
+            return pecaList;
         }
 
         public async Task<Peca> GetByIdAsync(Guid id)
         {
             var peca = await _context.Pecas.FindAsync(id);
-            if (peca == null) throw new Exception("Peca Nao Encontrada");
+            if (peca == null) return null;
 
             return peca;
         }
 
-        public async Task<string> AddAsync(PecasDto dto)
+        public async Task<Peca> AddAsync(PecasDto dto)
         {
             var subCategoria = await _context.SubCategoriasPecas.FindAsync(dto.SubCategoriaPecaId);
-            if (subCategoria == null) throw new Exception("subCategoria de Peca não encontrada");
+            if (subCategoria == null) return null;
 
             Peca peca = new Peca
             {
@@ -46,16 +49,16 @@ namespace Mecanica_Automotiva.Services
             await _context.Pecas.AddAsync(peca);
 
             await _context.SaveChangesAsync();
-            return $"Peca {peca.Nome} adicionada com sucesso";
+            return peca;
         }
 
-        public async Task<string> UpdateAsync( PecasDto dto, Guid id)
+        public async Task<(Peca, CodigoResult)> UpdateAsync(PecasDto dto, Guid id)
         {
             var peca = await _context.Pecas.FindAsync(id);
-            if (peca == null) throw new Exception("Peca Nao Encontrada");
+            if (peca == null) return (null, CodigoResult.PecaNaoEncontrada);
 
             var subCategoria = await _context.SubCategoriasPecas.FindAsync(dto.SubCategoriaPecaId);
-            if (subCategoria == null) throw new Exception("Categoria de Peca não encontrada");
+            if (subCategoria == null) return (null, CodigoResult.SubCategoriaNaoEncontrada);
 
             peca.Img = dto.Img;
             peca.Nome = dto.Nome;
@@ -63,18 +66,18 @@ namespace Mecanica_Automotiva.Services
             peca.SubCategoriaPeca = subCategoria;
 
             await _context.SaveChangesAsync();
-            return $"Peca {peca.Nome} atualizada com sucesso";
+            return (peca,CodigoResult.Sucesso);
         }
 
-        public async Task<string> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var peca = await _context.Pecas.FindAsync(id);
-            if (peca == null) throw new Exception("Peca Nao Encontrada");
+            if (peca == null) return false;
 
             _context.Pecas.Remove(peca);
 
             await _context.SaveChangesAsync();
-            return $"Peca {peca.Nome} deletada com sucesso";
+            return true;
         }
     }
 }

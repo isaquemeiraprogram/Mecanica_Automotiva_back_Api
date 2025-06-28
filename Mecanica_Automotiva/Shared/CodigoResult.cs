@@ -7,5 +7,7 @@
         CategoriaNaoEncontrada = 2,
         MarcaNaoEncontrada = 3,
         ModeloNaoEncontrado = 4,
+        VeiculoNaoEncontrado = 5,
+        PecaNaoEncontrada = 6,
     }
 }
