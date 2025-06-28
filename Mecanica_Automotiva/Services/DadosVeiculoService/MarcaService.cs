@@ -1,6 +1,7 @@
 ﻿using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtosDadosVeiculo;
 using Mecanica_Automotiva.Models.DadosVeiculo;
+using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services.DadosVeiculoService
@@ -13,20 +14,20 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             this._context = context;
         }
 
-        public async Task<List<Marca>> GetAllMarcas()
+        public async Task<List<Marca>> GetAllAsync()
         {
             return await _context.Marcas.ToListAsync();
         }
 
-        public async Task<Marca> GetMarcaById(Guid id)
+        public async Task<(Marca,CodigoResult)> GetByIdAsync(Guid id)
         {
             var marca = await _context.Marcas.FindAsync(id);
-            if (marca == null) throw new Exception("Marca não encontrada");
+            if (marca == null) return(null, CodigoResult.MarcaNaoEncontrada);
 
-            return marca;
+            return (marca,CodigoResult.Sucesso);
         }
 
-        public async Task<string> AddMarca(MarcaDto dto)
+        public async Task<(Marca,CodigoResult)> AddAsync(MarcaDto dto)
         {
             Marca marca = new Marca
             {
@@ -37,10 +38,10 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             await _context.Marcas.AddAsync(marca);
 
             await _context.SaveChangesAsync();
-            return $"Marca {marca.Nome} adicionada com sucesso";
+            return (marca,CodigoResult.Sucesso);
         }
 
-        public async Task<string> UpdateMarca(MarcaDto dto, Guid id)
+        public async Task<Marca> UpdateAsync(MarcaDto dto, Guid id)
         {
             var marca = await _context.Marcas.FindAsync(id);
             if (marca == null) throw new Exception("Marca não encontrada");
@@ -48,10 +49,10 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             marca.Nome = dto.Nome;
 
             await _context.SaveChangesAsync();
-            return $"Marca {marca.Nome} atualizada com sucesso";
+            return (marca);
         }
 
-        public async Task<string> DeleteMarca(Guid id)
+        public async Task<string> DeleteAsync(Guid id)
         {
             var marca = await _context.Marcas.FindAsync(id);
             if (marca == null) throw new Exception("Marca não encontrada");

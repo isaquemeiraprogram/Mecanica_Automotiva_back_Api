@@ -1,6 +1,7 @@
 ﻿using Mecanica_Automotiva.Dtos.DtosDadosPescas;
 using Mecanica_Automotiva.Models.Produtos;
 using Mecanica_Automotiva.Services.DadosPecaService;
+using Mecanica_Automotiva.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,39 +19,65 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         }
 
         [HttpGet]
-        public async Task<List<SubCategoriaPeca>> GetAllSubCategoria()
+        public async Task<ActionResult<List<SubCategoriaPeca>>> GetAllAsync()
         {
-            return await _Service.GetAllSubCategoria();
+            var subcategoriaList = await _Service.GetAllAsync();
+            return Ok(subcategoriaList);
         }
 
         [HttpGet("{id}")]
-        public async Task<SubCategoriaPeca> GetByIdSubCategoria(Guid id)
+        public async Task<ActionResult<SubCategoriaPeca>> GetByIdAsync(Guid id)
         {
-            return await _Service.GetByIdSubCategoria(id);
+            var subCategoria = await _Service.GetByIdAsync(id);
+            if (subCategoria == null) return NotFound("SubCategoria não encontrada");
+
+            return Ok(subCategoria);
         }
 
         [HttpGet("/Categoria/{id}")]//o nome da rota tem que ser igual no parametro
-        public async Task<List<SubCategoriaPeca>> GetSubcategoriaPorCategoria(Guid id)
+
+        //entrada: categoriaId
+        //saida : lista de subcategorias que pertencem a categoriaId
+        public async Task<ActionResult<List<SubCategoriaPeca>>> GetFiltroSubcategoriaAsync(Guid id)
         {
-            return await _Service.GetSubcategoriaPorCategoria(id);
+            var subcategoriaList = await _Service.GetFiltroSubcategoriaAsync(id);
+            if (subcategoriaList == null) return NotFound("Categoria não encontrada");
+
+            return Ok(subcategoriaList);
         }
 
         [HttpPost]
-        public async Task<string> AddSubCategoria(SubCategoriaPecaDto dto)
+        public async Task<ActionResult<SubCategoriaPeca>> AddAsync(SubCategoriaPecaDto dto)
         {
-            return await _Service.AddSubCategoria(dto);
+            var subCategoriaPeca = await _Service.AddAsync(dto);
+            if (subCategoriaPeca == null) return NotFound("Categoria da subcategoria não encontrada");
+            return Ok(subCategoriaPeca);
         }
 
         [HttpPut("{id}")]
-        public async Task<string> UpdateSubCategoria(SubCategoriaPecaDto dto, Guid id)
+        public async Task<ActionResult<SubCategoriaPeca>> UpdateAsync(SubCategoriaPecaDto dto, Guid id)
         {
-            return await _Service.UpdateSubCategoria(dto, id);
+            //cria duas var pra dividir   subicategoria e codigo de erro
+            var (subCategoria, codigo) = await _Service.UpdateAsync(dto, id);
+
+            if (codigo == CodigoResult.SubCategoriaNaoEncontrada)
+                return NotFound("SubCategoria não encontrada");
+
+            if (codigo == CodigoResult.CategoriaNaoEncontrada)
+                return NotFound("Categoria da subcategoria não encontrada");
+
+            return Ok(subCategoria);
         }
 
         [HttpDelete("{id}")]
-        public async Task<string> DeleteSubCategoria(Guid id)
+        public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
-            return await _Service.DeleteSubCategoria(id);
+            var (subCategoria, codigo) = await _Service.DeleteAsync(id);
+
+            if (codigo == CodigoResult.SubCategoriaNaoEncontrada)
+                return NotFound("SubCategoria não encontrada");
+
+            return Ok(subCategoria);
         }
     }
 }

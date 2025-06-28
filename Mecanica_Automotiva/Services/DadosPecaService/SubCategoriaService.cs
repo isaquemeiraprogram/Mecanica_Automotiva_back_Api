@@ -1,6 +1,8 @@
-﻿using Mecanica_Automotiva.Context;
+﻿using Mecanica_Automotiva.CodigosdeErros;
+using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtosDadosPescas;
 using Mecanica_Automotiva.Models.Produtos;
+using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -12,74 +14,85 @@ namespace Mecanica_Automotiva.Services.DadosPecaService
 
         public SubCategoriaService(DataBase context)
         {
-           _context = context;
+            _context = context;
         }
 
-        public async Task<List<SubCategoriaPeca>> GetAllSubCategoria()
+        public async Task<List<SubCategoriaPeca>> GetAllAsync()
         {
-            return await _context.SubCategoriasPecas.Include(subcategoria => subcategoria.CategoriaPeca).ToListAsync();
+            var subcategoriaList = await _context.SubCategoriasPecas
+                .Include(subcategoria => subcategoria.CategoriaPeca)
+                .ToListAsync();
+
+            return subcategoriaList;
         }
 
-        public async Task<SubCategoriaPeca> GetByIdSubCategoria(Guid id)
+        public async Task<SubCategoriaPeca> GetByIdAsync(Guid id)
         {
             var subCategoria = await _context.SubCategoriasPecas.FindAsync(id);
-            if (subCategoria == null) throw new Exception("SubCategoria não encontrada");
+            if (subCategoria == null) return null;
 
             return subCategoria;
         }
 
-        //filtro entrada:um id de categoria saida : lista de subcategorias que pertencem a categoriaid
-        public async Task<List<SubCategoriaPeca>> GetSubcategoriaPorCategoria(Guid CategoriaId)
+        //filtro entrada:um id de categoria
+        //saida : lista de subcategorias que pertencem a categoriaid
+        public async Task<List<SubCategoriaPeca>> GetFiltroSubcategoriaAsync(Guid id)
         {
-            var categoria = await _context.CategoriasPecas.FindAsync(CategoriaId);
-            if (categoria == null) throw new Exception("Categoria não encontrada");
+            var categoria = await _context.CategoriasPecas.FindAsync(id);
+            if (categoria == null) return null;
 
-            return await _context.SubCategoriasPecas.Include(s => s.CategoriaPeca)
-                .Where(sbc => sbc.CategoriaPeca.ID == CategoriaId).ToListAsync();
+            var subcategoriaList = await _context.SubCategoriasPecas
+                    .Include(s => s.CategoriaPeca)
+                    .Where(sbc => sbc.CategoriaPeca.ID == id)
+                    .ToListAsync();
+
+            return subcategoriaList;
         }
 
-        public async Task<string> AddSubCategoria(SubCategoriaPecaDto dto)
+        public async Task<SubCategoriaPeca> AddAsync(SubCategoriaPecaDto dto)
         {
             var categoria = await _context.CategoriasPecas.FindAsync(dto.CategoriaId);
-            if(categoria == null) throw new Exception("Categoria não encontrada");
-            
-            SubCategoriaPeca subCategoriaPeca = new SubCategoriaPeca
+            if (categoria == null) return null; 
+
+            var subCategoria = new SubCategoriaPeca
             {
                 ID = Guid.NewGuid(),
                 Nome = dto.Nome,
                 CategoriaPeca = categoria
             };
 
-            await _context.SubCategoriasPecas.AddAsync(subCategoriaPeca);
+            await _context.SubCategoriasPecas.AddAsync(subCategoria);
 
             await _context.SaveChangesAsync();
-            return "SubCategoria adicionada com sucesso!";
+            return subCategoria;
         }
 
-        public async Task<string> UpdateSubCategoria( SubCategoriaPecaDto dto, Guid id)
+        public async Task<(SubCategoriaPeca,CodigoResult)> UpdateAsync(SubCategoriaPecaDto dto, Guid id)
         {
             var subCategoria = await _context.SubCategoriasPecas.FindAsync(id);
-            if (subCategoria == null) throw new Exception("SubCategoria não encontrada");
+            if (subCategoria == null) return (null,CodigoResult.SubCategoriaNaoEncontrada);
 
             var categoria = await _context.CategoriasPecas.FindAsync(dto.CategoriaId);
-            if (categoria == null) throw new Exception("Categoria não encontrada");
+            if (categoria == null) return (null, CodigoResult.CategoriaNaoEncontrada);
+
 
             subCategoria.Nome = dto.Nome;
             subCategoria.CategoriaPeca = categoria;
 
             await _context.SaveChangesAsync();
-            return "SubCategoria atualizada com sucesso!";
+            return (subCategoria,0);
         }
 
-        public async Task<string> DeleteSubCategoria(Guid id)
+        //Entrada: id da subcategoria
+        public async Task<(bool,CodigoResult)> DeleteAsync(Guid id)
         {
             var subCategoria = await _context.SubCategoriasPecas.FindAsync(id);
-            if (subCategoria == null) throw new Exception("SubCategoria não encontrada");
+            if (subCategoria == null) return(false,CodigoResult.SubCategoriaNaoEncontrada);
 
             _context.SubCategoriasPecas.Remove(subCategoria);
 
             await _context.SaveChangesAsync();
-            return "SubCategoria removida com sucesso!";
+            return (true, CodigoResult.Sucesso);
         }
     }
 }

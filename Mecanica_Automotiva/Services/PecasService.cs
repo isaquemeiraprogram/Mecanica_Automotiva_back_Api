@@ -14,14 +14,14 @@ namespace Mecanica_Automotiva.Services
             this._context = _context;
         }
 
-        public async Task<List<Peca>> GetPecasAsync()
+        public async Task<List<Peca>> GetAllAsync()
         {
             return await _context.Pecas
                 .Include(p => p.SubCategoriaPeca)
                 .ToListAsync();
         }
 
-        public async Task<Peca> GetPecaByIdAsync(Guid id)
+        public async Task<Peca> GetByIdAsync(Guid id)
         {
             var peca = await _context.Pecas.FindAsync(id);
             if (peca == null) throw new Exception("Peca Nao Encontrada");
@@ -29,10 +29,10 @@ namespace Mecanica_Automotiva.Services
             return peca;
         }
 
-        public async Task<string> AddPeca(PecasDto dto)
+        public async Task<string> AddAsync(PecasDto dto)
         {
-            var categoria = await _context.CategoriasPecas.FindAsync(dto.CategoriaPecaId);
-            if (categoria == null) throw new Exception("Categoria de Peca não encontrada");
+            var subCategoria = await _context.SubCategoriasPecas.FindAsync(dto.SubCategoriaPecaId);
+            if (subCategoria == null) throw new Exception("subCategoria de Peca não encontrada");
 
             Peca peca = new Peca
             {
@@ -40,7 +40,7 @@ namespace Mecanica_Automotiva.Services
                 Img = dto.Img,
                 Nome = dto.Nome,
                 Preco = dto.Preco,
-                CategoriaPeca = categoria,//subcategoria esta na categoria
+                SubCategoriaPeca = subCategoria,//subcategoria esta na categoria
             };
 
             await _context.Pecas.AddAsync(peca);
@@ -49,12 +49,12 @@ namespace Mecanica_Automotiva.Services
             return $"Peca {peca.Nome} adicionada com sucesso";
         }
 
-        public async Task<string> UpdatePeca( PecasDto dto, Guid id)
+        public async Task<string> UpdateAsync( PecasDto dto, Guid id)
         {
             var peca = await _context.Pecas.FindAsync(id);
             if (peca == null) throw new Exception("Peca Nao Encontrada");
 
-            var subCategoria = await _context.CategoriasPecas.FindAsync(dto.SubCategoriaPecaId);
+            var subCategoria = await _context.SubCategoriasPecas.FindAsync(dto.SubCategoriaPecaId);
             if (subCategoria == null) throw new Exception("Categoria de Peca não encontrada");
 
             peca.Img = dto.Img;
@@ -66,7 +66,7 @@ namespace Mecanica_Automotiva.Services
             return $"Peca {peca.Nome} atualizada com sucesso";
         }
 
-        public async Task<string> DeletePeca(Guid id)
+        public async Task<string> DeleteAsync(Guid id)
         {
             var peca = await _context.Pecas.FindAsync(id);
             if (peca == null) throw new Exception("Peca Nao Encontrada");

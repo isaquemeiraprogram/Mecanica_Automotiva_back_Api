@@ -14,25 +14,23 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             this._context = _context;
         }
 
-        public async Task<List<Cliente>> GetAllClintes()
+        public async Task<List<Cliente>> GetAllAsync()
         {
-            return await _context.Clientes
+            var clienteList = await _context.Clientes
                 .Include(c => c.Endereco)
                 .ToListAsync();
-        }
 
-        public async Task<Cliente> GetClienteById(Guid id)
+            return clienteList;
+        }
+        public async Task<Cliente> GetByIdAsync(Guid id)
         {
             var cliente = await _context.Clientes
                 .Include(c => c.Endereco)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (cliente == null) throw new Exception("Cliente não encontrado");
-
             return cliente;
         }
-
-        public async Task<string> AddCliente(ClienteDto dto)
+        public async Task<Cliente> AddAsync(ClienteDto dto)
         {
             Cliente cliente = new Cliente
             {
@@ -44,29 +42,28 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             await _context.Clientes.AddAsync(cliente);
             await _context.SaveChangesAsync();
 
-            return $"Cliente {cliente.Nome} adicionado com sucesso";
+            return cliente;
         }
-
-        public async Task<string> UpdateCliente( ClienteDto dto, Guid id)
+        public async Task<Cliente> UpdateAsync(ClienteDto dto, Guid id)
         {
             var cliente = await _context.Clientes.FindAsync(id);
-            if (cliente == null) throw new Exception("Cliente não encontrado");
+            if (cliente == null) return null;
 
             cliente.Nome = dto.Nome;
             cliente.Cpf = dto.Cpf;
 
             await _context.SaveChangesAsync();
-            return $"Cliente {cliente.Nome} atualizado com sucesso";
+            return cliente;
         }
-        public async Task<string> DeleteCliente(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var cliente = await _context.Clientes.FindAsync(id);
-            if (cliente == null) throw new Exception("Cliente não encontrado");
+            if (cliente == null) return false;
 
             _context.Clientes.Remove(cliente);
 
             await _context.SaveChangesAsync();
-            return $"Cliente {cliente.Nome} removido com sucesso";
+            return true;
         }
 
     }

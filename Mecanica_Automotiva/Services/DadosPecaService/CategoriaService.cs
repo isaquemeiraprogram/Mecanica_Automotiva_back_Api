@@ -16,18 +16,20 @@ namespace Mecanica_Automotiva.Services.DadosPecaService
         }
 
 
-        public async Task<List<CategoriaPeca>> GetAllCategorias()
+        public async Task<List<CategoriaPeca>> GetAllAsync()
         {
-            return await _context.CategoriasPecas.ToListAsync();
+            var categoriaList = await _context.CategoriasPecas.ToListAsync();
+
+            return categoriaList;
         }
-        public async Task<CategoriaPeca> GetCategoriasById(Guid id)
+        public async Task<CategoriaPeca> GetByIdAsync(Guid id)
         {
             var categoria = await _context.CategoriasPecas.FindAsync(id);
-            if (categoria == null) throw new Exception("Categoria não encontrada");
+            if (categoria == null) return null;
 
             return categoria;
         }
-        public async Task<string> AddCategoria(CategoriaPecaDto dto)
+        public async Task<CategoriaPeca> AddAsync(CategoriaPecaDto dto)
         {
             CategoriaPeca categoria = new CategoriaPeca
             {
@@ -38,27 +40,27 @@ namespace Mecanica_Automotiva.Services.DadosPecaService
             await _context.CategoriasPecas.AddAsync(categoria);
 
             await _context.SaveChangesAsync();
-            return $"Categoria {categoria.Nome} adicionada com sucesso";
+            return categoria;
         }
-        public async Task<string> UpdateCategoria(CategoriaPecaDto dto, Guid id)
+        public async Task<CategoriaPeca> UpdateAsync(CategoriaPecaDto dto, Guid id)
         {
             var categoria = await _context.CategoriasPecas.FindAsync(id);
-            if (categoria == null) throw new Exception("Categoria não encontrada");
+            if (categoria == null) return null;
 
             categoria.Nome = dto.Nome;
 
             await _context.SaveChangesAsync();
-            return $"Categoria {categoria.Nome} atualizada com sucesso";
+            return categoria;
         }
-        public async Task<string> DeleteCategoria(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            CategoriaPeca categoria = await _context.CategoriasPecas.FindAsync(id);
-            if (categoria == null) throw new Exception("Categoria não encontrada");
+            var categoria = await _context.CategoriasPecas.FindAsync(id);
+            if (categoria == null) return false;
 
             _context.CategoriasPecas.Remove(categoria);
 
             await _context.SaveChangesAsync();
-            return $"Categoria {categoria.Nome} deletada com sucesso";
+            return true;
         }
     }
 }

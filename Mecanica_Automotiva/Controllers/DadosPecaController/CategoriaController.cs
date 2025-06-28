@@ -2,6 +2,7 @@
 using Mecanica_Automotiva.Models.Produtos;
 using Mecanica_Automotiva.Services.DadosPecaService;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,33 +21,41 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
 
 
         [HttpGet]
-        public async Task<List<CategoriaPeca>> GetAllCategorias()
+        public async Task<ActionResult<List<CategoriaPeca>>> GetAllAsync()
         {
-            return await _service.GetAllCategorias();
+            var categoriList = await _service.GetAllAsync();
+            return Ok(categoriList);
         }
 
         [HttpGet("{id}")]
-        public async Task<CategoriaPeca> GetCategoriasById(Guid id)
+        public async Task<ActionResult<CategoriaPeca>> GetByIdAsync(Guid id)
         {
-            return await _service.GetCategoriasById(id);
+            var categoria = await _service.GetByIdAsync(id);
+            if (categoria == null) return NotFound("Categoria não encontrada");
+            return Ok(categoria);
         }
 
         [HttpPost]
-        public async Task<string> AddCategoria([FromBody] CategoriaPecaDto dto)
+        public async Task<ActionResult<CategoriaPeca>> AddAsync([FromBody] CategoriaPecaDto dto)
         {
-            return await _service.AddCategoria(dto);
+            var categoria = await _service.AddAsync(dto);
+            return Ok(categoria);
         }
 
         [HttpPut("{id}")]
-        public async Task<string> UpdateCategoria([FromBody] CategoriaPecaDto dto, Guid id)
+        public async Task<ActionResult<CategoriaPeca>> UpdateAsync([FromBody] CategoriaPecaDto dto, Guid id)
         {
-            return await _service.UpdateCategoria(dto,id);
+            var categoria = await _service.UpdateAsync(dto,id);
+            if (categoria == null)  return NotFound("Categoria não encontrada");
+            return categoria;
         }
 
         [HttpDelete("{id}")]
-        public async Task<string> DeleteCategoria(Guid id)
+        public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
-            return await _service.DeleteCategoria(id);
+            var categoria = await _service.DeleteAsync(id);
+            if (categoria ==  false) return NotFound("Categoria não encontrada");
+            return categoria;
         }
 
     }

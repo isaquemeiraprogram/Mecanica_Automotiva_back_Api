@@ -14,11 +14,20 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             this._context = _context;
         }
 
-        
-        public async Task<string> AddEndereco(EnderecoDto dto)
+        //nao precisa de getAll quando pega cliente ja vem getbyid pode precisar pra descobrir de quem é o endereco
+
+        public async Task<List<Endereco>> GetByIdAsync()
+        {
+            var endereco = await _context.Enderecos
+                .Include(e => e.Cliente)
+                .ToListAsync();
+
+            return endereco;
+        }
+        public async Task<Endereco> AddAsync(EnderecoDto dto)
         {
             var cliente = await _context.Clientes.FindAsync(dto.ClienteId);
-            if (cliente == null) throw new Exception("cliente nao encontrado");
+            if (cliente == null) return null;
 
             
             Endereco endereco = new Endereco
@@ -33,17 +42,15 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
                 Cliente = cliente
             };
 
-
-
             await _context.Enderecos.AddAsync(endereco);
 
             await _context.SaveChangesAsync();
             return $"Endereço de {endereco.Cliente.Nome} adicionado com sucesso";
         }
-        public async Task<string> UpdateEndereco(Guid id, EnderecoDto dto)
+        public async Task<Endereco> UpdateAsync(EnderecoDto dto, Guid id)
         {
             var endereco = await _context.Enderecos.FindAsync(id);
-            if (endereco == null) throw new Exception("Endereço não encontrado");
+            if (endereco == null) return null; 
 
             endereco.Cep = dto.Cep;
             endereco.Estado = dto.Estado;
@@ -53,17 +60,17 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             endereco.Numero = dto.Numero;
 
             await _context.SaveChangesAsync();
-            return $"Endereço {endereco.Id} atualizado com sucesso";
+            return endereco;
         }
-        public async Task<string> DeleteEndereco(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             Endereco endereco = await _context.Enderecos.FindAsync(id);
-            if (endereco == null) throw new Exception("Endereço não encontrado");
+            if (endereco == null) return false;
 
             _context.Enderecos.Remove(endereco);
 
             await _context.SaveChangesAsync();
-            return $"Endereço {endereco.Id} removido com sucesso";
+            return true;
         }
     }
 }

@@ -19,33 +19,45 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
 
 
         [HttpGet]
-        public async Task<List<Cliente>> GetAllClintes()
+        public async Task<ActionResult<List<Cliente>>> GetAllAsync()
         {
-            return await _service.GetAllClintes();
+            //talves de pra usar try catch aqui
+            var clienteList = await _service.GetAllAsync();
+            return Ok(clienteList);
         }
 
         [HttpGet("{id}")]
-        public async Task<Cliente> GetClienteById(Guid id)
+        public async Task<ActionResult<Cliente>> GetByIdAsync(Guid id)
         {
-            return await _service.GetClienteById(id);
+            //fazer assim deixa mais facil de ler o retorno
+            var cliente = await _service.GetByIdAsync(id);
+            if (cliente == null) return NotFound("Cliente não encontrado");
+
+            return Ok(cliente);
         }
 
         [HttpPost]
-        public async Task<string> AddCliente([FromBody] ClienteDto dto)
+        public async Task<ActionResult<Cliente>> AddAsync([FromBody] ClienteDto dto)
         {
-            return await _service.AddCliente(dto);
+            var cliente = await _service.AddAsync(dto);
+            return Ok(cliente);
         }
 
         [HttpPut("{id}")]
-        public async Task<string> UpdateCliente([FromBody] ClienteDto dto, Guid id)
+        public async Task<ActionResult<Cliente>> UpdateAsync(ClienteDto dto, Guid id)
         {
-            return await _service.UpdateCliente(dto,id);
+            var cliente = await _service.UpdateAsync(dto,id);
+            if (cliente == null) return NotFound("Cliente não encontrado");
+
+            return Ok(cliente);
         }
 
         [HttpDelete("{id}")]
-        public async Task<string> DeleteCliente(Guid id)
+        public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
-            return await _service.DeleteCliente(id);
+            var cliente = await _service.DeleteAsync(id);
+            if (cliente == false) return NotFound();
+            return Ok(cliente);
         }
     }
 }
