@@ -30,6 +30,8 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
 
             return cliente;
         }
+
+       // fazer ele botar endereco tambem quando cria cliente
         public async Task<Cliente> AddAsync(ClienteDto dto)
         {
             Cliente cliente = new Cliente

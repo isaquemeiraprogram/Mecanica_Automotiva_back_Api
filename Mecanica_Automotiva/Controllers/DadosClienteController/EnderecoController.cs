@@ -18,11 +18,12 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<Endereco>>> GetByIdAsync()
+        public async Task<ActionResult<Endereco>> GetByIdAsync(Guid id)
         {
-            var enderecoList = await _service.GetByIdAsync();
+            var endereco = await _service.GetByIdAsync(id);
+            if (endereco == null) return NotFound("Endereco nao encontrado");
 
-            return Ok(enderecoList);
+            return Ok(endereco);
         }
 
         [HttpPost]
@@ -35,9 +36,9 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Endereco>> UpdateAsync([FromBody] EnderecoDto dto, Guid id)
+        public async Task<ActionResult<Endereco>> UpdateAsync([FromBody] EnderecoDto dto,Guid id)
         {
-            var endereco = await _service.UpdateAsync(dto, id);
+            var endereco = await _service.UpdateAsync(dto,id);
             if (endereco == null) return NotFound("Endereço não encontrado");
 
             return Ok(endereco);

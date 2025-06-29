@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mecanica_Automotiva.Migrations
 {
     [DbContext(typeof(DataBase))]
-    [Migration("20250626111501_test")]
-    partial class test
+    [Migration("20250629124930_reparoVeiculo")]
+    partial class reparoVeiculo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,10 @@ namespace Mecanica_Automotiva.Migrations
 
                     b.Property<TimeOnly>("Hora")
                         .HasColumnType("time(6)");
+
+                    b.Property<string>("Queixa")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<TimeOnly>("TempoServiçoTotal")
                         .HasColumnType("time(6)");
@@ -114,7 +118,7 @@ namespace Mecanica_Automotiva.Migrations
 
             modelBuilder.Entity("Mecanica_Automotiva.Models.DadosVeiculo.Marca", b =>
                 {
-                    b.Property<Guid>("ID")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
@@ -122,33 +126,35 @@ namespace Mecanica_Automotiva.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Marcas");
                 });
 
             modelBuilder.Entity("Mecanica_Automotiva.Models.DadosVeiculo.Modelo", b =>
                 {
-                    b.Property<Guid>("ID")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("MarcaId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
+
+                    b.HasIndex("MarcaId");
 
                     b.ToTable("Modelos");
                 });
 
-            modelBuilder.Entity("Mecanica_Automotiva.Models.Pecas", b =>
+            modelBuilder.Entity("Mecanica_Automotiva.Models.Peca", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("CategoriaPecaID")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Img")
@@ -166,11 +172,19 @@ namespace Mecanica_Automotiva.Migrations
                     b.Property<Guid>("ServicoId")
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("SubCategoriaPecaID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("VeiculoId")
+                        .HasColumnType("char(36)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoriaPecaID");
-
                     b.HasIndex("ServicoId");
+
+                    b.HasIndex("SubCategoriaPecaID");
+
+                    b.HasIndex("VeiculoId");
 
                     b.ToTable("Pecas");
                 });
@@ -247,20 +261,24 @@ namespace Mecanica_Automotiva.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("MarcaID")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("ModeloID")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("Nome")
+                    b.Property<int>("Ano")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("MarcaId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ModeloId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Placa")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MarcaID");
+                    b.HasIndex("MarcaId");
 
-                    b.HasIndex("ModeloID");
+                    b.HasIndex("ModeloId");
 
                     b.ToTable("Veiculos");
                 });
@@ -287,23 +305,42 @@ namespace Mecanica_Automotiva.Migrations
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("Mecanica_Automotiva.Models.Pecas", b =>
+            modelBuilder.Entity("Mecanica_Automotiva.Models.DadosVeiculo.Modelo", b =>
                 {
-                    b.HasOne("Mecanica_Automotiva.Models.Produtos.CategoriaPeca", "CategoriaPeca")
-                        .WithMany("Pecas")
-                        .HasForeignKey("CategoriaPecaID")
+                    b.HasOne("Mecanica_Automotiva.Models.DadosVeiculo.Marca", "Marca")
+                        .WithMany()
+                        .HasForeignKey("MarcaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Marca");
+                });
+
+            modelBuilder.Entity("Mecanica_Automotiva.Models.Peca", b =>
+                {
                     b.HasOne("Mecanica_Automotiva.Models.Servico", "Servico")
                         .WithMany("Pecas")
                         .HasForeignKey("ServicoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CategoriaPeca");
+                    b.HasOne("Mecanica_Automotiva.Models.Produtos.SubCategoriaPeca", "SubCategoriaPeca")
+                        .WithMany("Pecas")
+                        .HasForeignKey("SubCategoriaPecaID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mecanica_Automotiva.Models.Veiculo", "Veiculo")
+                        .WithMany("Pecas")
+                        .HasForeignKey("VeiculoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Servico");
+
+                    b.Navigation("SubCategoriaPeca");
+
+                    b.Navigation("Veiculo");
                 });
 
             modelBuilder.Entity("Mecanica_Automotiva.Models.Produtos.SubCategoriaPeca", b =>
@@ -340,13 +377,13 @@ namespace Mecanica_Automotiva.Migrations
                 {
                     b.HasOne("Mecanica_Automotiva.Models.DadosVeiculo.Marca", "Marca")
                         .WithMany()
-                        .HasForeignKey("MarcaID")
+                        .HasForeignKey("MarcaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Mecanica_Automotiva.Models.DadosVeiculo.Modelo", "Modelo")
                         .WithMany()
-                        .HasForeignKey("ModeloID")
+                        .HasForeignKey("ModeloId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -369,9 +406,12 @@ namespace Mecanica_Automotiva.Migrations
 
             modelBuilder.Entity("Mecanica_Automotiva.Models.Produtos.CategoriaPeca", b =>
                 {
-                    b.Navigation("Pecas");
-
                     b.Navigation("SubCategoria");
+                });
+
+            modelBuilder.Entity("Mecanica_Automotiva.Models.Produtos.SubCategoriaPeca", b =>
+                {
+                    b.Navigation("Pecas");
                 });
 
             modelBuilder.Entity("Mecanica_Automotiva.Models.Servico", b =>
@@ -381,6 +421,8 @@ namespace Mecanica_Automotiva.Migrations
 
             modelBuilder.Entity("Mecanica_Automotiva.Models.Veiculo", b =>
                 {
+                    b.Navigation("Pecas");
+
                     b.Navigation("Servico");
                 });
 #pragma warning restore 612, 618

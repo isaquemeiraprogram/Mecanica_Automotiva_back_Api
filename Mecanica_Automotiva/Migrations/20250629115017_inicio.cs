@@ -15,7 +15,7 @@ namespace Mecanica_Automotiva.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "CategoriaPeca",
+                name: "CategoriasPecas",
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -24,7 +24,7 @@ namespace Mecanica_Automotiva.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoriaPeca", x => x.ID);
+                    table.PrimaryKey("PK_CategoriasPecas", x => x.ID);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -48,32 +48,18 @@ namespace Mecanica_Automotiva.Migrations
                 name: "Marcas",
                 columns: table => new
                 {
-                    ID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Nome = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Marcas", x => x.ID);
+                    table.PrimaryKey("PK_Marcas", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Modelos",
-                columns: table => new
-                {
-                    ID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Nome = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Modelos", x => x.ID);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "SubCategoriaPeca",
+                name: "SubCategoriasPecas",
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -83,11 +69,11 @@ namespace Mecanica_Automotiva.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubCategoriaPeca", x => x.ID);
+                    table.PrimaryKey("PK_SubCategoriasPecas", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_SubCategoriaPeca_CategoriaPeca_CategoriaPecaID",
+                        name: "FK_SubCategoriasPecas_CategoriasPecas_CategoriaPecaID",
                         column: x => x.CategoriaPecaID,
-                        principalTable: "CategoriaPeca",
+                        principalTable: "CategoriasPecas",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -148,28 +134,48 @@ namespace Mecanica_Automotiva.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Modelos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Nome = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    MarcaId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Modelos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Modelos_Marcas_MarcaId",
+                        column: x => x.MarcaId,
+                        principalTable: "Marcas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Veiculos",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Nome = table.Column<int>(type: "int", nullable: false),
-                    MarcaID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    ModeloID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    MarcaId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ModeloId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Veiculos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Veiculos_Marcas_MarcaID",
-                        column: x => x.MarcaID,
+                        name: "FK_Veiculos_Marcas_MarcaId",
+                        column: x => x.MarcaId,
                         principalTable: "Marcas",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Veiculos_Modelos_ModeloID",
-                        column: x => x.ModeloID,
+                        name: "FK_Veiculos_Modelos_ModeloId",
+                        column: x => x.ModeloId,
                         principalTable: "Modelos",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -215,22 +221,29 @@ namespace Mecanica_Automotiva.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Preco = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CategoriaPecaID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    SubCategoriaPecaID = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    VeiculoId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     ServicoId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pecas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pecas_CategoriaPeca_CategoriaPecaID",
-                        column: x => x.CategoriaPecaID,
-                        principalTable: "CategoriaPeca",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Pecas_Servicos_ServicoId",
                         column: x => x.ServicoId,
                         principalTable: "Servicos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Pecas_SubCategoriasPecas_SubCategoriaPecaID",
+                        column: x => x.SubCategoriaPecaID,
+                        principalTable: "SubCategoriasPecas",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Pecas_Veiculos_VeiculoId",
+                        column: x => x.VeiculoId,
+                        principalTable: "Veiculos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -247,14 +260,24 @@ namespace Mecanica_Automotiva.Migrations
                 column: "ClienteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pecas_CategoriaPecaID",
-                table: "Pecas",
-                column: "CategoriaPecaID");
+                name: "IX_Modelos_MarcaId",
+                table: "Modelos",
+                column: "MarcaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pecas_ServicoId",
                 table: "Pecas",
                 column: "ServicoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pecas_SubCategoriaPecaID",
+                table: "Pecas",
+                column: "SubCategoriaPecaID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pecas_VeiculoId",
+                table: "Pecas",
+                column: "VeiculoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Servicos_AgendarID",
@@ -267,19 +290,19 @@ namespace Mecanica_Automotiva.Migrations
                 column: "VeiculoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubCategoriaPeca_CategoriaPecaID",
-                table: "SubCategoriaPeca",
+                name: "IX_SubCategoriasPecas_CategoriaPecaID",
+                table: "SubCategoriasPecas",
                 column: "CategoriaPecaID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Veiculos_MarcaID",
+                name: "IX_Veiculos_MarcaId",
                 table: "Veiculos",
-                column: "MarcaID");
+                column: "MarcaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Veiculos_ModeloID",
+                name: "IX_Veiculos_ModeloId",
                 table: "Veiculos",
-                column: "ModeloID");
+                column: "ModeloId");
         }
 
         /// <inheritdoc />
@@ -292,13 +315,10 @@ namespace Mecanica_Automotiva.Migrations
                 name: "Pecas");
 
             migrationBuilder.DropTable(
-                name: "SubCategoriaPeca");
-
-            migrationBuilder.DropTable(
                 name: "Servicos");
 
             migrationBuilder.DropTable(
-                name: "CategoriaPeca");
+                name: "SubCategoriasPecas");
 
             migrationBuilder.DropTable(
                 name: "Agendamentos");
@@ -307,13 +327,16 @@ namespace Mecanica_Automotiva.Migrations
                 name: "Veiculos");
 
             migrationBuilder.DropTable(
+                name: "CategoriasPecas");
+
+            migrationBuilder.DropTable(
                 name: "Clientes");
 
             migrationBuilder.DropTable(
-                name: "Marcas");
+                name: "Modelos");
 
             migrationBuilder.DropTable(
-                name: "Modelos");
+                name: "Marcas");
         }
     }
 }

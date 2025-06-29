@@ -18,11 +18,14 @@ namespace Mecanica_Automotiva.Controllers
             this._service = _service;
         }
 
+        [HttpGet]
         public async Task<ActionResult<List<Veiculo>>> GetAllAsync()
         {
             var veiculoList = await _service.GetAllAsync();
             return Ok(veiculoList);
         }
+
+        [HttpGet("{id}")]
         public async Task<ActionResult<Veiculo>> GetByIdAsync(Guid id)
         {
             var veiculo = await _service.GetByIdAsync(id);
@@ -30,6 +33,8 @@ namespace Mecanica_Automotiva.Controllers
 
             return Ok(veiculo);
         }
+
+        [HttpPost]
         public async Task<ActionResult<(Veiculo, CodigoResult)>> AddAsync(VeiculoDto dto)
         {
             var (veiculo, codigo) = await _service.AddAsync(dto);
@@ -44,6 +49,8 @@ namespace Mecanica_Automotiva.Controllers
             }
             return Ok(veiculo);
         }
+
+        [HttpPut("{id}")]
         public async Task<ActionResult<(Veiculo, CodigoResult)>> UpdateAsync(Guid id, VeiculoDto dto)
         {
             var (veiculo, codigo) = await _service.UpdateAsync(id, dto);
@@ -62,6 +69,8 @@ namespace Mecanica_Automotiva.Controllers
 
             return Ok(veiculo);
         }
+
+        [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
             var veiculo = await _service.DeleteAsync(id);

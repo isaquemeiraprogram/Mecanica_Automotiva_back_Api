@@ -12,5 +12,6 @@ namespace Mecanica_Automotiva.Dtos.DtoCliente
         public string Numero { get; set; }
 
         public Guid ClienteId { get; set; }
+
     }
 }

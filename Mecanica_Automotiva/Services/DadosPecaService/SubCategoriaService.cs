@@ -1,5 +1,4 @@
-﻿using Mecanica_Automotiva.CodigosdeErros;
-using Mecanica_Automotiva.Context;
+﻿using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtosDadosPescas;
 using Mecanica_Automotiva.Models.Produtos;
 using Mecanica_Automotiva.Shared;
@@ -80,7 +79,7 @@ namespace Mecanica_Automotiva.Services.DadosPecaService
             subCategoria.CategoriaPeca = categoria;
 
             await _context.SaveChangesAsync();
-            return (subCategoria,0);
+            return (subCategoria, CodigoResult.Sucesso);
         }
 
         //Entrada: id da subcategoria

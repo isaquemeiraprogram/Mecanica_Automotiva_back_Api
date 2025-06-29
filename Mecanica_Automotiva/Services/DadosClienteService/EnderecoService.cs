@@ -16,11 +16,13 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
 
         //nao precisa de getAll quando pega cliente ja vem getbyid pode precisar pra descobrir de quem é o endereco
 
-        public async Task<List<Endereco>> GetByIdAsync()
+        public async Task<Endereco> GetByIdAsync(Guid id)
         {
             var endereco = await _context.Enderecos
-                .Include(e => e.Cliente)
-                .ToListAsync();
+                          .Include(e => e.Cliente)
+                          .FirstOrDefaultAsync(e=> e.Id == id);
+
+            if (endereco == null) return null;
 
             return endereco;
         }
@@ -45,7 +47,7 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             await _context.Enderecos.AddAsync(endereco);
 
             await _context.SaveChangesAsync();
-            return $"Endereço de {endereco.Cliente.Nome} adicionado com sucesso";
+            return endereco;
         }
         public async Task<Endereco> UpdateAsync(EnderecoDto dto, Guid id)
         {
@@ -58,6 +60,7 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             endereco.Bairro = dto.Bairro;
             endereco.Rua = dto.Rua;
             endereco.Numero = dto.Numero;
+            //nao tem pq botar o cliente na atualizacao mas se tirar da dto da ruim arruma mais tarde
 
             await _context.SaveChangesAsync();
             return endereco;
