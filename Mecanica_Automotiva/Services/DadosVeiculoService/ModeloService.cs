@@ -18,16 +18,13 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
         public async Task<List<Modelo>> GetAllAsync()
         {
             var modelosList = await _context.Modelos
-                                    .Include(m => m.Marca)
                                     .ToListAsync();
             return modelosList;
         }
 
         public async Task<Modelo> GetByIdAsync(Guid id)
         {
-            var modelo = await _context.Modelos
-                .Include(m => m.Marca)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var modelo = await _context.Modelos.FindAsync(id);
 
             if (modelo == null) return null;
 

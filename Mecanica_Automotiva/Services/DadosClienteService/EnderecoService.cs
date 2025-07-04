@@ -1,4 +1,5 @@
-﻿using Mecanica_Automotiva.Context;
+﻿using AutoMapper;
+using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtoCliente;
 using Mecanica_Automotiva.Models.DadosCliente;
 using Microsoft.EntityFrameworkCore;
@@ -8,15 +9,19 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
     public class EnderecoService
     {
         private readonly DataBase _context;
+        private readonly IMapper _mapper;
 
-        public EnderecoService(DataBase _context)
+        public EnderecoService(DataBase context, IMapper mapper)
         {
-            this._context = _context;
+            _context = context;
+            _mapper = mapper;
         }
+
+
 
         //nao precisa de getAll quando pega cliente ja vem getbyid pode precisar pra descobrir de quem é o endereco
 
-        public async Task<Endereco> GetByIdAsync(Guid id)
+        public async Task<EnderecoDto> GetByIdAsync(Guid id)
         {
             var endereco = await _context.Enderecos
                           .Include(e => e.Cliente)
@@ -24,25 +29,27 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
 
             if (endereco == null) return null;
 
-            return endereco;
+            var enderecoDto = _mapper.Map<EnderecoDto>(endereco);
+
+            return enderecoDto;
         }
         public async Task<Endereco> AddAsync(EnderecoDto dto)
         {
             var cliente = await _context.Clientes.FindAsync(dto.ClienteId);
             if (cliente == null) return null;
 
-            
-            Endereco endereco = new Endereco
-            {
-                Id = Guid.NewGuid(),
-                Cep = dto.Cep,
-                Estado = dto.Estado,
-                Cidade = dto.Cidade,
-                Bairro = dto.Bairro,
-                Rua = dto.Rua,
-                Numero = dto.Numero,
-                Cliente = cliente
-            };
+            var endereco = _mapper.Map<Endereco>(dto);
+            //Endereco endereco = new Endereco
+            //{
+            //    Id = Guid.NewGuid(),
+            //    Cep = dto.Cep,
+            //    Estado = dto.Estado,
+            //    Cidade = dto.Cidade,
+            //    Bairro = dto.Bairro,
+            //    Rua = dto.Rua,
+            //    Numero = dto.Numero,
+            //    Cliente = cliente
+            //};
 
             await _context.Enderecos.AddAsync(endereco);
 
