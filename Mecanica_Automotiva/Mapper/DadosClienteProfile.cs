@@ -9,7 +9,10 @@ namespace Mecanica_Automotiva.Mapper
         public DadosClienteProfile()
         {
             CreateMap<Cliente, ClienteDto>();
-            CreateMap<ClienteDto, Cliente>();
+                
+            CreateMap<ClienteDto, Cliente>()
+                .ForMember(dest => dest.Endereco, opt => opt.Ignore())
+                .ForMember(dest => dest.Agendamentos, opt => opt.Ignore()); 
 
             CreateMap<Endereco, EnderecoDto>()
                 .ForMember(dest => dest.ClienteId, opt => opt.Ignore());

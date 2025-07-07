@@ -1,5 +1,7 @@
-﻿using Mecanica_Automotiva.Context;
+﻿using AutoMapper;
+using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtosDadosPescas;
+using Mecanica_Automotiva.Interface.IDadosPeca;
 using Mecanica_Automotiva.Models.Produtos;
 using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
@@ -7,13 +9,16 @@ using System.Linq;
 
 namespace Mecanica_Automotiva.Services.DadosPecaService
 {
-    public class SubCategoriaService
+    public class SubCategoriaPecaService:ISubCategoriaPeca
     {
         private readonly DataBase _context;
+        private readonly IMapper _mapper;
 
-        public SubCategoriaService(DataBase context)
+
+        public SubCategoriaPecaService(DataBase _context, IMapper _mapper)
         {
-            _context = context;
+            this._context = _context;
+            this._mapper = _mapper;
         }
 
         public async Task<List<SubCategoriaPeca>> GetAllAsync()
@@ -53,12 +58,7 @@ namespace Mecanica_Automotiva.Services.DadosPecaService
             var categoria = await _context.CategoriasPecas.FindAsync(dto.CategoriaId);
             if (categoria == null) return null; 
 
-            var subCategoria = new SubCategoriaPeca
-            {
-                ID = Guid.NewGuid(),
-                Nome = dto.Nome,
-                CategoriaPeca = categoria
-            };
+            var subCategoria = _mapper.Map<SubCategoriaPeca>(dto);
 
             await _context.SubCategoriasPecas.AddAsync(subCategoria);
 
@@ -75,8 +75,7 @@ namespace Mecanica_Automotiva.Services.DadosPecaService
             if (categoria == null) return (null, CodigoResult.CategoriaNaoEncontrada);
 
 
-            subCategoria.Nome = dto.Nome;
-            subCategoria.CategoriaPeca = categoria;
+            subCategoria = _mapper.Map(dto, subCategoria);
 
             await _context.SaveChangesAsync();
             return (subCategoria, CodigoResult.Sucesso);

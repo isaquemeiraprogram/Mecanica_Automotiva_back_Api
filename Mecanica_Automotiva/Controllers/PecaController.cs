@@ -1,4 +1,5 @@
 ﻿using Mecanica_Automotiva.Dtos;
+using Mecanica_Automotiva.Interface;
 using Mecanica_Automotiva.Models;
 using Mecanica_Automotiva.Services;
 using Mecanica_Automotiva.Shared;
@@ -11,9 +12,9 @@ namespace Mecanica_Automotiva.Controllers
     [ApiController]
     public class PecaController : ControllerBase
     {
-        private readonly PecasService _service;
+        private readonly IPeca _service;
 
-        public PecaController(PecasService _service)
+        public PecaController(IPeca _service)
         {
             this._service = _service;
         }
@@ -35,7 +36,7 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Peca>> AddAsync(PecasDto dto)
+        public async Task<ActionResult<Peca>> AddAsync(PecaDto dto)
         {
             var peca = await _service.AddAsync(dto);
             if (peca == null) return NotFound("Subcategoria não encontrada.");
@@ -44,7 +45,7 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<(Peca, CodigoResult)>> UpdateAsync(PecasDto dto, Guid id)
+        public async Task<ActionResult<(Peca, CodigoResult)>> UpdateAsync(PecaDto dto, Guid id)
         {
             var (peca, codigo) = await _service.UpdateAsync(dto, id);
 

@@ -1,4 +1,5 @@
 ﻿using Mecanica_Automotiva.Dtos.DtoCliente;
+using Mecanica_Automotiva.Interface.IDadosCliente;
 using Mecanica_Automotiva.Models.DadosCliente;
 using Mecanica_Automotiva.Services.DadosClienteService;
 using Microsoft.AspNetCore.Http;
@@ -10,9 +11,9 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
     [ApiController]
     public class EnderecoController : ControllerBase
     {
-        private readonly EnderecoService _service;
+        private readonly IEndereco _service;
 
-        public EnderecoController(EnderecoService _service)
+        public EnderecoController(IEndereco _service)
         {
             this._service = _service;
         }

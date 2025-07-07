@@ -1,4 +1,5 @@
 ﻿using Mecanica_Automotiva.Dtos.DtosDadosPescas;
+using Mecanica_Automotiva.Interface.IDadosPeca;
 using Mecanica_Automotiva.Models.Produtos;
 using Mecanica_Automotiva.Services.DadosPecaService;
 using Microsoft.AspNetCore.Http;
@@ -12,9 +13,9 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
     [ApiController]
     public class CategoriaController : ControllerBase
     {
-        private readonly CategoriaService _service;
+        private readonly ICategoriaPeca _service;
 
-        public CategoriaController(CategoriaService _service)
+        public CategoriaController(ICategoriaPeca _service)
         {
             this._service = _service;
         }

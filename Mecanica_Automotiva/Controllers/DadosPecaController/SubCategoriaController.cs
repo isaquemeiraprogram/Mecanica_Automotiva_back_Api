@@ -1,4 +1,5 @@
 ﻿using Mecanica_Automotiva.Dtos.DtosDadosPescas;
+using Mecanica_Automotiva.Interface.IDadosPeca;
 using Mecanica_Automotiva.Models.Produtos;
 using Mecanica_Automotiva.Services.DadosPecaService;
 using Mecanica_Automotiva.Shared;
@@ -11,9 +12,9 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
     [ApiController]
     public class SubCategoriaController : ControllerBase
     {
-        private readonly SubCategoriaService _Service;
+        private readonly ISubCategoriaPeca _Service;
 
-        public SubCategoriaController(SubCategoriaService _Service)
+        public SubCategoriaController(ISubCategoriaPeca _Service)
         {
             this._Service = _Service;
         }

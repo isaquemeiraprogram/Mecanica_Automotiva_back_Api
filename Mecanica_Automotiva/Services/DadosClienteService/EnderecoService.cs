@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtoCliente;
+using Mecanica_Automotiva.Interface.IDadosCliente;
 using Mecanica_Automotiva.Models.DadosCliente;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services.DadosClienteService
 {
-    public class EnderecoService
+    public class EnderecoService : IEndereco
     {
         private readonly DataBase _context;
         private readonly IMapper _mapper;
@@ -21,7 +22,7 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
 
         //nao precisa de getAll quando pega cliente ja vem getbyid pode precisar pra descobrir de quem é o endereco
 
-        public async Task<EnderecoDto> GetByIdAsync(Guid id)
+        public async Task<Endereco> GetByIdAsync(Guid id)
         {
             var endereco = await _context.Enderecos
                           .Include(e => e.Cliente)
@@ -29,9 +30,8 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
 
             if (endereco == null) return null;
 
-            var enderecoDto = _mapper.Map<EnderecoDto>(endereco);
-
-            return enderecoDto;
+            
+            return endereco;
         }
         public async Task<Endereco> AddAsync(EnderecoDto dto)
         {
@@ -39,17 +39,6 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             if (cliente == null) return null;
 
             var endereco = _mapper.Map<Endereco>(dto);
-            //Endereco endereco = new Endereco
-            //{
-            //    Id = Guid.NewGuid(),
-            //    Cep = dto.Cep,
-            //    Estado = dto.Estado,
-            //    Cidade = dto.Cidade,
-            //    Bairro = dto.Bairro,
-            //    Rua = dto.Rua,
-            //    Numero = dto.Numero,
-            //    Cliente = cliente
-            //};
 
             await _context.Enderecos.AddAsync(endereco);
 
@@ -59,14 +48,9 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
         public async Task<Endereco> UpdateAsync(EnderecoDto dto, Guid id)
         {
             var endereco = await _context.Enderecos.FindAsync(id);
-            if (endereco == null) return null; 
+            if (endereco == null) return null;
 
-            endereco.Cep = dto.Cep;
-            endereco.Estado = dto.Estado;
-            endereco.Cidade = dto.Cidade;
-            endereco.Bairro = dto.Bairro;
-            endereco.Rua = dto.Rua;
-            endereco.Numero = dto.Numero;
+            endereco = _mapper.Map(dto,endereco);
             //nao tem pq botar o cliente na atualizacao mas se tirar da dto da ruim arruma mais tarde
 
             await _context.SaveChangesAsync();

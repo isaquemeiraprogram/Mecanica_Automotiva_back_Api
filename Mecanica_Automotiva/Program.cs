@@ -1,4 +1,8 @@
 using Mecanica_Automotiva.Context;
+using Mecanica_Automotiva.Interface;
+using Mecanica_Automotiva.Interface.IDadosCliente;
+using Mecanica_Automotiva.Interface.IDadosPeca;
+using Mecanica_Automotiva.Interface.IDadosVeiculo;
 using Mecanica_Automotiva.Mapper;
 using Mecanica_Automotiva.Services;
 using Mecanica_Automotiva.Services.DadosClienteService;
@@ -11,7 +15,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddAutoMapper(typeof(DadosClienteProfile));
+
+
+builder.Services.AddAutoMapper(config =>
+{
+    config.AddProfile<DadosClienteProfile>();
+    config.AddProfile<DadosPecaProfile>();
+    config.AddProfile<DadosVeiculoProfile>();
+    config.AddProfile<OutrosProfile>();
+});
+
+
 
 
 
@@ -21,18 +35,18 @@ builder.Services.AddSwaggerGen();
 
 //conect sql
 var conectSql = builder.Configuration.GetConnectionString("LinkSql");
-builder.Services.AddDbContext<DataBase>(options=>
-    options.UseMySql(conectSql,ServerVersion.AutoDetect(conectSql)));
+builder.Services.AddDbContext<DataBase>(options =>
+    options.UseMySql(conectSql, ServerVersion.AutoDetect(conectSql)));
 
 //services
-builder.Services.AddScoped<ClienteService>();
-builder.Services.AddScoped<EnderecoService>();
-builder.Services.AddScoped<CategoriaService>();
-builder.Services.AddScoped<SubCategoriaService>();
-builder.Services.AddScoped<MarcaService>();
-builder.Services.AddScoped<ModeloService>();
-builder.Services.AddScoped<PecasService>();
-builder.Services.AddScoped<VeiculoService>();
+builder.Services.AddScoped<ICliente, ClienteService>();
+builder.Services.AddScoped<IEndereco, EnderecoService>();
+builder.Services.AddScoped<ICategoriaPeca, CategoriaPecaService>();
+builder.Services.AddScoped<ISubCategoriaPeca, SubCategoriaPecaService>();
+builder.Services.AddScoped<IMarca, MarcaService>();
+builder.Services.AddScoped<IModelo, ModeloService>();
+builder.Services.AddScoped<IPeca, PecasService>();
+builder.Services.AddScoped<IVeiculo, VeiculoService>();
 
 
 

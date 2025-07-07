@@ -1,18 +1,22 @@
-﻿using Mecanica_Automotiva.Context;
+﻿using AutoMapper;
+using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos;
+using Mecanica_Automotiva.Interface;
 using Mecanica_Automotiva.Models;
 using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services
 {
-    public class PecasService
+    public class PecasService:IPeca
     {
         private readonly DataBase _context;
+        private readonly IMapper _mapper;
 
-        public PecasService(DataBase _context)
+        public PecasService(DataBase context, IMapper mapper)
         {
-            this._context = _context;
+            _context = context;
+            _mapper = mapper;
         }
 
         public async Task<List<Peca>> GetAllAsync()
@@ -32,19 +36,12 @@ namespace Mecanica_Automotiva.Services
             return peca;
         }
 
-        public async Task<Peca> AddAsync(PecasDto dto)
+        public async Task<Peca> AddAsync(PecaDto dto)
         {
             var subCategoria = await _context.SubCategoriasPecas.FindAsync(dto.SubCategoriaPecaId);
             if (subCategoria == null) return null;
 
-            Peca peca = new Peca
-            {
-                Id = Guid.NewGuid(),
-                Img = dto.Img,
-                Nome = dto.Nome,
-                Preco = dto.Preco,
-                SubCategoriaPeca = subCategoria,//subcategoria esta na categoria
-            };
+            var peca = _mapper.Map<Peca>(dto);
 
             await _context.Pecas.AddAsync(peca);
 
@@ -52,7 +49,7 @@ namespace Mecanica_Automotiva.Services
             return peca;
         }
 
-        public async Task<(Peca, CodigoResult)> UpdateAsync(PecasDto dto, Guid id)
+        public async Task<(Peca, CodigoResult)> UpdateAsync(PecaDto dto, Guid id)
         {
             var peca = await _context.Pecas.FindAsync(id);
             if (peca == null) return (null, CodigoResult.PecaNaoEncontrada);
@@ -60,13 +57,10 @@ namespace Mecanica_Automotiva.Services
             var subCategoria = await _context.SubCategoriasPecas.FindAsync(dto.SubCategoriaPecaId);
             if (subCategoria == null) return (null, CodigoResult.SubCategoriaNaoEncontrada);
 
-            peca.Img = dto.Img;
-            peca.Nome = dto.Nome;
-            peca.Preco = dto.Preco;
-            peca.SubCategoriaPeca = subCategoria;
+            peca = _mapper.Map(dto, peca);
 
             await _context.SaveChangesAsync();
-            return (peca,CodigoResult.Sucesso);
+            return (peca, CodigoResult.Sucesso);
         }
 
         public async Task<bool> DeleteAsync(Guid id)

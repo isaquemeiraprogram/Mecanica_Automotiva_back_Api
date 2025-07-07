@@ -1,4 +1,5 @@
 ﻿using Mecanica_Automotiva.Dtos.DtosDadosVeiculo;
+using Mecanica_Automotiva.Interface.IDadosVeiculo;
 using Mecanica_Automotiva.Models.DadosVeiculo;
 using Mecanica_Automotiva.Services.DadosVeiculoService;
 using Microsoft.AspNetCore.Http;
@@ -10,9 +11,9 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
     [ApiController]
     public class MarcaController : ControllerBase
     {
-        private readonly MarcaService _service;
+        private readonly IMarca _service;
 
-        public MarcaController(MarcaService _service)
+        public MarcaController(IMarca _service)
         {
             this._service = _service;
         }

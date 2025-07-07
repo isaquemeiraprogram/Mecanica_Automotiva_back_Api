@@ -8,7 +8,6 @@ namespace Mecanica_Automotiva.Models.DadosVeiculo
         public string Nome { get; set; }
 
         [JsonIgnore]
-        ICollection< Modelo> Modelo { get; set; } = new List<Modelo>();
-
+        public ICollection<Modelo> Modelos { get; set; } = new List<Modelo>();
     }
 }

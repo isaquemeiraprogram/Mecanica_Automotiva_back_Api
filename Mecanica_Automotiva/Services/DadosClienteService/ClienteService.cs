@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtoCliente;
+using Mecanica_Automotiva.Interface.IDadosCliente;
 using Mecanica_Automotiva.Models.DadosCliente;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services.DadosClienteService
 {
-    public class ClienteService
+    public class ClienteService: ICliente
     {
         private readonly DataBase _context;
         private readonly IMapper _mapper;
@@ -17,23 +18,23 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             _mapper = mapper;
         }
 
-        public async Task<List<ClienteDto>> GetAllAsync()
+        public async Task<List<Cliente>> GetAllAsync()
         {
             var clienteList = await _context.Clientes
                 .Include(c => c.Endereco)
                 .ToListAsync();
 
-           var clienteListDto = _mapper.Map<List<ClienteDto>>(clienteList);
-            return clienteListDto;
+           
+            return clienteList;
         }
-        public async Task<ClienteDto> GetByIdAsync(Guid id)
+        public async Task<Cliente> GetByIdAsync(Guid id)
         {
             var cliente = await _context.Clientes
                 .Include(c => c.Endereco)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            var clienteDto = _mapper.Map<ClienteDto>(cliente);
-            return clienteDto;
+            
+            return cliente;
         }
 
        // fazer ele botar endereco tambem quando cria cliente
@@ -51,9 +52,10 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             await _context.Clientes.AddAsync(cliente);
             await _context.SaveChangesAsync();
 
+           
             return cliente;
         }
-        public async Task<ClienteDto> UpdateAsync(ClienteDto dto, Guid id)
+        public async Task<Cliente> UpdateAsync(ClienteDto dto, Guid id)
         {
             var cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null) return null;
@@ -63,8 +65,9 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
 
             await _context.SaveChangesAsync();
 
-            var clienteDto = _mapper.Map<ClienteDto>(cliente);
-            return clienteDto;
+            
+
+            return cliente;
         }
         public async Task<bool> DeleteAsync(Guid id)
         {

@@ -12,8 +12,6 @@ namespace Mecanica_Automotiva.Models.Produtos
         [JsonIgnore]
         public ICollection<SubCategoriaPeca> SubCategoria { get; set; } = new List<SubCategoriaPeca>();
 
-       
-
         //mecanica
         //eletrica
         //fluidos/hidraulica

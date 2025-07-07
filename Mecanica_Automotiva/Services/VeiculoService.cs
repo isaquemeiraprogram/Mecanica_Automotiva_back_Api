@@ -1,18 +1,24 @@
-﻿using Mecanica_Automotiva.Context;
+﻿using AutoMapper;
+using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos;
+using Mecanica_Automotiva.Interface;
 using Mecanica_Automotiva.Models;
 using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services
 {
-    public class VeiculoService //talves de pra tirar veiculo ja que modelo ja pega marca
+    public class VeiculoService: IVeiculo
     {
         private readonly DataBase _context;
-        public VeiculoService(DataBase context)
+        private readonly IMapper _mapper;
+
+        public VeiculoService(DataBase context, IMapper mapper)
         {
-            this._context = context;
+            _context = context;
+            _mapper = mapper;
         }
+
         public async Task<List<Veiculo>> GetAllAsync()
         {
             var veiculoList = await _context.Veiculos.Include(v => v.Marca)
@@ -42,14 +48,7 @@ namespace Mecanica_Automotiva.Services
             var modelo = await _context.Modelos.FindAsync(dto.ModeloId);
             if (modelo == null) return (null, CodigoResult.ModeloNaoEncontrado);
 
-            var veiculo = new Veiculo()
-            {
-                Id = Guid.NewGuid(),
-                Placa = dto.Placa,
-                Marca = marca,
-                Modelo = modelo,
-                Ano = dto.Ano
-            };
+            var veiculo = _mapper.Map<Veiculo>(dto);
 
             await _context.Veiculos.AddAsync(veiculo);
 
@@ -69,10 +68,7 @@ namespace Mecanica_Automotiva.Services
             var modelo = await _context.Modelos.FindAsync(dto.ModeloId);
             if (modelo == null) return (null, CodigoResult.ModeloNaoEncontrado);
 
-            veiculo.Placa = dto.Placa;
-            veiculo.Marca = marca;
-            veiculo.Modelo = modelo;
-            veiculo.Ano = dto.Ano;
+            veiculo= _mapper.Map(dto, veiculo);
 
             await _context.SaveChangesAsync();
             return (veiculo, CodigoResult.Sucesso);

@@ -1,4 +1,5 @@
 ﻿using Mecanica_Automotiva.Dtos.DtosDadosVeiculo;
+using Mecanica_Automotiva.Interface.IDadosVeiculo;
 using Mecanica_Automotiva.Models.DadosVeiculo;
 using Mecanica_Automotiva.Services.DadosVeiculoService;
 using Mecanica_Automotiva.Shared;
@@ -11,9 +12,9 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
     [ApiController]
     public class ModeloController : ControllerBase
     {
-        private readonly ModeloService _service;
+        private readonly IModelo _service;
 
-        public ModeloController(ModeloService _service)
+        public ModeloController(IModelo _service)
         {
             this._service = _service;
         }

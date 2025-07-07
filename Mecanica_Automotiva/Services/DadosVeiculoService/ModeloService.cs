@@ -1,19 +1,25 @@
-﻿using Mecanica_Automotiva.Context;
+﻿using AutoMapper;
+using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtosDadosVeiculo;
+using Mecanica_Automotiva.Interface.IDadosVeiculo;
 using Mecanica_Automotiva.Models.DadosVeiculo;
 using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services.DadosVeiculoService
 {
-    public class ModeloService
+    public class ModeloService: IModelo
     {
         private readonly DataBase _context;
+        private readonly IMapper _mapper;
 
-        public ModeloService(DataBase _context)
+        public ModeloService(DataBase context, IMapper mapper)
         {
-            this._context = _context;
+            _context = context;
+            _mapper = mapper;
         }
+
+
         //fazer filtro
         public async Task<List<Modelo>> GetAllAsync()
         {
@@ -36,12 +42,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             var marca = await _context.Marcas.FindAsync(dto.MarcaId);
             if (marca == null) return null;
 
-            var modelo = new Modelo
-            {
-                Id = Guid.NewGuid(),
-                Nome = dto.Nome,
-                Marca = marca
-            };
+            var modelo = _mapper.Map<Modelo>(dto);
 
             await _context.Modelos.AddAsync(modelo);
 
@@ -57,8 +58,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             var marca = await _context.Marcas.FindAsync(dto.MarcaId);
             if (marca == null) return (null, CodigoResult.MarcaNaoEncontrada);
 
-            modelo.Nome = dto.Nome;
-            modelo.Marca = marca;
+            modelo = _mapper.Map(dto, modelo);
 
             await _context.SaveChangesAsync();
             return (modelo,CodigoResult.Sucesso);
