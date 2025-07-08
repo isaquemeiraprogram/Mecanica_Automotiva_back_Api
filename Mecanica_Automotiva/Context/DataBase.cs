@@ -19,8 +19,8 @@ namespace Mecanica_Automotiva.Context
         public DbSet<SubCategoriaPeca> SubCategoriasPecas { get; set; }
 
         //DadosVeiculo
-        public DbSet<Marca> Marcas { get; set; }
-        public DbSet<Modelo> Modelos { get; set; }
+        public DbSet<MarcaVeiculo> Marcas { get; set; }
+        public DbSet<ModeloVeiculo> Modelos { get; set; }
 
         //outros
         public DbSet<Agendar> Agendamentos { get; set; }

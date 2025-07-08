@@ -19,14 +19,14 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Marca>>> GetAllAsync()
+        public async Task<ActionResult<List<MarcaVeiculo>>> GetAllAsync()
         {
             var marcaList = await _service.GetAllAsync();
             return Ok(marcaList);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Marca>> GetByIdAsync(Guid id)
+        public async Task<ActionResult<MarcaVeiculo>> GetByIdAsync(Guid id)
         {
             var marca = await _service.GetByIdAsync(id);
             if (marca == null) return NotFound("Marca Não Encontrada"); 
@@ -35,14 +35,14 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
         }
 
         [HttpPost]
-        public async Task<ActionResult<Marca>> AddAsync([FromBody] MarcaDto dto)
+        public async Task<ActionResult<MarcaVeiculo>> AddAsync([FromBody] MarcaDto dto)
         {
             var marca = await _service.AddAsync(dto);
             return Ok(marca);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Marca>> UpdateAsync([FromBody] MarcaDto dto, Guid id)
+        public async Task<ActionResult<MarcaVeiculo>> UpdateAsync([FromBody] MarcaDto dto, Guid id)
         {
             var marca = await _service.UpdateAsync(dto, id);
             if (marca == null) return NotFound("Marca Não Encontrada");

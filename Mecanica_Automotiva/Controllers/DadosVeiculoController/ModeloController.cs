@@ -21,14 +21,14 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
 
 
         [HttpGet]
-        public async Task<ActionResult<List<Modelo>>> GetAllAsync()
+        public async Task<ActionResult<List<ModeloVeiculo>>> GetAllAsync()
         {
             var modeloList = await _service.GetAllAsync();
             return Ok(modeloList);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Modelo>> GetByIdAsync(Guid id)
+        public async Task<ActionResult<ModeloVeiculo>> GetByIdAsync(Guid id)
         {
             var modelo = await _service.GetByIdAsync(id);
             if (modelo == null) return NotFound("Modelo não encontrado.");
@@ -37,7 +37,7 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
         }
 
         [HttpPost]
-        public async Task<ActionResult<Modelo>> AddAsync([FromBody] ModeloDto dto)
+        public async Task<ActionResult<ModeloVeiculo>> AddAsync([FromBody] ModeloDto dto)
         {
             var modelo = await _service.AddAsync(dto);
             if (modelo == null) return NotFound("Marca do modelo nao encontrada");
@@ -45,7 +45,7 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Modelo>> UpdateAsync([FromBody] ModeloDto dto, Guid id)
+        public async Task<ActionResult<ModeloVeiculo>> UpdateAsync([FromBody] ModeloDto dto, Guid id)
         {
             var (modelo,codigo) = await _service.UpdateAsync(dto, id);
 

@@ -21,14 +21,14 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
 
 
         //fazer filtro
-        public async Task<List<Modelo>> GetAllAsync()
+        public async Task<List<ModeloVeiculo>> GetAllAsync()
         {
             var modelosList = await _context.Modelos
                                     .ToListAsync();
             return modelosList;
         }
 
-        public async Task<Modelo> GetByIdAsync(Guid id)
+        public async Task<ModeloVeiculo> GetByIdAsync(Guid id)
         {
             var modelo = await _context.Modelos.FindAsync(id);
 
@@ -37,12 +37,12 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             return modelo;
         }
 
-        public async Task<Modelo> AddAsync(ModeloDto dto)
+        public async Task<ModeloVeiculo> AddAsync(ModeloDto dto)
         {
             var marca = await _context.Marcas.FindAsync(dto.MarcaId);
             if (marca == null) return null;
 
-            var modelo = _mapper.Map<Modelo>(dto);
+            var modelo = _mapper.Map<ModeloVeiculo>(dto);
 
             await _context.Modelos.AddAsync(modelo);
 
@@ -50,7 +50,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             return modelo;
         }
 
-        public async Task<(Modelo,CodigoResult)> UpdateAsync(ModeloDto dto, Guid id)
+        public async Task<(ModeloVeiculo,CodigoResult)> UpdateAsync(ModeloDto dto, Guid id)
         {
             var modelo = await _context.Modelos.FindAsync(id);
             if (modelo == null) return (null,CodigoResult.ModeloNaoEncontrado);

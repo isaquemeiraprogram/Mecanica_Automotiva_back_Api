@@ -6,10 +6,10 @@ namespace Mecanica_Automotiva.Interface.IDadosVeiculo
 {
     public interface IModelo
     {
-        Task<List<Modelo>> GetAllAsync();
-        Task<Modelo> GetByIdAsync(Guid id);
-        Task<Modelo> AddAsync(ModeloDto dto);
-        Task<(Modelo, CodigoResult)> UpdateAsync(ModeloDto dto, Guid id);
+        Task<List<ModeloVeiculo>> GetAllAsync();
+        Task<ModeloVeiculo> GetByIdAsync(Guid id);
+        Task<ModeloVeiculo> AddAsync(ModeloDto dto);
+        Task<(ModeloVeiculo, CodigoResult)> UpdateAsync(ModeloDto dto, Guid id);
         Task<bool> DeleteAsync(Guid id);
     }
 }

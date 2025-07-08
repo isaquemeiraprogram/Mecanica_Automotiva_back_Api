@@ -19,12 +19,12 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             _mapper = mapper;
         }
 
-        public async Task<List<Marca>> GetAllAsync()
+        public async Task<List<MarcaVeiculo>> GetAllAsync()
         {
             return await _context.Marcas.ToListAsync();
         }
 
-        public async Task<Marca> GetByIdAsync(Guid id)
+        public async Task<MarcaVeiculo> GetByIdAsync(Guid id)
         {
             var marca = await _context.Marcas.FindAsync(id);
             if (marca == null) return null;
@@ -32,9 +32,9 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             return marca;
         }
 
-        public async Task<Marca> AddAsync(MarcaDto dto)
+        public async Task<MarcaVeiculo> AddAsync(MarcaDto dto)
         {
-            var marca = _mapper.Map<Marca>(dto);
+            var marca = _mapper.Map<MarcaVeiculo>(dto);
 
             await _context.Marcas.AddAsync(marca);
 
@@ -42,7 +42,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             return marca;
         }
 
-        public async Task<Marca> UpdateAsync(MarcaDto dto, Guid id)
+        public async Task<MarcaVeiculo> UpdateAsync(MarcaDto dto, Guid id)
         {
             var marca = await _context.Marcas.FindAsync(id);
             if (marca == null) return null;

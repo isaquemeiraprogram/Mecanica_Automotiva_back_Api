@@ -7,8 +7,8 @@ namespace Mecanica_Automotiva.Models
     {
         public Guid Id { get; set; }
         public string Placa { get; set; }
-        public Marca Marca { get; set; }
-        public Modelo Modelo { get; set; }
+        public MarcaVeiculo Marca { get; set; }
+        public ModeloVeiculo Modelo { get; set; }
         public CategoriaVeiculo CategoriaVeiculo { get; set; }
         public int Ano { get; set; }
 
