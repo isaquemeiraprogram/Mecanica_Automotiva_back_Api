@@ -3,6 +3,7 @@ using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos;
 using Mecanica_Automotiva.Interface;
 using Mecanica_Automotiva.Models;
+using Mecanica_Automotiva.Models.DadosVeiculo;
 using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,13 +43,14 @@ namespace Mecanica_Automotiva.Services
 
         public async Task<(Veiculo, CodigoResult)> AddAsync(VeiculoDto dto)
         {
-            var marca = await _context.Marcas.FindAsync(dto.MarcaId);
-            if (marca == null) return (null, CodigoResult.MarcaNaoEncontrada);
+           var modeloVeiculo = await _context.Modelos.Include(mv=> mv.Marca).FirstOrDefaultAsync(mv => dto.ModeloId == mv.Id);
+            if (modeloVeiculo == null) return (null, CodigoResult.ModeloNaoEncontrado);
 
-            var modelo = await _context.Modelos.FindAsync(dto.ModeloId);
-            if (modelo == null) return (null, CodigoResult.ModeloNaoEncontrado);
+           
 
             var veiculo = _mapper.Map<Veiculo>(dto);
+            veiculo.Marca = modeloVeiculo.Marca;
+            veiculo.Modelo = modeloVeiculo;
 
             await _context.Veiculos.AddAsync(veiculo);
 
@@ -62,13 +64,14 @@ namespace Mecanica_Automotiva.Services
             var veiculo = await _context.Veiculos.FindAsync(id);
             if (veiculo == null) return (null, CodigoResult.VeiculoNaoEncontrado);
 
-            var marca = await _context.Marcas.FindAsync(dto.MarcaId);
-            if (marca == null) return (null, CodigoResult.MarcaNaoEncontrada);
+            var modeloVeiculo = await _context.Modelos.FindAsync(dto.ModeloId);
+            if (modeloVeiculo == null) return (null, CodigoResult.ModeloNaoEncontrado);
 
-            var modelo = await _context.Modelos.FindAsync(dto.ModeloId);
-            if (modelo == null) return (null, CodigoResult.ModeloNaoEncontrado);
+            var marca = await _context.Marcas.FindAsync(modeloVeiculo.Marca.Id);
 
-            veiculo= _mapper.Map(dto, veiculo);
+            veiculo = _mapper.Map(dto, veiculo);
+            veiculo.Marca = marca;
+            veiculo.Modelo = modeloVeiculo;
 
             await _context.SaveChangesAsync();
             return (veiculo, CodigoResult.Sucesso);

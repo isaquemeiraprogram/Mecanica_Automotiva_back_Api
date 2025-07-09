@@ -4,6 +4,7 @@ using Mecanica_Automotiva.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mecanica_Automotiva.Migrations
 {
     [DbContext(typeof(DataBase))]
-    partial class DataBaseModelSnapshot : ModelSnapshot
+    [Migration("20250709110834_naolembroqfoisalvoversearrumabugaddveiculo")]
+    partial class naolembroqfoisalvoversearrumabugaddveiculo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,14 +50,9 @@ namespace Mecanica_Automotiva.Migrations
                     b.Property<double>("ValorTotal")
                         .HasColumnType("double");
 
-                    b.Property<Guid>("VeiculoId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("ID");
 
                     b.HasIndex("ClienteId");
-
-                    b.HasIndex("VeiculoId");
 
                     b.ToTable("Agendamentos");
                 });
@@ -310,9 +308,14 @@ namespace Mecanica_Automotiva.Migrations
                     b.Property<double>("Valor")
                         .HasColumnType("double");
 
+                    b.Property<Guid>("VeiculoId")
+                        .HasColumnType("char(36)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AgendarID");
+
+                    b.HasIndex("VeiculoId");
 
                     b.ToTable("Servicos");
                 });
@@ -356,15 +359,7 @@ namespace Mecanica_Automotiva.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Mecanica_Automotiva.Models.Veiculo", "Veiculo")
-                        .WithMany("Agendamentos")
-                        .HasForeignKey("VeiculoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Cliente");
-
-                    b.Navigation("Veiculo");
                 });
 
             modelBuilder.Entity("Mecanica_Automotiva.Models.DadosCliente.Endereco", b =>
@@ -474,7 +469,15 @@ namespace Mecanica_Automotiva.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Mecanica_Automotiva.Models.Veiculo", "Veiculo")
+                        .WithMany("Servico")
+                        .HasForeignKey("VeiculoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Agendar");
+
+                    b.Navigation("Veiculo");
                 });
 
             modelBuilder.Entity("Mecanica_Automotiva.Models.Veiculo", b =>
@@ -549,9 +552,9 @@ namespace Mecanica_Automotiva.Migrations
 
             modelBuilder.Entity("Mecanica_Automotiva.Models.Veiculo", b =>
                 {
-                    b.Navigation("Agendamentos");
-
                     b.Navigation("Pecas");
+
+                    b.Navigation("Servico");
                 });
 #pragma warning restore 612, 618
         }

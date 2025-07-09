@@ -55,30 +55,32 @@ namespace Mecanica_Automotiva.Services.DadosPecaService
 
         public async Task<SubCategoriaPeca> AddAsync(SubCategoriaPecaDto dto)
         {
-            var categoria = await _context.CategoriasPecas.FindAsync(dto.CategoriaId);
-            if (categoria == null) return null; 
+            var categoriaPeca = await _context.CategoriasPecas.FindAsync(dto.CategoriaId);
+            if (categoriaPeca == null) return null; 
 
-            var subCategoria = _mapper.Map<SubCategoriaPeca>(dto);
+            var subCategoriaPeca = _mapper.Map<SubCategoriaPeca>(dto);
+            subCategoriaPeca.CategoriaPeca = categoriaPeca;
 
-            await _context.SubCategoriasPecas.AddAsync(subCategoria);
+            await _context.SubCategoriasPecas.AddAsync(subCategoriaPeca);
 
             await _context.SaveChangesAsync();
-            return subCategoria;
+            return subCategoriaPeca;
         }
 
         public async Task<(SubCategoriaPeca,CodigoResult)> UpdateAsync(SubCategoriaPecaDto dto, Guid id)
         {
-            var subCategoria = await _context.SubCategoriasPecas.FindAsync(id);
-            if (subCategoria == null) return (null,CodigoResult.SubCategoriaNaoEncontrada);
+            var subCategoriaPeca = await _context.SubCategoriasPecas.FindAsync(id);
+            if (subCategoriaPeca == null) return (null,CodigoResult.SubCategoriaNaoEncontrada);
 
             var categoria = await _context.CategoriasPecas.FindAsync(dto.CategoriaId);
             if (categoria == null) return (null, CodigoResult.CategoriaNaoEncontrada);
 
 
-            subCategoria = _mapper.Map(dto, subCategoria);
+            subCategoriaPeca = _mapper.Map(dto, subCategoriaPeca);
+            subCategoriaPeca.CategoriaPeca = categoria;
 
             await _context.SaveChangesAsync();
-            return (subCategoria, CodigoResult.Sucesso);
+            return (subCategoriaPeca, CodigoResult.Sucesso);
         }
 
         //Entrada: id da subcategoria

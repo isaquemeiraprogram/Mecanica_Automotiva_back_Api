@@ -8,12 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services.DadosVeiculoService
 {
-    public class MarcaService:IMarca
+    public class MarcaVeiculoService:IMarca
     {
         private readonly DataBase _context;
         private readonly IMapper _mapper;
 
-        public MarcaService(DataBase context, IMapper mapper)
+        public MarcaVeiculoService(DataBase context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

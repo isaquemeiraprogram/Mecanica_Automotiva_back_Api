@@ -39,6 +39,7 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             if (cliente == null) return null;
 
             var endereco = _mapper.Map<Endereco>(dto);
+            endereco.Cliente = cliente;
 
             await _context.Enderecos.AddAsync(endereco);
 

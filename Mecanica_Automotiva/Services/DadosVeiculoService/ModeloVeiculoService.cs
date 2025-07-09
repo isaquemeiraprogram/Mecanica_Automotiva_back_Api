@@ -8,12 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services.DadosVeiculoService
 {
-    public class ModeloService: IModelo
+    public class ModeloVeiculoService: IModelo
     {
         private readonly DataBase _context;
         private readonly IMapper _mapper;
 
-        public ModeloService(DataBase context, IMapper mapper)
+        public ModeloVeiculoService(DataBase context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -24,7 +24,9 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
         public async Task<List<ModeloVeiculo>> GetAllAsync()
         {
             var modelosList = await _context.Modelos
+                                    .Include(m=> m.Marca)
                                     .ToListAsync();
+
             return modelosList;
         }
 
@@ -43,6 +45,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             if (marca == null) return null;
 
             var modelo = _mapper.Map<ModeloVeiculo>(dto);
+            modelo.Marca = marca;
 
             await _context.Modelos.AddAsync(modelo);
 
@@ -59,6 +62,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             if (marca == null) return (null, CodigoResult.MarcaNaoEncontrada);
 
             modelo = _mapper.Map(dto, modelo);
+            modelo.Marca = marca;
 
             await _context.SaveChangesAsync();
             return (modelo,CodigoResult.Sucesso);

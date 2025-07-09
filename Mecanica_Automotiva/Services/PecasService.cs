@@ -3,6 +3,7 @@ using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos;
 using Mecanica_Automotiva.Interface;
 using Mecanica_Automotiva.Models;
+using Mecanica_Automotiva.Models.Produtos;
 using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,10 +39,11 @@ namespace Mecanica_Automotiva.Services
 
         public async Task<Peca> AddAsync(PecaDto dto)
         {
-            var subCategoria = await _context.SubCategoriasPecas.FindAsync(dto.SubCategoriaPecaId);
-            if (subCategoria == null) return null;
+            var subCategoriaPeca = await _context.SubCategoriasPecas.FindAsync(dto.SubCategoriaPecaId);
+            if (subCategoriaPeca == null) return null;
 
             var peca = _mapper.Map<Peca>(dto);
+            peca.SubCategoriaPeca = subCategoriaPeca;
 
             await _context.Pecas.AddAsync(peca);
 
@@ -54,10 +56,11 @@ namespace Mecanica_Automotiva.Services
             var peca = await _context.Pecas.FindAsync(id);
             if (peca == null) return (null, CodigoResult.PecaNaoEncontrada);
 
-            var subCategoria = await _context.SubCategoriasPecas.FindAsync(dto.SubCategoriaPecaId);
-            if (subCategoria == null) return (null, CodigoResult.SubCategoriaNaoEncontrada);
+            var subCategoriaPeca = await _context.SubCategoriasPecas.FindAsync(dto.SubCategoriaPecaId);
+            if (subCategoriaPeca == null) return (null, CodigoResult.SubCategoriaNaoEncontrada);
 
             peca = _mapper.Map(dto, peca);
+            peca.SubCategoriaPeca = subCategoriaPeca;
 
             await _context.SaveChangesAsync();
             return (peca, CodigoResult.Sucesso);

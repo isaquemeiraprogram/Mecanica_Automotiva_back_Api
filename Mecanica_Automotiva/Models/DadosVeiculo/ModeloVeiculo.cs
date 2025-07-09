@@ -8,7 +8,6 @@ namespace Mecanica_Automotiva.Models.DadosVeiculo
         public string Nome { get; set; }
         //precisa diser de que marca e tal modelo nao existe modelo sem marca(teoria)
 
-        [JsonIgnore]
         public MarcaVeiculo Marca { get; set; }
 
         [JsonIgnore]

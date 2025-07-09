@@ -7,6 +7,7 @@ namespace Mecanica_Automotiva.Models
     {
         public Guid Id { get; set; }
         public string Placa { get; set; }
+        [JsonIgnore]
         public MarcaVeiculo Marca { get; set; }
         public ModeloVeiculo Modelo { get; set; }
         public CategoriaVeiculo CategoriaVeiculo { get; set; }
@@ -16,6 +17,6 @@ namespace Mecanica_Automotiva.Models
         public ICollection<Peca> Pecas { get; set; } = new List<Peca>();
 
         [JsonIgnore]
-        public ICollection<Servico> Servico { get; set; } = new List<Servico>();
+        public ICollection<Agendar> Agendamentos { get; set; } = new List<Agendar>();
     }
 }

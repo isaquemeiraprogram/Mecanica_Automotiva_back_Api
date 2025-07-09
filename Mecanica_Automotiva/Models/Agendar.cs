@@ -12,5 +12,6 @@ namespace Mecanica_Automotiva.Models
         public TimeOnly TempoServiçoTotal { get; set; }
         public ICollection<Servico> Servicos { get; set; } = new List<Servico>();
         public Cliente Cliente { get; set; }
+        public Veiculo Veiculo { get; set; }
     }
 }

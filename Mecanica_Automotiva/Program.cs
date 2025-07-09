@@ -43,10 +43,11 @@ builder.Services.AddScoped<ICliente, ClienteService>();
 builder.Services.AddScoped<IEndereco, EnderecoService>();
 builder.Services.AddScoped<ICategoriaPeca, CategoriaPecaService>();
 builder.Services.AddScoped<ISubCategoriaPeca, SubCategoriaPecaService>();
-builder.Services.AddScoped<IMarca, MarcaService>();
-builder.Services.AddScoped<IModelo, ModeloService>();
+builder.Services.AddScoped<IMarca, MarcaVeiculoService>();
+builder.Services.AddScoped<IModelo, ModeloVeiculoService>();
 builder.Services.AddScoped<IPeca, PecasService>();
 builder.Services.AddScoped<IVeiculo, VeiculoService>();
+builder.Services.AddScoped<IServico, ServicoService>();
 
 
 
