@@ -23,7 +23,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
         //fazer filtro
         public async Task<List<ModeloVeiculo>> GetAllAsync()
         {
-            var modelosList = await _context.Modelos
+            var modelosList = await _context.ModeloVeiculos
                                     .Include(m=> m.Marca)
                                     .ToListAsync();
 
@@ -32,7 +32,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
 
         public async Task<ModeloVeiculo> GetByIdAsync(Guid id)
         {
-            var modelo = await _context.Modelos.FindAsync(id);
+            var modelo = await _context.ModeloVeiculos.FindAsync(id);
 
             if (modelo == null) return null;
 
@@ -41,13 +41,13 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
 
         public async Task<ModeloVeiculo> AddAsync(ModeloDto dto)
         {
-            var marca = await _context.Marcas.FindAsync(dto.MarcaId);
+            var marca = await _context.MarcaVeiculos.FindAsync(dto.MarcaId);
             if (marca == null) return null;
 
             var modelo = _mapper.Map<ModeloVeiculo>(dto);
             modelo.Marca = marca;
 
-            await _context.Modelos.AddAsync(modelo);
+            await _context.ModeloVeiculos.AddAsync(modelo);
 
             await _context.SaveChangesAsync();
             return modelo;
@@ -55,11 +55,11 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
 
         public async Task<(ModeloVeiculo,CodigoResult)> UpdateAsync(ModeloDto dto, Guid id)
         {
-            var modelo = await _context.Modelos.FindAsync(id);
+            var modelo = await _context.ModeloVeiculos.FindAsync(id);
             if (modelo == null) return (null,CodigoResult.ModeloNaoEncontrado);
 
-            var marca = await _context.Marcas.FindAsync(dto.MarcaId);
-            if (marca == null) return (null, CodigoResult.MarcaNaoEncontrada);
+            var marca = await _context.MarcaVeiculos.FindAsync(dto.MarcaId);
+            if (marca == null) return (null, CodigoResult.MarcaVeiculoNaoEncontrada);
 
             modelo = _mapper.Map(dto, modelo);
             modelo.Marca = marca;
@@ -70,10 +70,10 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
 
         public async Task<bool> DeleteAsync(Guid id)
         {
-            var modelo = await _context.Modelos.FindAsync(id);
+            var modelo = await _context.ModeloVeiculos.FindAsync(id);
             if (modelo == null) return false;
 
-            _context.Modelos.Remove(modelo);
+            _context.ModeloVeiculos.Remove(modelo);
 
             await _context.SaveChangesAsync();
             return true;

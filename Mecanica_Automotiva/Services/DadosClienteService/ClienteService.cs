@@ -24,7 +24,6 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
                 .Include(c => c.Endereco)
                 .ToListAsync();
 
-           
             return clienteList;
         }
         public async Task<Cliente> GetByIdAsync(Guid id)
@@ -33,7 +32,6 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
                 .Include(c => c.Endereco)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            
             return cliente;
         }
 
@@ -46,7 +44,6 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             await _context.Clientes.AddAsync(cliente);
             await _context.SaveChangesAsync();
 
-           
             return cliente;
         }
         public async Task<Cliente> UpdateAsync(ClienteDto dto, Guid id)
@@ -58,8 +55,6 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             cliente = _mapper.Map(dto, cliente);
 
             await _context.SaveChangesAsync();
-
-            
 
             return cliente;
         }

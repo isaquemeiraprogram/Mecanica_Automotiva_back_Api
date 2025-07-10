@@ -11,7 +11,6 @@ namespace Mecanica_Automotiva.Dtos
         public int QtdEstoque { get; set; }
         public Guid SubCategoriaProdutoId { get; set; }
         public Guid MarcaProdutoId { get; set; }
-        public Guid ModeloProdutoId { get; set; }
         public Guid MarcaVeiculoId { get; set; }
         public Guid ModeloVeiculoId { get; set; }
         public CategoriaVeiculo CategoriaVeiculo { get; set; }

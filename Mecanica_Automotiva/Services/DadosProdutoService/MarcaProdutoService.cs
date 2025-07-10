@@ -3,6 +3,7 @@ using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtosDadosVeiculo;
 using Mecanica_Automotiva.Interface.IDadosProdutos;
 using Mecanica_Automotiva.Models.DadosPeca;
+using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services.DadosProdutoService
 {
@@ -19,28 +20,48 @@ namespace Mecanica_Automotiva.Services.DadosProdutoService
 
         public async Task<MarcaProduto> AddAsync(MarcaDto dto)
         {
-            var marca = 
-            throw new NotImplementedException();
+            var marcaP = _mapper.Map<MarcaProduto>(dto);
+
+            await _context.MarcaProdutos.AddAsync(marcaP);
+
+            await _context.SaveChangesAsync();
+            return marcaP;
         }
 
-        public Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var marca = await _context.MarcaProdutos.FindAsync(id);
+            if (marca == null) return false;
+            
+            _context.MarcaProdutos.Remove(marca);
+
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<List<MarcaProduto>> GetAllAsync()
+        public async Task<List<MarcaProduto>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var marcaPList = await _context.MarcaProdutos.ToListAsync();
+            return marcaPList;
         }
 
-        public Task<MarcaProduto> GetByIdAsync(Guid id)
+        public async Task<MarcaProduto> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var marcap = await _context.MarcaProdutos.FindAsync(id);
+            if (marcap == null) return null;
+            
+            return marcap;
         }
 
-        public Task<MarcaProduto> UpdateAsync(MarcaDto dto, Guid id)
+        public async Task<MarcaProduto> UpdateAsync(MarcaDto dto, Guid id)
         {
-            throw new NotImplementedException();
+            var marcaP = await _context.MarcaProdutos.FindAsync(id);
+            if (marcaP == null) return null;
+
+            marcaP = _mapper.Map(dto,marcaP);
+
+            await _context.SaveChangesAsync();
+            return marcaP;
         }
     }
 }

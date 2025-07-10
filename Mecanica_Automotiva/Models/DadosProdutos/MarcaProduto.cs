@@ -9,9 +9,6 @@ namespace Mecanica_Automotiva.Models.DadosPeca
         public string Nome { get; set; }
 
         [JsonIgnore]
-        public ICollection<ModeloProduto> Modelos { get; set; } = new List<ModeloProduto>();
-
-        [JsonIgnore]
         public ICollection<Produto> Produtos { get; set; } = new List<Produto>();
     }
 }

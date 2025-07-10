@@ -11,11 +11,11 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriaController : ControllerBase
+    public class CategoriaProdutoController : ControllerBase
     {
         private readonly ICategoriaProduto _service;
 
-        public CategoriaController(ICategoriaProduto _service)
+        public CategoriaProdutoController(ICategoriaProduto _service)
         {
             this._service = _service;
         }
@@ -48,7 +48,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         {
             var categoria = await _service.UpdateAsync(dto,id);
             if (categoria == null)  return NotFound("Categoria não encontrada");
-            return categoria;
+            return Ok(categoria);
         }
 
         [HttpDelete("{id}")]
@@ -56,7 +56,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         {
             var categoria = await _service.DeleteAsync(id);
             if (categoria ==  false) return NotFound("Categoria não encontrada");
-            return categoria;
+            return Ok(categoria);
         }
 
     }

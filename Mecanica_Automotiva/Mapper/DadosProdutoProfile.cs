@@ -22,14 +22,6 @@ namespace Mecanica_Automotiva.Mapper
 
             CreateMap<MarcaProduto, MarcaProdutoDto>();
             CreateMap<MarcaProdutoDto, MarcaProduto>()
-                .ForMember(dest => dest.Modelos, opt => opt.Ignore())
-                .ForMember(dest => dest.Produtos, opt => opt.Ignore());
-
-            CreateMap<ModeloProduto, ModeloProdutoDto>()
-               .ForMember(dest => dest.Marca, opt => opt.Ignore());
-
-            CreateMap<ModeloProdutoDto, ModeloProduto>()
-                .ForMember(dest => dest.Marca, opt => opt.Ignore())
                 .ForMember(dest => dest.Produtos, opt => opt.Ignore());
         }
     }

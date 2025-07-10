@@ -50,7 +50,7 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
             var (modelo,codigo) = await _service.UpdateAsync(dto, id);
 
             if (codigo == CodigoResult.ModeloNaoEncontrado) return NotFound("Modelo não encontrado.");
-            if(codigo == CodigoResult.MarcaNaoEncontrada) return NotFound("Marca do modelo não encontrada.");
+            if(codigo == CodigoResult.MarcaVeiculoNaoEncontrada) return NotFound("Marca do modelo do veiculo não encontrada.");
 
             return modelo;
         }

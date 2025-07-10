@@ -19,33 +19,53 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Servico>> GetAllAsync()
+        public async Task<ActionResult<List<Servico>>> GetAllAsync()
         {
-            return await _service.GetAllAsync();
+            var marca = await _service.GetAllAsync();
+            return Ok(marca);
         }
 
         [HttpGet("{id}")]
-        public async Task<Servico> GetByIdAsync(Guid id)
+        public async Task<ActionResult<Servico>> GetByIdAsync(Guid id)
         {
-            return await _service.GetByIdAsync(id);
+            var marca = await _service.GetByIdAsync(id);
+            if (marca == null) return NotFound("Serviço Não Encontrado");
+
+            return Ok(marca);
         }
 
         [HttpPost]
-        public async Task<Servico> AddAsync(ServicoDto dto)
+        public async Task<ActionResult<Servico>> AddAsync(ServicoDto dto)
         {
-            return await _service.AddAsync(dto);
+            var marca = await _service.AddAsync(dto);
+            if (marca == null) return NotFound("Lista dePecas do servico nula");
+
+            return Ok(marca);
         }
 
         [HttpPut("{id}")]
-        public async Task<(Servico, CodigoResult)> UpdateAsync(ServicoDto dto, Guid id)
+        public async Task<ActionResult<(Servico, CodigoResult)>> UpdateAsync(ServicoDto dto, Guid id)
         {
-            return await _service.UpdateAsync(dto, id);
+            var (marca,codigo) = await _service.UpdateAsync(dto, id);
+
+            switch (codigo)
+            {
+                case CodigoResult.ServicoNaoEncontrado: 
+                    return NotFound("Serviço Não Encontrado");
+                case CodigoResult.ProdutoNaoEncontrado:
+                    return NotFound("Produto Não Encontrado");
+            }
+            
+            return Ok(marca);
         }
 
         [HttpDelete("{id}")]
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
-            return await _service.DeleteAsync(id);
+            var marca = await _service.DeleteAsync(id);
+            if (marca == false) return NotFound("Serviço Não Encontrado");
+
+            return Ok(marca);
         }
     }
 }

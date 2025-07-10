@@ -56,7 +56,7 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
             var marca = await _service.DeleteAsync(id);
             if (marca == false) return NotFound("Marca Não Encontrada");
 
-            return true;
+            return Ok(marca);
         }
     }
 }

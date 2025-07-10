@@ -45,7 +45,6 @@ builder.Services.AddScoped<ICliente, ClienteService>();
 builder.Services.AddScoped<IEndereco, EnderecoService>();
 builder.Services.AddScoped<ICategoriaProduto, CategoriaProdutoService>();
 builder.Services.AddScoped<IMarcaProduto, MarcaProdutoService>();
-builder.Services.AddScoped<IModeloProduto, ModeloProdutoService>();
 builder.Services.AddScoped<ISubCategoriaProduto, SubCategoriaProdutoService>();
 builder.Services.AddScoped<IMarca, MarcaVeiculoService>();
 builder.Services.AddScoped<IModelo, ModeloVeiculoService>();

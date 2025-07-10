@@ -10,11 +10,11 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SubCategoriaController : ControllerBase
+    public class SubCategoriaProdutoController : ControllerBase
     {
         private readonly ISubCategoriaProduto _Service;
 
-        public SubCategoriaController(ISubCategoriaProduto _Service)
+        public SubCategoriaProdutoController(ISubCategoriaProduto _Service)
         {
             this._Service = _Service;
         }

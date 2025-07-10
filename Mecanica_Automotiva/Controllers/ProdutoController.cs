@@ -36,10 +36,21 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Produto>> AddAsync(ProdutoDto dto)
+        public async Task<ActionResult<(Produto, CodigoResult)>> AddAsync(ProdutoDto dto)
         {
-            var produto = await _service.AddAsync(dto);
-            if (produto == null) return NotFound("Subcategoria não encontrada.");
+            var (produto,codigo) = await _service.AddAsync(dto);
+
+            switch (codigo)
+            {
+                case CodigoResult.SubCategoriaNaoEncontrada:
+                    return NotFound("SubCategoria Do Produto Não Encontrada");
+                case CodigoResult.MarcaProdutoNaoEncontrada:
+                    return NotFound("Marca Do Produto Não Encontrada");
+                case CodigoResult.MarcaVeiculoNaoEncontrada:
+                    return NotFound("Marca Veiculo Do Produto Não Encontrada");
+                case CodigoResult.ModeloNaoEncontrado:
+                    return NotFound("Modelo Veiculo Do Produto Nao Encontrado");
+            }
 
             return Ok(produto);
         }
@@ -55,6 +66,12 @@ namespace Mecanica_Automotiva.Controllers
                     return NotFound("Produto não encontrada.");
                 case CodigoResult.SubCategoriaNaoEncontrada:
                     return NotFound("Subcategoria da produto não encontrada.");
+                case CodigoResult.MarcaProdutoNaoEncontrada:
+                    return NotFound("Marca Do Produto Não Encontrada");
+                case CodigoResult.MarcaVeiculoNaoEncontrada:
+                    return NotFound("Marca Veiculo Do Produto Não Encontrada");
+                case CodigoResult.ModeloNaoEncontrado:
+                    return NotFound("Modelo Veiculo Do Produto Nao Encontrado");
             }
 
             return Ok(produto);
@@ -64,9 +81,9 @@ namespace Mecanica_Automotiva.Controllers
         public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
             var produto = await _service.DeleteAsync(id);
-            if (produto) return NotFound("Produto não encontrada.");
+            if (produto == false) return NotFound("Produto não encontrada.");
 
-            return true;
+            return Ok(produto);
         }
     }
 }

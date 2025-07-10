@@ -6,6 +6,7 @@ using Mecanica_Automotiva.Models;
 using Mecanica_Automotiva.Models.Produtos;
 using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.JSInterop.Infrastructure;
 
 namespace Mecanica_Automotiva.Services
 {
@@ -24,6 +25,9 @@ namespace Mecanica_Automotiva.Services
         {
             var ProdutoList = await _context.Produtos
                 .Include(p => p.SubCategoriaProduto)
+                .Include(p => p.MarcaProduto)
+                .Include(p => p.MarcaVeiculo)
+                .Include(p => p.ModeloVeiculo)
                 .ToListAsync();
 
             return ProdutoList;
@@ -31,24 +35,42 @@ namespace Mecanica_Automotiva.Services
 
         public async Task<Produto> GetByIdAsync(Guid id)
         {
-            var Produto = await _context.Produtos.FindAsync(id);
+            var Produto = await _context.Produtos
+                .Include(p => p.SubCategoriaProduto)
+                .Include(p => p.MarcaProduto)
+                .Include(p => p.MarcaVeiculo)
+                .Include(p => p.ModeloVeiculo)
+                .FirstOrDefaultAsync(p=> p.Id == id);
+
             if (Produto == null) return null;
 
             return Produto;
         }
 
-        public async Task<Produto> AddAsync(ProdutoDto dto)
+        public async Task<(Produto,CodigoResult)> AddAsync(ProdutoDto dto)
         {
             var subCategoriaProduto = await _context.SubCategoriasProdutos.FindAsync(dto.SubCategoriaProdutoId);
-            if (subCategoriaProduto == null) return null;
+            if (subCategoriaProduto == null) return (null,CodigoResult.SubCategoriaNaoEncontrada);
+
+            var marcaProduto = await _context.MarcaProdutos.FindAsync(dto.MarcaProdutoId);
+            if (marcaProduto == null) return (null, CodigoResult.MarcaProdutoNaoEncontrada);
+
+            var marcaVeiculo = await _context.MarcaVeiculos.FindAsync(dto.MarcaVeiculoId);
+            if (marcaVeiculo == null) return (null, CodigoResult.MarcaVeiculoNaoEncontrada);
+
+            var modeloVeiculo = await _context.ModeloVeiculos.FindAsync(dto.ModeloVeiculoId);
+            if (modeloVeiculo == null) return (null, CodigoResult.ModeloNaoEncontrado);
 
             var Produto = _mapper.Map<Produto>(dto);
             Produto.SubCategoriaProduto = subCategoriaProduto;
+            Produto.MarcaProduto = marcaProduto;
+            Produto.MarcaVeiculo = marcaVeiculo;
+            Produto.ModeloVeiculo = modeloVeiculo;
 
             await _context.Produtos.AddAsync(Produto);
 
             await _context.SaveChangesAsync();
-            return Produto;
+            return (Produto, CodigoResult.Sucesso);
         }
 
         public async Task<(Produto, CodigoResult)> UpdateAsync(ProdutoDto dto, Guid id)
@@ -59,8 +81,20 @@ namespace Mecanica_Automotiva.Services
             var subCategoriaProduto = await _context.SubCategoriasProdutos.FindAsync(dto.SubCategoriaProdutoId);
             if (subCategoriaProduto == null) return (null, CodigoResult.SubCategoriaNaoEncontrada);
 
+            var marcaProduto = await _context.MarcaProdutos.FindAsync(dto.MarcaProdutoId);
+            if (marcaProduto == null) return (null, CodigoResult.MarcaProdutoNaoEncontrada);
+
+            var marcaVeiculo = await _context.MarcaVeiculos.FindAsync(dto.MarcaVeiculoId);
+            if (marcaVeiculo == null) return (null, CodigoResult.MarcaVeiculoNaoEncontrada);
+
+            var modeloVeiculo = await _context.ModeloVeiculos.FindAsync(dto.ModeloVeiculoId);
+            if (modeloVeiculo == null) return (null, CodigoResult.ModeloNaoEncontrado);
+
             Produto = _mapper.Map(dto, Produto);
             Produto.SubCategoriaProduto = subCategoriaProduto;
+            Produto.MarcaProduto = marcaProduto;
+            Produto.MarcaVeiculo = marcaVeiculo;
+            Produto.ModeloVeiculo = modeloVeiculo;
 
             await _context.SaveChangesAsync();
             return (Produto, CodigoResult.Sucesso);

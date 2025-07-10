@@ -22,7 +22,8 @@ namespace Mecanica_Automotiva.Services
         //recebe um servico dto e sai um servico com a lista de Produtos necessarias para oservico
         public async Task<Servico> AddAsync(ServicoDto dto)
         {
-            if (dto.ProdutosId == null) { }
+            if (dto.ProdutosId == null) return null;
+
             var listProdutos = await _context.Produtos
                 .Where(lp=>dto.ProdutosId
                 .Contains(lp.Id)).ToListAsync();

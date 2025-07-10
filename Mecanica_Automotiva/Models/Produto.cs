@@ -13,7 +13,6 @@ namespace Mecanica_Automotiva.Models
         public string Preco { get; set; }
         public SubCategoriaProduto SubCategoriaProduto { get; set; }
         public MarcaProduto MarcaProduto { get; set; }
-        public ModeloProduto ModeloProduto { get; set; }
         public int QtdEstoque { get; set; }
 
         //para que veiculo

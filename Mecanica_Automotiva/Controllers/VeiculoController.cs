@@ -42,8 +42,8 @@ namespace Mecanica_Automotiva.Controllers
 
             switch (codigo)
             {
-                case CodigoResult.MarcaNaoEncontrada:
-                    return NotFound("Marca não encontrada.");
+                case CodigoResult.MarcaVeiculoNaoEncontrada:
+                    return NotFound("Marca  do veiculo não encontrada.");
                 case CodigoResult.ModeloNaoEncontrado:
                     return NotFound("Modelo não encontrado.");
 
@@ -61,8 +61,8 @@ namespace Mecanica_Automotiva.Controllers
                 case CodigoResult.VeiculoNaoEncontrado:
                     return NotFound("Veículo não encontrado.");
 
-                case CodigoResult.MarcaNaoEncontrada:
-                    return NotFound("Marca não encontrada.");
+                case CodigoResult.MarcaVeiculoNaoEncontrada:
+                    return NotFound("Marca do veiculo não encontrada.");
 
                 case CodigoResult.ModeloNaoEncontrado:
                     return NotFound("Modelo não encontrado.");
@@ -76,7 +76,8 @@ namespace Mecanica_Automotiva.Controllers
         {
             var veiculo = await _service.DeleteAsync(id);
             if (veiculo == false) return NotFound("Veículo não encontrado.");
-            return Ok(true);
+
+            return Ok(veiculo);
         }
 
     }
