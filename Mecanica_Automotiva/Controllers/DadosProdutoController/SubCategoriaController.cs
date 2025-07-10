@@ -12,22 +12,22 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
     [ApiController]
     public class SubCategoriaController : ControllerBase
     {
-        private readonly ISubCategoriaPeca _Service;
+        private readonly ISubCategoriaProduto _Service;
 
-        public SubCategoriaController(ISubCategoriaPeca _Service)
+        public SubCategoriaController(ISubCategoriaProduto _Service)
         {
             this._Service = _Service;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<SubCategoriaPeca>>> GetAllAsync()
+        public async Task<ActionResult<List<SubCategoriaProduto>>> GetAllAsync()
         {
             var subcategoriaList = await _Service.GetAllAsync();
             return Ok(subcategoriaList);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<SubCategoriaPeca>> GetByIdAsync(Guid id)
+        public async Task<ActionResult<SubCategoriaProduto>> GetByIdAsync(Guid id)
         {
             var subCategoria = await _Service.GetByIdAsync(id);
             if (subCategoria == null) return NotFound("SubCategoria não encontrada");
@@ -39,7 +39,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
 
         //entrada: categoriaId
         //saida : lista de subcategorias que pertencem a categoriaId
-        public async Task<ActionResult<List<SubCategoriaPeca>>> GetFiltroSubcategoriaAsync(Guid id)
+        public async Task<ActionResult<List<SubCategoriaProduto>>> GetFiltroSubcategoriaAsync(Guid id)
         {
             var subcategoriaList = await _Service.GetFiltroSubcategoriaAsync(id);
             if (subcategoriaList == null) return NotFound("Categoria não encontrada");
@@ -48,7 +48,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         }
 
         [HttpPost]
-        public async Task<ActionResult<SubCategoriaPeca>> AddAsync(SubCategoriaPecaDto dto)
+        public async Task<ActionResult<SubCategoriaProduto>> AddAsync(SubCategoriaProdutoDto dto)
         {
             var subCategoriaPeca = await _Service.AddAsync(dto);
             if (subCategoriaPeca == null) return NotFound("Categoria da subcategoria não encontrada");
@@ -56,7 +56,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<SubCategoriaPeca>> UpdateAsync(SubCategoriaPecaDto dto, Guid id)
+        public async Task<ActionResult<SubCategoriaProduto>> UpdateAsync(SubCategoriaProdutoDto dto, Guid id)
         {
             //cria duas var pra dividir   subicategoria e codigo de erro
             var (subCategoria, codigo) = await _Service.UpdateAsync(dto, id);

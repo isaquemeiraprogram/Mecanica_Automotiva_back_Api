@@ -4,13 +4,13 @@ using System.Text.Json.Serialization;
 
 namespace Mecanica_Automotiva.Models.Produtos
 {
-    public class CategoriaPeca
+    public class CategoriaProduto
     {
         public Guid ID { get; set; }
         public string Nome { get; set; }
 
         [JsonIgnore]
-        public ICollection<SubCategoriaPeca> SubCategoria { get; set; } = new List<SubCategoriaPeca>();
+        public ICollection<SubCategoriaProduto> SubCategoria { get; set; } = new List<SubCategoriaProduto>();
 
         //mecanica
         //eletrica

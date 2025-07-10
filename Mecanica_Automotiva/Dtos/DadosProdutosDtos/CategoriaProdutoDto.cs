@@ -3,9 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace Mecanica_Automotiva.Dtos.DtosDadosPescas
 {
-    public class SubCategoriaPecaDto
+    public class CategoriaProdutoDto
     {
         public string Nome { get; set; }
-        public Guid CategoriaId { get; set; }
     }
 }

@@ -12,6 +12,6 @@ namespace Mecanica_Automotiva.Dtos
 
         [JsonIgnore]
         public Guid AgendarId { get; set; }
-        public List<Guid> PecasId { get; set; } = new List<Guid>();
+        public List<Guid> ProdutosId { get; set; } = new List<Guid>();
     }
 }

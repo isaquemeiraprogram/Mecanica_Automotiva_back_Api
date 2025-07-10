@@ -12,6 +12,6 @@ namespace Mecanica_Automotiva.Models
 
         [JsonIgnore]
         public Agendar Agendar { get; set; }
-        public ICollection<Peca> Pecas { get; set; } = new List<Peca>();
+        public ICollection<Produto> Produtos { get; set; } = new List<Produto>();
     }
 }

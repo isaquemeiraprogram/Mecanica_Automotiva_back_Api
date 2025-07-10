@@ -19,16 +19,16 @@ namespace Mecanica_Automotiva.Services
             _mapper = mapper;
         }
 
-        //recebe um servico dto e sai um servico com a lista de pecas necessarias para oservico
+        //recebe um servico dto e sai um servico com a lista de Produtos necessarias para oservico
         public async Task<Servico> AddAsync(ServicoDto dto)
         {
-            if (dto.PecasId == null) { }
-            var listPecas = await _context.Pecas
-                .Where(lp=>dto.PecasId
+            if (dto.ProdutosId == null) { }
+            var listProdutos = await _context.Produtos
+                .Where(lp=>dto.ProdutosId
                 .Contains(lp.Id)).ToListAsync();
 
             var servico = _mapper.Map<Servico>(dto);
-            servico.Pecas = listPecas;
+            servico.Produtos = listProdutos;
 
             await _context.Servicos.AddAsync(servico);
 
@@ -46,7 +46,7 @@ namespace Mecanica_Automotiva.Services
             return true;
         }
 
-        //pensar em retornar pecas tbm dai ja tem nocao esse servico vai tantas pecas
+        //pensar em retornar Produtos tbm dai ja tem nocao esse servico vai tantas Produtos
         public async Task<List<Servico>> GetAllAsync()
         {
             var servicoList = await _context.Servicos.ToListAsync();
@@ -66,11 +66,11 @@ namespace Mecanica_Automotiva.Services
             var servico = await _context.Servicos.FindAsync(id);
             if (servico == null) return (null,CodigoResult.ServicoNaoEncontrado);
 
-            var pecaList = await _context.Pecas.Where(pl=> dto.PecasId.Contains(pl.Id)).ToListAsync();
-            if (pecaList == null) return (null,CodigoResult.PecaNaoEncontrada);
+            var ProdutoList = await _context.Produtos.Where(pl=> dto.ProdutosId.Contains(pl.Id)).ToListAsync();
+            if (ProdutoList == null) return (null,CodigoResult.ProdutoNaoEncontrado);
 
             servico = _mapper.Map(dto,servico);
-            servico.Pecas = pecaList;
+            servico.Produtos = ProdutoList;
 
             return (servico,CodigoResult.Sucesso);
         }

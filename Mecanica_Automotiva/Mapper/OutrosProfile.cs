@@ -8,17 +8,17 @@ namespace Mecanica_Automotiva.Mapper
     {
         public OutrosProfile()
         {
-            CreateMap<Peca, PecaDto>()
-                .ForMember(dest => dest.SubCategoriaPecaId, opt => opt.Ignore())
-                .ForMember(dest => dest.MarcaPecaId, opt => opt.Ignore())
-                .ForMember(dest => dest.ModeloPecaId, opt => opt.Ignore())
+            CreateMap<Produto, ProdutoDto>()
+                .ForMember(dest => dest.SubCategoriaProdutoId, opt => opt.Ignore())
+                .ForMember(dest => dest.MarcaProdutoId, opt => opt.Ignore())
+                .ForMember(dest => dest.ModeloProdutoId, opt => opt.Ignore())
                 .ForMember(dest => dest.MarcaVeiculoId, opt => opt.Ignore())
                 .ForMember(dest => dest.ModeloVeiculoId, opt => opt.Ignore());
 
-            CreateMap<PecaDto, Peca>()
-                .ForMember(dest => dest.SubCategoriaPeca, opt => opt.Ignore())
-                .ForMember(dest => dest.MarcaPeca, opt => opt.Ignore())
-                .ForMember(dest => dest.ModeloPeca, opt => opt.Ignore())
+            CreateMap<ProdutoDto, Produto>()
+                .ForMember(dest => dest.SubCategoriaProduto, opt => opt.Ignore())
+                .ForMember(dest => dest.MarcaProduto, opt => opt.Ignore())
+                .ForMember(dest => dest.ModeloProduto, opt => opt.Ignore())
                 .ForMember(dest => dest.MarcaVeiculo, opt => opt.Ignore())
                 .ForMember(dest => dest.ModeloVeiculo, opt => opt.Ignore())
                 .ForMember(dest => dest.Servico, opt => opt.Ignore());
@@ -29,7 +29,7 @@ namespace Mecanica_Automotiva.Mapper
             CreateMap<VeiculoDto, Veiculo>()
                 .ForMember(dest => dest.Marca, opt => opt.Ignore())
                 .ForMember(dest => dest.Modelo, opt => opt.Ignore())
-                .ForMember(dest => dest.Pecas, opt => opt.Ignore());
+                .ForMember(dest => dest.Produtos, opt => opt.Ignore());
         }
     }
 }

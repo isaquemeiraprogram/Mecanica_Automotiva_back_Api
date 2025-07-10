@@ -13,23 +13,23 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
     [ApiController]
     public class CategoriaController : ControllerBase
     {
-        private readonly ICategoriaPeca _service;
+        private readonly ICategoriaProduto _service;
 
-        public CategoriaController(ICategoriaPeca _service)
+        public CategoriaController(ICategoriaProduto _service)
         {
             this._service = _service;
         }
 
 
         [HttpGet]
-        public async Task<ActionResult<List<CategoriaPeca>>> GetAllAsync()
+        public async Task<ActionResult<List<CategoriaProduto>>> GetAllAsync()
         {
             var categoriList = await _service.GetAllAsync();
             return Ok(categoriList);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CategoriaPeca>> GetByIdAsync(Guid id)
+        public async Task<ActionResult<CategoriaProduto>> GetByIdAsync(Guid id)
         {
             var categoria = await _service.GetByIdAsync(id);
             if (categoria == null) return NotFound("Categoria não encontrada");
@@ -37,14 +37,14 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         }
 
         [HttpPost]
-        public async Task<ActionResult<CategoriaPeca>> AddAsync([FromBody] CategoriaPecaDto dto)
+        public async Task<ActionResult<CategoriaProduto>> AddAsync([FromBody] CategoriaProdutoDto dto)
         {
             var categoria = await _service.AddAsync(dto);
             return Ok(categoria);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<CategoriaPeca>> UpdateAsync([FromBody] CategoriaPecaDto dto, Guid id)
+        public async Task<ActionResult<CategoriaProduto>> UpdateAsync([FromBody] CategoriaProdutoDto dto, Guid id)
         {
             var categoria = await _service.UpdateAsync(dto,id);
             if (categoria == null)  return NotFound("Categoria não encontrada");

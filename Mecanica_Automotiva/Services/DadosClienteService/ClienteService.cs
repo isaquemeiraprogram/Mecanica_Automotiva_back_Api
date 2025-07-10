@@ -42,13 +42,7 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
         {
 
             var cliente = _mapper.Map<Cliente>(dto);
-            //Cliente cliente = new Cliente
-            //{
-            //    Id = Guid.NewGuid(),
-            //    Nome = dto.Nome,
-            //    Cpf = dto.Cpf
-            //};
-
+            
             await _context.Clientes.AddAsync(cliente);
             await _context.SaveChangesAsync();
 

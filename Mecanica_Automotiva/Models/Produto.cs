@@ -5,15 +5,15 @@ using System.Text.Json.Serialization;
 
 namespace Mecanica_Automotiva.Models
 {
-    public class Peca
+    public class Produto
     {
         public Guid Id { get; set; }
         public string Img { get; set; }
         public string Nome { get; set; }
         public string Preco { get; set; }
-        public SubCategoriaPeca SubCategoriaPeca { get; set; }
-        public MarcaPeca MarcaPeca { get; set; }
-        public ModeloPeca ModeloPeca { get; set; }
+        public SubCategoriaProduto SubCategoriaProduto { get; set; }
+        public MarcaProduto MarcaProduto { get; set; }
+        public ModeloProduto ModeloProduto { get; set; }
         public int QtdEstoque { get; set; }
 
         //para que veiculo

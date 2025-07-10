@@ -14,7 +14,7 @@ namespace Mecanica_Automotiva.Models
         public int Ano { get; set; }
 
         [JsonIgnore]
-        public ICollection<Peca> Pecas { get; set; } = new List<Peca>();
+        public ICollection<Produto> Produtos { get; set; } = new List<Produto>();
 
         [JsonIgnore]
         public ICollection<Agendar> Agendamentos { get; set; } = new List<Agendar>();
