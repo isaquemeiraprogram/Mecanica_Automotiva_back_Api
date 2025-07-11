@@ -32,7 +32,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             return marca;
         }
 
-        public async Task<MarcaVeiculo> AddAsync(MarcaDto dto)
+        public async Task<MarcaVeiculo> AddAsync(MarcaVeiculoDto dto)
         {
             var marca = _mapper.Map<MarcaVeiculo>(dto);
 
@@ -42,7 +42,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             return marca;
         }
 
-        public async Task<MarcaVeiculo> UpdateAsync(MarcaDto dto, Guid id)
+        public async Task<MarcaVeiculo> UpdateAsync(MarcaVeiculoDto dto, Guid id)
         {
             var marca = await _context.MarcaVeiculos.FindAsync(id);
             if (marca == null) return null;

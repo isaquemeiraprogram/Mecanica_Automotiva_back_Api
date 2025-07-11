@@ -43,13 +43,13 @@ namespace Mecanica_Automotiva.Services
 
         public async Task<(Veiculo, CodigoResult)> AddAsync(VeiculoDto dto)
         {
-           var modeloVeiculo = await _context.ModeloVeiculos.Include(mv=> mv.Marca).FirstOrDefaultAsync(mv => dto.ModeloId == mv.Id);
+           var modeloVeiculo = await _context.ModeloVeiculos.Include(mv=> mv.MarcaVeiculo).FirstOrDefaultAsync(mv => dto.ModeloId == mv.Id);
             if (modeloVeiculo == null) return (null, CodigoResult.ModeloNaoEncontrado);
 
            
 
             var veiculo = _mapper.Map<Veiculo>(dto);
-            veiculo.Marca = modeloVeiculo.Marca;
+            veiculo.Marca = modeloVeiculo.MarcaVeiculo;
             veiculo.Modelo = modeloVeiculo;
 
             await _context.Veiculos.AddAsync(veiculo);
@@ -67,7 +67,7 @@ namespace Mecanica_Automotiva.Services
             var modeloVeiculo = await _context.ModeloVeiculos.FindAsync(dto.ModeloId);
             if (modeloVeiculo == null) return (null, CodigoResult.ModeloNaoEncontrado);
 
-            var marca = await _context.MarcaVeiculos.FindAsync(modeloVeiculo.Marca.Id);
+            var marca = await _context.MarcaVeiculos.FindAsync(modeloVeiculo.MarcaVeiculo.Id);
 
             veiculo = _mapper.Map(dto, veiculo);
             veiculo.Marca = marca;

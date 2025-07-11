@@ -47,7 +47,7 @@ namespace Mecanica_Automotiva.Services.DadosPecaService
 
             var subcategoriaList = await _context.SubCategoriasProdutos
                     .Include(s => s.CategoriaProduto)
-                    .Where(sbc => sbc.CategoriaProduto.ID == id)
+                    .Where(sbc => sbc.CategoriaProduto.Id == id)
                     .ToListAsync();
 
             return subcategoriaList;

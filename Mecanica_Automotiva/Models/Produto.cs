@@ -16,11 +16,10 @@ namespace Mecanica_Automotiva.Models
         public int QtdEstoque { get; set; }
 
         //para que veiculo
-        public MarcaVeiculo MarcaVeiculo { get; set; }
-        public ModeloVeiculo ModeloVeiculo { get; set; }
-        public CategoriaVeiculo CategoriaVeiculo { get; set; }
-
+        public ICollection<MarcaVeiculo> MarcasVeiculos { get; set; } = new List<MarcaVeiculo>();
+        public ICollection<ModeloVeiculo> ModelosVeiculos { get; set; } = new List<ModeloVeiculo>();
+        
         [JsonIgnore]
-        public Servico Servico { get; set; }
+        public ICollection<Servico> Servico { get; set; } = new List<Servico>();
     }
 }

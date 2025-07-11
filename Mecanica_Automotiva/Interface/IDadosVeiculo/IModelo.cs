@@ -8,8 +8,8 @@ namespace Mecanica_Automotiva.Interface.IDadosVeiculo
     {
         Task<List<ModeloVeiculo>> GetAllAsync();
         Task<ModeloVeiculo> GetByIdAsync(Guid id);
-        Task<ModeloVeiculo> AddAsync(ModeloDto dto);
-        Task<(ModeloVeiculo, CodigoResult)> UpdateAsync(ModeloDto dto, Guid id);
+        Task<ModeloVeiculo> AddAsync(ModeloVeiculoDto dto);
+        Task<(ModeloVeiculo, CodigoResult)> UpdateAsync(ModeloVeiculoDto dto, Guid id);
         Task<bool> DeleteAsync(Guid id);
     }
 }

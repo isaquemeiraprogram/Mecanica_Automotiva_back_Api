@@ -9,8 +9,6 @@ namespace Mecanica_Automotiva.Dtos
         public string Descricao { get; set; }
         public double Valor { get; set; }
         public TimeOnly Duracao { get; set; }
-
-        [JsonIgnore]
         public Guid AgendarId { get; set; }
         public List<Guid> ProdutosId { get; set; } = new List<Guid>();
     }

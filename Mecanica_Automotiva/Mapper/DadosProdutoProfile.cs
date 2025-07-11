@@ -11,7 +11,9 @@ namespace Mecanica_Automotiva.Mapper
         public DadosProdutoProfile()
         {
             CreateMap<CategoriaProduto, CategoriaProdutoDto>();
-            CreateMap<CategoriaProdutoDto, CategoriaProduto>();
+            CreateMap<CategoriaProdutoDto, CategoriaProduto>()
+                .ForMember(dest=> dest.Id, opt=> opt.Ignore());
+
 
             CreateMap<SubCategoriaProduto, SubCategoriaProdutoDto>()
                 .ForMember(dest => dest.CategoriaId, opt => opt.Ignore());
@@ -22,7 +24,8 @@ namespace Mecanica_Automotiva.Mapper
 
             CreateMap<MarcaProduto, MarcaProdutoDto>();
             CreateMap<MarcaProdutoDto, MarcaProduto>()
-                .ForMember(dest => dest.Produtos, opt => opt.Ignore());
+                .ForMember(dest => dest.Produtos, opt => opt.Ignore())
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }
 }

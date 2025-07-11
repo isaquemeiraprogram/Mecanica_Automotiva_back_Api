@@ -4,6 +4,7 @@ using Mecanica_Automotiva.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mecanica_Automotiva.Migrations
 {
     [DbContext(typeof(DataBase))]
-    partial class DataBaseModelSnapshot : ModelSnapshot
+    [Migration("20250711114336_autereiIDpraidemalgumasclasses")]
+    partial class autereiIDpraidemalgumasclasses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,12 +146,7 @@ namespace Mecanica_Automotiva.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("ProdutoId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProdutoId");
 
                     b.ToTable("MarcaVeiculos");
                 });
@@ -159,24 +157,16 @@ namespace Mecanica_Automotiva.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("CategoriaVeiculo")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("MarcaVeiculoId")
+                    b.Property<Guid>("MarcaId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("ProdutoId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("MarcaVeiculoId");
-
-                    b.HasIndex("ProdutoId");
+                    b.HasIndex("MarcaId");
 
                     b.ToTable("ModeloVeiculos");
                 });
@@ -187,11 +177,20 @@ namespace Mecanica_Automotiva.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<int>("CategoriaVeiculo")
+                        .HasColumnType("int");
+
                     b.Property<string>("Img")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<Guid>("MarcaProdutoId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("MarcaVeiculoId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ModeloVeiculoId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Nome")
@@ -205,6 +204,9 @@ namespace Mecanica_Automotiva.Migrations
                     b.Property<int>("QtdEstoque")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("ServicoId")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid>("SubCategoriaProdutoId")
                         .HasColumnType("char(36)");
 
@@ -214,6 +216,12 @@ namespace Mecanica_Automotiva.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MarcaProdutoId");
+
+                    b.HasIndex("MarcaVeiculoId");
+
+                    b.HasIndex("ModeloVeiculoId");
+
+                    b.HasIndex("ServicoId");
 
                     b.HasIndex("SubCategoriaProdutoId");
 
@@ -318,21 +326,6 @@ namespace Mecanica_Automotiva.Migrations
                     b.ToTable("Veiculos");
                 });
 
-            modelBuilder.Entity("ProdutoServico", b =>
-                {
-                    b.Property<Guid>("ProdutosId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("ServicoId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("ProdutosId", "ServicoId");
-
-                    b.HasIndex("ServicoId");
-
-                    b.ToTable("ProdutoServico");
-                });
-
             modelBuilder.Entity("Mecanica_Automotiva.Models.Agendar", b =>
                 {
                     b.HasOne("Mecanica_Automotiva.Models.DadosCliente.Cliente", "Cliente")
@@ -363,26 +356,15 @@ namespace Mecanica_Automotiva.Migrations
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("Mecanica_Automotiva.Models.DadosVeiculo.MarcaVeiculo", b =>
-                {
-                    b.HasOne("Mecanica_Automotiva.Models.Produto", null)
-                        .WithMany("MarcasVeiculos")
-                        .HasForeignKey("ProdutoId");
-                });
-
             modelBuilder.Entity("Mecanica_Automotiva.Models.DadosVeiculo.ModeloVeiculo", b =>
                 {
-                    b.HasOne("Mecanica_Automotiva.Models.DadosVeiculo.MarcaVeiculo", "MarcaVeiculo")
+                    b.HasOne("Mecanica_Automotiva.Models.DadosVeiculo.MarcaVeiculo", "Marca")
                         .WithMany("Modelos")
-                        .HasForeignKey("MarcaVeiculoId")
+                        .HasForeignKey("MarcaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Mecanica_Automotiva.Models.Produto", null)
-                        .WithMany("ModelosVeiculos")
-                        .HasForeignKey("ProdutoId");
-
-                    b.Navigation("MarcaVeiculo");
+                    b.Navigation("Marca");
                 });
 
             modelBuilder.Entity("Mecanica_Automotiva.Models.Produto", b =>
@@ -390,6 +372,24 @@ namespace Mecanica_Automotiva.Migrations
                     b.HasOne("Mecanica_Automotiva.Models.DadosPeca.MarcaProduto", "MarcaProduto")
                         .WithMany("Produtos")
                         .HasForeignKey("MarcaProdutoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mecanica_Automotiva.Models.DadosVeiculo.MarcaVeiculo", "MarcaVeiculo")
+                        .WithMany()
+                        .HasForeignKey("MarcaVeiculoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mecanica_Automotiva.Models.DadosVeiculo.ModeloVeiculo", "ModeloVeiculo")
+                        .WithMany()
+                        .HasForeignKey("ModeloVeiculoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mecanica_Automotiva.Models.Servico", "Servico")
+                        .WithMany("Produtos")
+                        .HasForeignKey("ServicoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -404,6 +404,12 @@ namespace Mecanica_Automotiva.Migrations
                         .HasForeignKey("VeiculoId");
 
                     b.Navigation("MarcaProduto");
+
+                    b.Navigation("MarcaVeiculo");
+
+                    b.Navigation("ModeloVeiculo");
+
+                    b.Navigation("Servico");
 
                     b.Navigation("SubCategoriaProduto");
                 });
@@ -449,21 +455,6 @@ namespace Mecanica_Automotiva.Migrations
                     b.Navigation("Modelo");
                 });
 
-            modelBuilder.Entity("ProdutoServico", b =>
-                {
-                    b.HasOne("Mecanica_Automotiva.Models.Produto", null)
-                        .WithMany()
-                        .HasForeignKey("ProdutosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Mecanica_Automotiva.Models.Servico", null)
-                        .WithMany()
-                        .HasForeignKey("ServicoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Mecanica_Automotiva.Models.Agendar", b =>
                 {
                     b.Navigation("Servicos");
@@ -493,19 +484,17 @@ namespace Mecanica_Automotiva.Migrations
                     b.Navigation("Veiculo");
                 });
 
-            modelBuilder.Entity("Mecanica_Automotiva.Models.Produto", b =>
-                {
-                    b.Navigation("MarcasVeiculos");
-
-                    b.Navigation("ModelosVeiculos");
-                });
-
             modelBuilder.Entity("Mecanica_Automotiva.Models.Produtos.CategoriaProduto", b =>
                 {
                     b.Navigation("SubCategoria");
                 });
 
             modelBuilder.Entity("Mecanica_Automotiva.Models.Produtos.SubCategoriaProduto", b =>
+                {
+                    b.Navigation("Produtos");
+                });
+
+            modelBuilder.Entity("Mecanica_Automotiva.Models.Servico", b =>
                 {
                     b.Navigation("Produtos");
                 });

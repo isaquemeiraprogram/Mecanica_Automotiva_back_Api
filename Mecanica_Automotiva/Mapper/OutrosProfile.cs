@@ -11,14 +11,13 @@ namespace Mecanica_Automotiva.Mapper
             CreateMap<Produto, ProdutoDto>()
                 .ForMember(dest => dest.SubCategoriaProdutoId, opt => opt.Ignore())
                 .ForMember(dest => dest.MarcaProdutoId, opt => opt.Ignore())
-                .ForMember(dest => dest.MarcaVeiculoId, opt => opt.Ignore())
-                .ForMember(dest => dest.ModeloVeiculoId, opt => opt.Ignore());
+                .ForMember(dest => dest.ModelosVeiculosIds, opt => opt.Ignore());
 
             CreateMap<ProdutoDto, Produto>()
                 .ForMember(dest => dest.SubCategoriaProduto, opt => opt.Ignore())
                 .ForMember(dest => dest.MarcaProduto, opt => opt.Ignore())
-                .ForMember(dest => dest.MarcaVeiculo, opt => opt.Ignore())
-                .ForMember(dest => dest.ModeloVeiculo, opt => opt.Ignore())
+                .ForMember(dest => dest.MarcasVeiculos, opt => opt.Ignore())
+                .ForMember(dest => dest.ModelosVeiculos, opt => opt.Ignore())
                 .ForMember(dest => dest.Servico, opt => opt.Ignore());
 
             CreateMap<Veiculo, VeiculoDto>()

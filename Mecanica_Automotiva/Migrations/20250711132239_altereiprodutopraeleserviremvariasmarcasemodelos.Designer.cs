@@ -4,6 +4,7 @@ using Mecanica_Automotiva.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mecanica_Automotiva.Migrations
 {
     [DbContext(typeof(DataBase))]
-    partial class DataBaseModelSnapshot : ModelSnapshot
+    [Migration("20250711132239_altereiprodutopraeleserviremvariasmarcasemodelos")]
+    partial class altereiprodutopraeleserviremvariasmarcasemodelos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,9 +162,6 @@ namespace Mecanica_Automotiva.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("CategoriaVeiculo")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("MarcaVeiculoId")
                         .HasColumnType("char(36)");
 
@@ -187,6 +187,9 @@ namespace Mecanica_Automotiva.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<int>("CategoriaVeiculo")
+                        .HasColumnType("int");
+
                     b.Property<string>("Img")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -205,6 +208,9 @@ namespace Mecanica_Automotiva.Migrations
                     b.Property<int>("QtdEstoque")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("ServicoId")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid>("SubCategoriaProdutoId")
                         .HasColumnType("char(36)");
 
@@ -214,6 +220,8 @@ namespace Mecanica_Automotiva.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MarcaProdutoId");
+
+                    b.HasIndex("ServicoId");
 
                     b.HasIndex("SubCategoriaProdutoId");
 
@@ -318,21 +326,6 @@ namespace Mecanica_Automotiva.Migrations
                     b.ToTable("Veiculos");
                 });
 
-            modelBuilder.Entity("ProdutoServico", b =>
-                {
-                    b.Property<Guid>("ProdutosId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("ServicoId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("ProdutosId", "ServicoId");
-
-                    b.HasIndex("ServicoId");
-
-                    b.ToTable("ProdutoServico");
-                });
-
             modelBuilder.Entity("Mecanica_Automotiva.Models.Agendar", b =>
                 {
                     b.HasOne("Mecanica_Automotiva.Models.DadosCliente.Cliente", "Cliente")
@@ -393,6 +386,12 @@ namespace Mecanica_Automotiva.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Mecanica_Automotiva.Models.Servico", "Servico")
+                        .WithMany("Produtos")
+                        .HasForeignKey("ServicoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Mecanica_Automotiva.Models.Produtos.SubCategoriaProduto", "SubCategoriaProduto")
                         .WithMany("Produtos")
                         .HasForeignKey("SubCategoriaProdutoId")
@@ -404,6 +403,8 @@ namespace Mecanica_Automotiva.Migrations
                         .HasForeignKey("VeiculoId");
 
                     b.Navigation("MarcaProduto");
+
+                    b.Navigation("Servico");
 
                     b.Navigation("SubCategoriaProduto");
                 });
@@ -449,21 +450,6 @@ namespace Mecanica_Automotiva.Migrations
                     b.Navigation("Modelo");
                 });
 
-            modelBuilder.Entity("ProdutoServico", b =>
-                {
-                    b.HasOne("Mecanica_Automotiva.Models.Produto", null)
-                        .WithMany()
-                        .HasForeignKey("ProdutosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Mecanica_Automotiva.Models.Servico", null)
-                        .WithMany()
-                        .HasForeignKey("ServicoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Mecanica_Automotiva.Models.Agendar", b =>
                 {
                     b.Navigation("Servicos");
@@ -506,6 +492,11 @@ namespace Mecanica_Automotiva.Migrations
                 });
 
             modelBuilder.Entity("Mecanica_Automotiva.Models.Produtos.SubCategoriaProduto", b =>
+                {
+                    b.Navigation("Produtos");
+                });
+
+            modelBuilder.Entity("Mecanica_Automotiva.Models.Servico", b =>
                 {
                     b.Navigation("Produtos");
                 });

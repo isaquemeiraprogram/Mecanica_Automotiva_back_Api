@@ -2,6 +2,8 @@
 {
     public enum CategoriaVeiculo
     {
+        todas,
+
         Hatch,
 
         Sedan,

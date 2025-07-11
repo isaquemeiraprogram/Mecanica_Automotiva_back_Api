@@ -9,11 +9,11 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MarcaController : ControllerBase
+    public class MarcaVeiculoController : ControllerBase
     {
         private readonly IMarca _service;
 
-        public MarcaController(IMarca _service)
+        public MarcaVeiculoController(IMarca _service)
         {
             this._service = _service;
         }
@@ -35,14 +35,14 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
         }
 
         [HttpPost]
-        public async Task<ActionResult<MarcaVeiculo>> AddAsync([FromBody] MarcaDto dto)
+        public async Task<ActionResult<MarcaVeiculo>> AddAsync([FromBody] MarcaVeiculoDto dto)
         {
             var marca = await _service.AddAsync(dto);
             return Ok(marca);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<MarcaVeiculo>> UpdateAsync([FromBody] MarcaDto dto, Guid id)
+        public async Task<ActionResult<MarcaVeiculo>> UpdateAsync([FromBody] MarcaVeiculoDto dto, Guid id)
         {
             var marca = await _service.UpdateAsync(dto, id);
             if (marca == null) return NotFound("Marca Não Encontrada");

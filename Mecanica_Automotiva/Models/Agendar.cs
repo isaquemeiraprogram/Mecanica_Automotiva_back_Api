@@ -4,7 +4,7 @@ namespace Mecanica_Automotiva.Models
 {
     public class Agendar
     {
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         public DateOnly Data { get; set; }
         public TimeOnly Hora { get; set; }
         public string Queixa { get; set; }

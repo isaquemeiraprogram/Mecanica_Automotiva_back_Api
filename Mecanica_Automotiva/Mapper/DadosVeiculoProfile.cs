@@ -8,15 +8,15 @@ namespace Mecanica_Automotiva.Mapper
     {
         public DadosVeiculoProfile()
         {
-            CreateMap<MarcaVeiculo, MarcaDto>();
-            CreateMap<MarcaDto, MarcaVeiculo>()
+            CreateMap<MarcaVeiculo, MarcaVeiculoDto>();
+            CreateMap<MarcaVeiculoDto, MarcaVeiculo>()
                 .ForMember(dest => dest.Modelos, opt => opt.Ignore())
                 .ForMember(dest => dest.Veiculo, opt => opt.Ignore());
 
-            CreateMap<ModeloVeiculo, ModeloDto>()
+            CreateMap<ModeloVeiculo, ModeloVeiculoDto>()
                 .ForMember(dest=> dest.MarcaId, opt=>opt.Ignore());
-            CreateMap<ModeloDto, ModeloVeiculo>()
-                .ForMember(dest=> dest.Marca, opt=>opt.Ignore())
+            CreateMap<ModeloVeiculoDto, ModeloVeiculo>()
+                .ForMember(dest=> dest.MarcaVeiculo, opt=>opt.Ignore())
                 .ForMember(dest=> dest.Veiculo, opt=>opt.Ignore());
         }
     }

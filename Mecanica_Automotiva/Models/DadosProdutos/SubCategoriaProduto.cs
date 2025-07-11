@@ -4,7 +4,7 @@ namespace Mecanica_Automotiva.Models.Produtos
 {
     public class SubCategoriaProduto
     {
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         public string Nome { get; set; }
 
         public CategoriaProduto CategoriaProduto { get; set; }

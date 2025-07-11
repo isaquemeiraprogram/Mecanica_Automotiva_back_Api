@@ -10,11 +10,11 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ModeloController : ControllerBase
+    public class ModeloVeiculoController : ControllerBase
     {
         private readonly IModelo _service;
 
-        public ModeloController(IModelo _service)
+        public ModeloVeiculoController(IModelo _service)
         {
             this._service = _service;
         }
@@ -37,7 +37,7 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
         }
 
         [HttpPost]
-        public async Task<ActionResult<ModeloVeiculo>> AddAsync([FromBody] ModeloDto dto)
+        public async Task<ActionResult<ModeloVeiculo>> AddAsync([FromBody] ModeloVeiculoDto dto)
         {
             var modelo = await _service.AddAsync(dto);
             if (modelo == null) return NotFound("Marca do modelo nao encontrada");
@@ -45,7 +45,7 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ModeloVeiculo>> UpdateAsync([FromBody] ModeloDto dto, Guid id)
+        public async Task<ActionResult<ModeloVeiculo>> UpdateAsync([FromBody] ModeloVeiculoDto dto, Guid id)
         {
             var (modelo,codigo) = await _service.UpdateAsync(dto, id);
 

@@ -6,7 +6,7 @@ namespace Mecanica_Automotiva.Models.Produtos
 {
     public class CategoriaProduto
     {
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         public string Nome { get; set; }
 
         [JsonIgnore]

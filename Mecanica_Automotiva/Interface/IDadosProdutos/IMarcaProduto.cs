@@ -1,4 +1,5 @@
-﻿using Mecanica_Automotiva.Dtos.DtosDadosVeiculo;
+﻿using Mecanica_Automotiva.Dtos.DadosProdutosDtos;
+using Mecanica_Automotiva.Dtos.DtosDadosVeiculo;
 using Mecanica_Automotiva.Models.DadosPeca;
 using Mecanica_Automotiva.Models.DadosVeiculo;
 
@@ -8,8 +9,8 @@ namespace Mecanica_Automotiva.Interface.IDadosProdutos
     {
         Task<List<MarcaProduto>> GetAllAsync();
         Task<MarcaProduto> GetByIdAsync(Guid id);
-        Task<MarcaProduto> AddAsync(MarcaDto dto);
-        Task<MarcaProduto> UpdateAsync(MarcaDto dto, Guid id);
+        Task<MarcaProduto> AddAsync(MarcaProdutoDto dto);
+        Task<MarcaProduto> UpdateAsync(MarcaProdutoDto dto, Guid id);
         Task<bool> DeleteAsync(Guid id);
     }
 }

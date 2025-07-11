@@ -24,7 +24,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
         public async Task<List<ModeloVeiculo>> GetAllAsync()
         {
             var modelosList = await _context.ModeloVeiculos
-                                    .Include(m=> m.Marca)
+                                    .Include(m=> m.MarcaVeiculo)
                                     .ToListAsync();
 
             return modelosList;
@@ -39,13 +39,13 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             return modelo;
         }
 
-        public async Task<ModeloVeiculo> AddAsync(ModeloDto dto)
+        public async Task<ModeloVeiculo> AddAsync(ModeloVeiculoDto dto)
         {
             var marca = await _context.MarcaVeiculos.FindAsync(dto.MarcaId);
             if (marca == null) return null;
 
             var modelo = _mapper.Map<ModeloVeiculo>(dto);
-            modelo.Marca = marca;
+            modelo.MarcaVeiculo = marca;
 
             await _context.ModeloVeiculos.AddAsync(modelo);
 
@@ -53,7 +53,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             return modelo;
         }
 
-        public async Task<(ModeloVeiculo,CodigoResult)> UpdateAsync(ModeloDto dto, Guid id)
+        public async Task<(ModeloVeiculo,CodigoResult)> UpdateAsync(ModeloVeiculoDto dto, Guid id)
         {
             var modelo = await _context.ModeloVeiculos.FindAsync(id);
             if (modelo == null) return (null,CodigoResult.ModeloNaoEncontrado);
@@ -62,7 +62,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             if (marca == null) return (null, CodigoResult.MarcaVeiculoNaoEncontrada);
 
             modelo = _mapper.Map(dto, modelo);
-            modelo.Marca = marca;
+            modelo.MarcaVeiculo = marca;
 
             await _context.SaveChangesAsync();
             return (modelo,CodigoResult.Sucesso);

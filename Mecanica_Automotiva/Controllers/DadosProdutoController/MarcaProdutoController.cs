@@ -1,4 +1,5 @@
-﻿using Mecanica_Automotiva.Dtos.DtosDadosVeiculo;
+﻿using Mecanica_Automotiva.Dtos.DadosProdutosDtos;
+using Mecanica_Automotiva.Dtos.DtosDadosVeiculo;
 using Mecanica_Automotiva.Interface.IDadosProdutos;
 using Mecanica_Automotiva.Models.DadosPeca;
 using Microsoft.AspNetCore.Http;
@@ -34,14 +35,14 @@ namespace Mecanica_Automotiva.Controllers.DadosProdutoController
         }
 
         [HttpPost]
-        public async Task<ActionResult<MarcaProduto>> AddAsync(MarcaDto dto)
+        public async Task<ActionResult<MarcaProduto>> AddAsync(MarcaProdutoDto dto)
         {
             var marca = await _service.AddAsync(dto);
             return Ok(marca);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<MarcaProduto>> UpdateAsync(MarcaDto dto, Guid id)
+        public async Task<ActionResult<MarcaProduto>> UpdateAsync(MarcaProdutoDto dto, Guid id)
         {
             var marca = await _service.UpdateAsync(dto, id);
             if (marca == null) return NotFound("A marca do produto nao foi encontrada");
