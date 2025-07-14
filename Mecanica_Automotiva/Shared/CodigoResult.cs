@@ -10,6 +10,8 @@
         VeiculoNaoEncontrado = 5,
         ProdutoNaoEncontrado = 6,
         ServicoNaoEncontrado = 7,
-        MarcaVeiculoNaoEncontrada = 8
+        MarcaVeiculoNaoEncontrada = 8,
+        ClienteNaoEncontrado = 9,
+        AgendamentoNaoEncontrado = 10
     }
 }

@@ -7,9 +7,9 @@ namespace Mecanica_Automotiva.Dtos
     {
         public DateOnly Data { get; set; }
         public TimeOnly Hora { get; set; }
-        public double ValorTotal { get; set; }
-        public TimeOnly TempoDeServiço { get; set; }
+        public string Queixa { get; set; }
         public List<Guid> ServicosId { get; set; } = new List<Guid>();
         public Guid ClienteId { get; set; }
+        public Guid VeiculoId { get; set; }
     }
 }

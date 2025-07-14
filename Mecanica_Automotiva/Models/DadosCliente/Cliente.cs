@@ -12,7 +12,7 @@ namespace Mecanica_Automotiva.Models.DadosCliente
         public ICollection<Endereco> Endereco { get; set; } = new List<Endereco>();
 
         [JsonIgnore]
-        public ICollection<Agendar> Agendamentos { get; set; } = new List<Agendar>();
+        public ICollection<Agenda> Agendamentos { get; set; } = new List<Agenda>();
 
     }
 }

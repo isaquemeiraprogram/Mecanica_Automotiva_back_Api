@@ -4,6 +4,7 @@ using Mecanica_Automotiva.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mecanica_Automotiva.Migrations
 {
     [DbContext(typeof(DataBase))]
-    partial class DataBaseModelSnapshot : ModelSnapshot
+    [Migration("20250714134533_tireicategoriaveiculodeagendaservice")]
+    partial class tireicategoriaveiculodeagendaservice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +44,7 @@ namespace Mecanica_Automotiva.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<TimeSpan>("TempoServiçoTotal")
+                    b.Property<TimeOnly>("TempoServiçoTotal")
                         .HasColumnType("time(6)");
 
                     b.Property<double>("ValorTotal")
@@ -270,7 +273,7 @@ namespace Mecanica_Automotiva.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<TimeSpan>("Duracao")
+                    b.Property<TimeOnly>("Duracao")
                         .HasColumnType("time(6)");
 
                     b.Property<string>("Nome")

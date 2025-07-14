@@ -51,6 +51,7 @@ builder.Services.AddScoped<IModelo, ModeloVeiculoService>();
 builder.Services.AddScoped<IProduto, ProdutoService>();
 builder.Services.AddScoped<IVeiculo, VeiculoService>();
 builder.Services.AddScoped<IServico, ServicoService>();
+builder.Services.AddScoped<IAgenda, AgendaService>();
 
 
 

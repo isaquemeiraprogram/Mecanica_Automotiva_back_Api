@@ -10,13 +10,12 @@ namespace Mecanica_Automotiva.Models
         [JsonIgnore]
         public MarcaVeiculo Marca { get; set; }
         public ModeloVeiculo Modelo { get; set; }
-        public CategoriaVeiculo CategoriaVeiculo { get; set; }
         public int Ano { get; set; }
 
         [JsonIgnore]
         public ICollection<Produto> Produtos { get; set; } = new List<Produto>();
 
         [JsonIgnore]
-        public ICollection<Agendar> Agendamentos { get; set; } = new List<Agendar>();
+        public ICollection<Agenda> Agendamentos { get; set; } = new List<Agenda>();
     }
 }

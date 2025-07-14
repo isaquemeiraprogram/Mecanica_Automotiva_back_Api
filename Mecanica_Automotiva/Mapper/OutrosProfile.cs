@@ -27,6 +27,19 @@ namespace Mecanica_Automotiva.Mapper
                 .ForMember(dest => dest.Marca, opt => opt.Ignore())
                 .ForMember(dest => dest.Modelo, opt => opt.Ignore())
                 .ForMember(dest => dest.Produtos, opt => opt.Ignore());
+
+            CreateMap<Agenda, AgendarDto>()
+                .ForMember(dest => dest.ServicosId, opt => opt.Ignore())
+                .ForMember(dest => dest.ClienteId, opt => opt.Ignore())
+                .ForMember(dest => dest.VeiculoId, opt => opt.Ignore());
+
+            CreateMap<AgendarDto,Agenda>()
+                .ForMember(dest => dest.TempoServiçoTotal, opt => opt.Ignore())
+                .ForMember(dest => dest.ValorTotal, opt => opt.Ignore())
+                .ForMember(dest => dest.Servicos, opt => opt.Ignore())
+                .ForMember(dest => dest.Cliente, opt => opt.Ignore())
+                .ForMember(dest => dest.Veiculo, opt => opt.Ignore());
+
         }
     }
 }

@@ -6,7 +6,6 @@ namespace Mecanica_Automotiva.Dtos
     {
         public string Placa { get; set; }
         public Guid ModeloId { get; set; }
-        public CategoriaVeiculo CategoriaVeiculo { get; set; }
         public int Ano { get; set; }
     }
 }

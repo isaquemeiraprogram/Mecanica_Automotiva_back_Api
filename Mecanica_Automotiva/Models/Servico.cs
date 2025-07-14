@@ -8,10 +8,10 @@ namespace Mecanica_Automotiva.Models
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public double Valor{ get; set; }
-        public TimeOnly Duracao { get; set; }
+        public TimeSpan Duracao { get; set; }
 
         [JsonIgnore]
-        public Agendar Agendar { get; set; }
+        public Agenda Agendar { get; set; }
         public ICollection<Produto> Produtos { get; set; } = new List<Produto>();
     }
 }
