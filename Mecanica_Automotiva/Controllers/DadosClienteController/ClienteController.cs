@@ -45,7 +45,7 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Cliente>> UpdateAsync(ClienteDto dto, Guid id)
+        public async Task<ActionResult<Cliente>> UpdateAsync([FromBody] ClienteDto dto, Guid id)
         {
             var cliente = await _service.UpdateAsync(dto,id);
             if (cliente == null) return NotFound("Cliente não encontrado");

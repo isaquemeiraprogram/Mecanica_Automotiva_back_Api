@@ -13,13 +13,14 @@ namespace Mecanica_Automotiva.Mapper
                 .ForMember(dest => dest.MarcaProdutoId, opt => opt.Ignore())
                 .ForMember(dest => dest.ModelosVeiculosIds, opt => opt.Ignore());
 
+            //dto pra produto
             CreateMap<ProdutoDto, Produto>()
                 .ForMember(dest => dest.SubCategoriaProduto, opt => opt.Ignore())
-                .ForMember(dest => dest.MarcaProduto, opt => opt.Ignore())
                 .ForMember(dest => dest.MarcasVeiculos, opt => opt.Ignore())
                 .ForMember(dest => dest.ModelosVeiculos, opt => opt.Ignore())
                 .ForMember(dest => dest.Servico, opt => opt.Ignore());
 
+            //dois atributos = de tipo diferente usa ignore senao nao
             CreateMap<Veiculo, VeiculoDto>()
                 .ForMember(dest => dest.ModeloId, opt => opt.Ignore());
 
@@ -27,6 +28,14 @@ namespace Mecanica_Automotiva.Mapper
                 .ForMember(dest => dest.Marca, opt => opt.Ignore())
                 .ForMember(dest => dest.Modelo, opt => opt.Ignore())
                 .ForMember(dest => dest.Produtos, opt => opt.Ignore());
+
+            CreateMap<Servico, ServicoDto>()
+                .ForMember(dest=> dest.ProdutosId, opt=> opt.Ignore());
+            
+            CreateMap<ServicoDto, Servico>()
+                .ForMember(dest=> dest.Id, opt=> opt.Ignore())
+                .ForMember(dest=> dest.Agendar, opt=> opt.Ignore())
+                .ForMember(dest=> dest.Produtos, opt=> opt.Ignore());
 
             CreateMap<Agenda, AgendarDto>()
                 .ForMember(dest => dest.ServicosId, opt => opt.Ignore())

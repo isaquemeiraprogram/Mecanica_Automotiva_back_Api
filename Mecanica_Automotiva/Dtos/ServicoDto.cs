@@ -8,8 +8,7 @@ namespace Mecanica_Automotiva.Dtos
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public double Valor { get; set; }
-        public TimeOnly Duracao { get; set; }
-        public Guid AgendarId { get; set; }
+        public TimeSpan Duracao { get; set; }
         public List<Guid> ProdutosId { get; set; } = new List<Guid>();
     }
 }

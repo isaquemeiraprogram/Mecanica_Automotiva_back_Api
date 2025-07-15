@@ -35,7 +35,7 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Servico>> AddAsync(ServicoDto dto)
+        public async Task<ActionResult<Servico>> AddAsync([FromBody] ServicoDto dto)
         {
             var marca = await _service.AddAsync(dto);
             if (marca == null) return NotFound("Lista dePecas do servico nula");
@@ -44,7 +44,7 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<(Servico, CodigoResult)>> UpdateAsync(ServicoDto dto, Guid id)
+        public async Task<ActionResult<(Servico, CodigoResult)>> UpdateAsync([FromBody] ServicoDto dto, Guid id)
         {
             var (marca,codigo) = await _service.UpdateAsync(dto, id);
 

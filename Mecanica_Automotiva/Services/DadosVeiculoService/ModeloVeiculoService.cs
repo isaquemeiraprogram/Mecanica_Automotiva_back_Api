@@ -32,7 +32,9 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
 
         public async Task<ModeloVeiculo> GetByIdAsync(Guid id)
         {
-            var modelo = await _context.ModeloVeiculos.FindAsync(id);
+            var modelo = await _context.ModeloVeiculos
+                .Include(mod=> mod.MarcaVeiculo)
+                .FirstOrDefaultAsync(mod => mod.Id == id);
 
             if (modelo == null) return null;
 

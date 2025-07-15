@@ -22,6 +22,21 @@ namespace Mecanica_Automotiva.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("AgendaServico", b =>
+                {
+                    b.Property<Guid>("AgendarId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("ServicosId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("AgendarId", "ServicosId");
+
+                    b.HasIndex("ServicosId");
+
+                    b.ToTable("AgendaServico");
+                });
+
             modelBuilder.Entity("Mecanica_Automotiva.Models.Agenda", b =>
                 {
                     b.Property<Guid>("Id")
@@ -263,9 +278,6 @@ namespace Mecanica_Automotiva.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("AgendarId")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -281,8 +293,6 @@ namespace Mecanica_Automotiva.Migrations
                         .HasColumnType("double");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AgendarId");
 
                     b.ToTable("Servicos");
                 });
@@ -328,6 +338,21 @@ namespace Mecanica_Automotiva.Migrations
                     b.HasIndex("ServicoId");
 
                     b.ToTable("ProdutoServico");
+                });
+
+            modelBuilder.Entity("AgendaServico", b =>
+                {
+                    b.HasOne("Mecanica_Automotiva.Models.Agenda", null)
+                        .WithMany()
+                        .HasForeignKey("AgendarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mecanica_Automotiva.Models.Servico", null)
+                        .WithMany()
+                        .HasForeignKey("ServicosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Mecanica_Automotiva.Models.Agenda", b =>
@@ -416,17 +441,6 @@ namespace Mecanica_Automotiva.Migrations
                     b.Navigation("CategoriaProduto");
                 });
 
-            modelBuilder.Entity("Mecanica_Automotiva.Models.Servico", b =>
-                {
-                    b.HasOne("Mecanica_Automotiva.Models.Agenda", "Agendar")
-                        .WithMany("Servicos")
-                        .HasForeignKey("AgendarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Agendar");
-                });
-
             modelBuilder.Entity("Mecanica_Automotiva.Models.Veiculo", b =>
                 {
                     b.HasOne("Mecanica_Automotiva.Models.DadosVeiculo.MarcaVeiculo", "Marca")
@@ -459,11 +473,6 @@ namespace Mecanica_Automotiva.Migrations
                         .HasForeignKey("ServicoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Mecanica_Automotiva.Models.Agenda", b =>
-                {
-                    b.Navigation("Servicos");
                 });
 
             modelBuilder.Entity("Mecanica_Automotiva.Models.DadosCliente.Cliente", b =>

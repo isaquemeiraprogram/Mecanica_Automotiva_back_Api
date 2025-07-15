@@ -35,7 +35,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
             return Ok(subCategoria);
         }
 
-        [HttpGet("/Categoria/{id}")]//o nome da rota tem que ser igual no parametro
+        [HttpGet("/FiltroPorCategoria/{id}")]//o nome da rota tem que ser igual no parametro
 
         //entrada: categoriaId
         //saida : lista de subcategorias que pertencem a categoriaId
@@ -48,7 +48,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         }
 
         [HttpPost]
-        public async Task<ActionResult<SubCategoriaProduto>> AddAsync(SubCategoriaProdutoDto dto)
+        public async Task<ActionResult<SubCategoriaProduto>> AddAsync([FromBody] SubCategoriaProdutoDto dto)
         {
             var subCategoriaPeca = await _Service.AddAsync(dto);
             if (subCategoriaPeca == null) return NotFound("Categoria da subcategoria não encontrada");
@@ -56,7 +56,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<SubCategoriaProduto>> UpdateAsync(SubCategoriaProdutoDto dto, Guid id)
+        public async Task<ActionResult<SubCategoriaProduto>> UpdateAsync([FromBody] SubCategoriaProdutoDto dto, Guid id)
         {
             //cria duas var pra dividir   subicategoria e codigo de erro
             var (subCategoria, codigo) = await _Service.UpdateAsync(dto, id);

@@ -25,6 +25,7 @@ namespace Mecanica_Automotiva.Services
         {
             var ProdutoList = await _context.Produtos
                 .Include(p => p.SubCategoriaProduto)
+                .ThenInclude(subcatp=> subcatp.CategoriaProduto)
                 .Include(p => p.MarcaProduto)
                 .Include(p => p.MarcasVeiculos)
                 .Include(p => p.ModelosVeiculos)
@@ -37,6 +38,7 @@ namespace Mecanica_Automotiva.Services
         {
             var Produto = await _context.Produtos
                 .Include(p => p.SubCategoriaProduto)
+                .ThenInclude(subcatp => subcatp.CategoriaProduto)
                 .Include(p => p.MarcaProduto)
                 .Include(p => p.MarcasVeiculos)
                 .Include(p => p.ModelosVeiculos)
@@ -49,7 +51,9 @@ namespace Mecanica_Automotiva.Services
 
         public async Task<(Produto, CodigoResult)> AddAsync(ProdutoDto dto)
         {
-            var subCategoriaProduto = await _context.SubCategoriasProdutos.FindAsync(dto.SubCategoriaProdutoId);
+            var subCategoriaProduto = await _context.SubCategoriasProdutos
+                .Include(subcat => subcat.CategoriaProduto)
+                .FirstOrDefaultAsync(subcat => dto.SubCategoriaProdutoId == subcat.Id);
             if (subCategoriaProduto == null) return (null, CodigoResult.SubCategoriaNaoEncontrada);
 
             var marcaProduto = await _context.MarcaProdutos.FindAsync(dto.MarcaProdutoId);
@@ -66,7 +70,7 @@ namespace Mecanica_Automotiva.Services
             var Produto = _mapper.Map<Produto>(dto);
             Produto.SubCategoriaProduto = subCategoriaProduto;
             Produto.MarcaProduto = marcaProduto;
-            Produto.MarcasVeiculos = modeloVeiculoList.Select(modv=> modv.MarcaVeiculo).ToList();
+            Produto.MarcasVeiculos = modeloVeiculoList.Select(modv => modv.MarcaVeiculo).ToList();
             Produto.ModelosVeiculos = modeloVeiculoList;
 
             await _context.Produtos.AddAsync(Produto);
@@ -80,7 +84,10 @@ namespace Mecanica_Automotiva.Services
             var Produto = await _context.Produtos.FindAsync(id);
             if (Produto == null) return (null, CodigoResult.ProdutoNaoEncontrado);
 
-            var subCategoriaProduto = await _context.SubCategoriasProdutos.FindAsync(dto.SubCategoriaProdutoId);
+            var subCategoriaProduto = await _context.SubCategoriasProdutos
+                .Include(subcat => subcat.CategoriaProduto)
+                .FirstOrDefaultAsync(subcat => dto.SubCategoriaProdutoId == subcat.Id);
+
             if (subCategoriaProduto == null) return (null, CodigoResult.SubCategoriaNaoEncontrada);
 
             var marcaProduto = await _context.MarcaProdutos.FindAsync(dto.MarcaProdutoId);
@@ -90,7 +97,7 @@ namespace Mecanica_Automotiva.Services
                 .Include(modv => modv.MarcaVeiculo)
                 .Where(modv => dto.ModelosVeiculosIds
                 .Contains(modv.Id)).ToListAsync();
-            
+
             //any verifica se tem item na lista !any se nao tiver
             if (!modeloVeiculoList.Any()) return (null, CodigoResult.ModeloNaoEncontrado);
 

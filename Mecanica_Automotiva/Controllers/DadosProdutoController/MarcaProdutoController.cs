@@ -35,14 +35,14 @@ namespace Mecanica_Automotiva.Controllers.DadosProdutoController
         }
 
         [HttpPost]
-        public async Task<ActionResult<MarcaProduto>> AddAsync(MarcaProdutoDto dto)
+        public async Task<ActionResult<MarcaProduto>> AddAsync([FromBody] MarcaProdutoDto dto)
         {
             var marca = await _service.AddAsync(dto);
             return Ok(marca);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<MarcaProduto>> UpdateAsync(MarcaProdutoDto dto, Guid id)
+        public async Task<ActionResult<MarcaProduto>> UpdateAsync([FromBody] MarcaProdutoDto dto, Guid id)
         {
             var marca = await _service.UpdateAsync(dto, id);
             if (marca == null) return NotFound("A marca do produto nao foi encontrada");

@@ -32,7 +32,9 @@ namespace Mecanica_Automotiva.Services.DadosPecaService
 
         public async Task<SubCategoriaProduto> GetByIdAsync(Guid id)
         {
-            var subCategoria = await _context.SubCategoriasProdutos.FindAsync(id);
+            var subCategoria = await _context.SubCategoriasProdutos
+                .Include(subcategoria => subcategoria.CategoriaProduto)
+                .FirstOrDefaultAsync(subcat => subcat.Id == id);
             if (subCategoria == null) return null;
 
             return subCategoria;

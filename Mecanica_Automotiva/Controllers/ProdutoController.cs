@@ -36,7 +36,7 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<(Produto, CodigoResult)>> AddAsync(ProdutoDto dto)
+        public async Task<ActionResult<(Produto, CodigoResult)>> AddAsync([FromBody] ProdutoDto dto)
         {
             var (produto,codigo) = await _service.AddAsync(dto);
 
@@ -56,7 +56,7 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<(Produto, CodigoResult)>> UpdateAsync(ProdutoDto dto, Guid id)
+        public async Task<ActionResult<(Produto, CodigoResult)>> UpdateAsync([FromBody] ProdutoDto dto, Guid id)
         {
             var (produto, codigo) = await _service.UpdateAsync(dto, id);
 

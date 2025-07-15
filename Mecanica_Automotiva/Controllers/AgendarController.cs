@@ -34,7 +34,7 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<(Agenda, CodigoResult)>> AddAsync(AgendarDto dto)
+        public async Task<ActionResult<(Agenda, CodigoResult)>> AddAsync([FromBody] AgendarDto dto)
         {
             var (agendamento,codigo) = await _service.AddAsync(dto);
 
@@ -52,7 +52,7 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<(Agenda, CodigoResult)>> UpdateAsync(AgendarDto dto, Guid id)
+        public async Task<ActionResult<(Agenda, CodigoResult)>> UpdateAsync([FromBody] AgendarDto dto, Guid id)
         {
             var (agendamento,codigo) = await _service.UpdateAsync(dto, id);
 

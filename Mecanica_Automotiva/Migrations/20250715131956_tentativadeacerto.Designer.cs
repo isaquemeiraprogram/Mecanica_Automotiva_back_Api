@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mecanica_Automotiva.Migrations
 {
     [DbContext(typeof(DataBase))]
-    [Migration("20250714134533_tireicategoriaveiculodeagendaservice")]
-    partial class tireicategoriaveiculodeagendaservice
+    [Migration("20250715131956_tentativadeacerto")]
+    partial class tentativadeacerto
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,7 +44,7 @@ namespace Mecanica_Automotiva.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<TimeOnly>("TempoServiçoTotal")
+                    b.Property<TimeSpan>("TempoServiçoTotal")
                         .HasColumnType("time(6)");
 
                     b.Property<double>("ValorTotal")
@@ -273,7 +273,7 @@ namespace Mecanica_Automotiva.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<TimeOnly>("Duracao")
+                    b.Property<TimeSpan>("Duracao")
                         .HasColumnType("time(6)");
 
                     b.Property<string>("Nome")

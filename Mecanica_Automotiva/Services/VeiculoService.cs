@@ -22,8 +22,10 @@ namespace Mecanica_Automotiva.Services
 
         public async Task<List<Veiculo>> GetAllAsync()
         {
-            var veiculoList = await _context.Veiculos.Include(v => v.Modelo)
-                                                     .ToListAsync();
+            var veiculoList = await _context.Veiculos
+                .Include(v => v.Marca)
+                .Include(v => v.Modelo)
+                .ToListAsync();
             //implantar api pra pegar veiculo pela placa
             return veiculoList;
         }
@@ -63,13 +65,14 @@ namespace Mecanica_Automotiva.Services
             var veiculo = await _context.Veiculos.FindAsync(id);
             if (veiculo == null) return (null, CodigoResult.VeiculoNaoEncontrado);
 
-            var modeloVeiculo = await _context.ModeloVeiculos.FindAsync(dto.ModeloId);
+            var modeloVeiculo = await _context.ModeloVeiculos
+                .Include(modv => modv.MarcaVeiculo)
+                .FirstOrDefaultAsync(modv => dto.ModeloId == modv.Id);
             if (modeloVeiculo == null) return (null, CodigoResult.ModeloNaoEncontrado);
 
-            var marca = await _context.MarcaVeiculos.FindAsync(modeloVeiculo.MarcaVeiculo.Id);
 
             veiculo = _mapper.Map(dto, veiculo);
-            veiculo.Marca = marca;
+            veiculo.Marca = modeloVeiculo.MarcaVeiculo;
             veiculo.Modelo = modeloVeiculo;
 
             await _context.SaveChangesAsync();
