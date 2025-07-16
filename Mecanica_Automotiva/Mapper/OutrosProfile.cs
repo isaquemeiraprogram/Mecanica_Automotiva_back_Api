@@ -30,7 +30,7 @@ namespace Mecanica_Automotiva.Mapper
                 .ForMember(dest => dest.Produtos, opt => opt.Ignore());
 
             CreateMap<Servico, ServicoDto>()
-                .ForMember(dest=> dest.ProdutosId, opt=> opt.Ignore());
+                .ForMember(dest => dest.ProdutosId, opt => opt.Ignore());
             
             CreateMap<ServicoDto, Servico>()
                 .ForMember(dest=> dest.Id, opt=> opt.Ignore())

@@ -1,5 +1,6 @@
 ﻿using Mecanica_Automotiva.Dtos.DtosDadosPescas;
 using Mecanica_Automotiva.Interface.IDadosPeca;
+using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models.Produtos;
 using Mecanica_Automotiva.Services.DadosPecaService;
 using Mecanica_Automotiva.Shared;
@@ -56,7 +57,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<SubCategoriaProduto>> UpdateAsync([FromBody] SubCategoriaProdutoDto dto, Guid id)
+        public async Task<ActionResult<(SubCategoriaProduto, CodigoResult)>> UpdateAsync([FromBody] SubCategoriaProdutoDto dto, Guid id)
         {
             //cria duas var pra dividir   subicategoria e codigo de erro
             var (subCategoria, codigo) = await _Service.UpdateAsync(dto, id);
@@ -71,7 +72,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> DeleteAsync(Guid id)
+        public async Task<ActionResult<(bool, CodigoResult)>> DeleteAsync(Guid id)
         {
             var (subCategoria, codigo) = await _Service.DeleteAsync(id);
 

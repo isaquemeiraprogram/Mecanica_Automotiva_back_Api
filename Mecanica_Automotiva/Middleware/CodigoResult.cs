@@ -1,4 +1,4 @@
-﻿namespace Mecanica_Automotiva.Shared
+﻿namespace Mecanica_Automotiva.Middleware
 {
     public enum CodigoResult
     {

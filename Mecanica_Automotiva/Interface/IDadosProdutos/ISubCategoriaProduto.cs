@@ -1,6 +1,6 @@
 ﻿using Mecanica_Automotiva.Dtos.DtosDadosPescas;
+using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models.Produtos;
-using Mecanica_Automotiva.Shared;
 
 namespace Mecanica_Automotiva.Interface.IDadosPeca
 {

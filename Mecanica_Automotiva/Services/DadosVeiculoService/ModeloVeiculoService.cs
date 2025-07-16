@@ -2,8 +2,8 @@
 using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtosDadosVeiculo;
 using Mecanica_Automotiva.Interface.IDadosVeiculo;
+using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models.DadosVeiculo;
-using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services.DadosVeiculoService

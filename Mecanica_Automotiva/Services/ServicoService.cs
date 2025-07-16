@@ -2,8 +2,8 @@
 using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos;
 using Mecanica_Automotiva.Interface;
+using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models;
-using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services
@@ -22,11 +22,12 @@ namespace Mecanica_Automotiva.Services
         //recebe um servico dto e sai um servico com a lista de Produtos necessarias para oservico
         public async Task<Servico> AddAsync(ServicoDto dto)
         {
-            if (dto.ProdutosId == null) return null;
 
             var listProdutos = await _context.Produtos
                 .Where(lp => dto.ProdutosId
                 .Contains(lp.Id)).ToListAsync();
+
+            if (!listProdutos.Any()) return null;
 
             var servico = _mapper.Map<Servico>(dto);
             servico.Produtos = listProdutos;

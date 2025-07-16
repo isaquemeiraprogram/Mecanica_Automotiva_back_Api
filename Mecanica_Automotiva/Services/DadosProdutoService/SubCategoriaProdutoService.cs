@@ -2,8 +2,8 @@
 using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtosDadosPescas;
 using Mecanica_Automotiva.Interface.IDadosPeca;//peca == produto
+using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models.Produtos;
-using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 

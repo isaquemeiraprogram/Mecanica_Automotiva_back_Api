@@ -1,6 +1,6 @@
 ﻿using Mecanica_Automotiva.Dtos;
+using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models;
-using Mecanica_Automotiva.Shared;
 
 namespace Mecanica_Automotiva.Interface
 {

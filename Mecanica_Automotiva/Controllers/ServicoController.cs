@@ -1,7 +1,7 @@
 ﻿using Mecanica_Automotiva.Dtos;
 using Mecanica_Automotiva.Interface;
+using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models;
-using Mecanica_Automotiva.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

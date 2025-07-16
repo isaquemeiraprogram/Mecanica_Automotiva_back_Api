@@ -3,8 +3,8 @@ using AutoMapper;
 using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos;
 using Mecanica_Automotiva.Interface;
+using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models;
-using Mecanica_Automotiva.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services
@@ -23,8 +23,12 @@ namespace Mecanica_Automotiva.Services
         {
             var agendamentoList = await _context.Agendamentos
                  .Include(a => a.Servicos)
+                    .ThenInclude(s => s.Produtos)
                  .Include(a => a.Cliente)
+                    .ThenInclude(c => c.Endereco)
                  .Include(a => a.Veiculo)
+                    .ThenInclude(v => v.Modelo)
+                    .ThenInclude(v => v.MarcaVeiculo)
                  .ToListAsync();
 
             return agendamentoList;
@@ -81,8 +85,10 @@ namespace Mecanica_Automotiva.Services
         }
         public async Task<(Agenda, CodigoResult)> UpdateAsync(AgendarDto dto, Guid id)
         {
-            var agendamento = await _context.Agendamentos.FindAsync(id);
-            if (agendamento == null) return (null,CodigoResult.AgendamentoNaoEncontrado);
+            var agendamento = await _context.Agendamentos
+                .Include(a => a.Servicos) // use include na hora de acahar quando for atualizar classes que tenham colecoes
+                .FirstOrDefaultAsync(a => a.Id == id);
+            if (agendamento == null) return (null, CodigoResult.AgendamentoNaoEncontrado);
 
             var servicoList = await _context.Servicos
                .Where(s => dto.ServicosId
@@ -96,25 +102,28 @@ namespace Mecanica_Automotiva.Services
             var veiculo = await _context.Veiculos.FindAsync(dto.VeiculoId);
             if (veiculo == null) return (null, CodigoResult.VeiculoNaoEncontrado);
 
-
-            var TempoServiçoTotal = TimeSpan.Zero;
+            var tempoServiçoTotal = TimeSpan.Zero;
             foreach (var item in servicoList)
             {
-                TempoServiçoTotal += item.Duracao;
+                tempoServiçoTotal += item.Duracao;
             }
 
-            var ValorTotal = 0.0;
+            var valorTotal = 0.0;
             foreach (var item in servicoList)
             {
-                ValorTotal = item.Valor;
+                valorTotal = item.Valor;
             }
+
+            //pra poder fazer update da lista de uma classe limpa ela pq senao ele vai adicionar os mesmos itens novamente deixando duplicado
+            agendamento.Servicos.Clear();
+            //_context.Entry(agendamento).Collection(a => a.Servicos).Load();
 
             agendamento = _mapper.Map(dto, agendamento);
             agendamento.Servicos = servicoList;
             agendamento.Cliente = cliente;
             agendamento.Veiculo = veiculo;
-            agendamento.TempoServiçoTotal = TempoServiçoTotal;
-            agendamento.ValorTotal = ValorTotal;
+            agendamento.TempoServiçoTotal = tempoServiçoTotal;
+            agendamento.ValorTotal = valorTotal;
 
             await _context.SaveChangesAsync();
             return (agendamento, CodigoResult.Sucesso);

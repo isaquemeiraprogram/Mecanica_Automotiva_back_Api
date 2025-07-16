@@ -1,7 +1,7 @@
 ﻿using Mecanica_Automotiva.Dtos;
 using Mecanica_Automotiva.Interface;
+using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models;
-using Mecanica_Automotiva.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +15,7 @@ namespace Mecanica_Automotiva.Controllers
 
         public AgendarController(IAgenda service)
         {
-            _service = service;
+            this._service = service;
         }
 
         [HttpGet]
@@ -34,7 +34,7 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<(Agenda, CodigoResult)>> AddAsync([FromBody] AgendarDto dto)
+        public async Task<ActionResult<Agenda>> AddAsync([FromBody] AgendarDto dto)
         {
             var (agendamento,codigo) = await _service.AddAsync(dto);
 
@@ -52,7 +52,7 @@ namespace Mecanica_Automotiva.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<(Agenda, CodigoResult)>> UpdateAsync([FromBody] AgendarDto dto, Guid id)
+        public async Task<ActionResult<Agenda>> UpdateAsync([FromBody] AgendarDto dto, Guid id)
         {
             var (agendamento,codigo) = await _service.UpdateAsync(dto, id);
 
