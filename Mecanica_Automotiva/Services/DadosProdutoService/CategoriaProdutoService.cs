@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtosDadosPescas;
+using Mecanica_Automotiva.Exception;
 using Mecanica_Automotiva.Interface.IDadosPeca; //peca == produto
 using Mecanica_Automotiva.Models.Produtos;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,7 @@ namespace Mecanica_Automotiva.Services.DadosPecaService
         public async Task<CategoriaProduto> GetByIdAsync(Guid id)
         {
             var categoria = await _context.CategoriasProdutos.FindAsync(id);
-            if (categoria == null) return null;
+            if (categoria == null) throw new NotFoundException("Categoria Não Encontrada");
 
             return categoria;
         }
@@ -46,7 +47,7 @@ namespace Mecanica_Automotiva.Services.DadosPecaService
         public async Task<CategoriaProduto> UpdateAsync(CategoriaProdutoDto dto, Guid id)
         {
             var categoria = await _context.CategoriasProdutos.FindAsync(id);
-            if (categoria == null) return null;
+            if (categoria == null) throw new NotFoundException("Categoria Não Encontrada");
 
            categoria = _mapper.Map(dto, categoria);
 
@@ -56,7 +57,7 @@ namespace Mecanica_Automotiva.Services.DadosPecaService
         public async Task<bool> DeleteAsync(Guid id)
         {
             var categoria = await _context.CategoriasProdutos.FindAsync(id);
-            if (categoria == null) return false;
+            if (categoria == null) throw new NotFoundException("Categoria Não Encontrada");
 
             _context.CategoriasProdutos.Remove(categoria);
 

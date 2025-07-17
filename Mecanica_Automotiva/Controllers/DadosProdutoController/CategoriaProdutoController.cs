@@ -25,6 +25,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         public async Task<ActionResult<List<CategoriaProduto>>> GetAllAsync()
         {
             var categoriList = await _service.GetAllAsync();
+
             return Ok(categoriList);
         }
 
@@ -32,7 +33,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         public async Task<ActionResult<CategoriaProduto>> GetByIdAsync(Guid id)
         {
             var categoria = await _service.GetByIdAsync(id);
-            if (categoria == null) return NotFound("Categoria não encontrada");
+
             return Ok(categoria);
         }
 
@@ -40,6 +41,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         public async Task<ActionResult<CategoriaProduto>> AddAsync([FromBody] CategoriaProdutoDto dto)
         {
             var categoria = await _service.AddAsync(dto);
+
             return Ok(categoria);
         }
 
@@ -47,7 +49,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         public async Task<ActionResult<CategoriaProduto>> UpdateAsync([FromBody] CategoriaProdutoDto dto, Guid id)
         {
             var categoria = await _service.UpdateAsync(dto,id);
-            if (categoria == null)  return NotFound("Categoria não encontrada");
+
             return Ok(categoria);
         }
 
@@ -55,7 +57,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
             var categoria = await _service.DeleteAsync(id);
-            if (categoria ==  false) return NotFound("Categoria não encontrada");
+
             return Ok(categoria);
         }
 

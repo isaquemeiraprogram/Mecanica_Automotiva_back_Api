@@ -22,7 +22,6 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
         public async Task<ActionResult<Endereco>> GetByIdAsync(Guid id)
         {
             var endereco = await _service.GetByIdAsync(id);
-            if (endereco == null) return NotFound("Endereco nao encontrado");
 
             return Ok(endereco);
         }
@@ -31,7 +30,6 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
         public async Task<ActionResult<Endereco>> AddAsync([FromBody] EnderecoDto dto)
         {
             var endereco = await _service.AddAsync(dto);
-            if (endereco == null) return NotFound("Cliente do endereco não encontrado");
 
             return Ok(endereco);
         }
@@ -40,7 +38,6 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
         public async Task<ActionResult<Endereco>> UpdateAsync([FromBody] EnderecoDto dto,Guid id)
         {
             var endereco = await _service.UpdateAsync(dto,id);
-            if (endereco == null) return NotFound("Endereço não encontrado");
 
             return Ok(endereco);
         }
@@ -49,7 +46,7 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
         public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
             var endereco = await _service.DeleteAsync(id);
-            if (endereco == false) return NotFound("Endereço não encontrado");
+
             return Ok(endereco);
         }
     }

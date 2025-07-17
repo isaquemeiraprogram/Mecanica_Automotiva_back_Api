@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos;
+using Mecanica_Automotiva.Exception;
 using Mecanica_Automotiva.Interface;
-using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,12 +22,11 @@ namespace Mecanica_Automotiva.Services
         //recebe um servico dto e sai um servico com a lista de Produtos necessarias para oservico
         public async Task<Servico> AddAsync(ServicoDto dto)
         {
-
             var listProdutos = await _context.Produtos
                 .Where(lp => dto.ProdutosId
                 .Contains(lp.Id)).ToListAsync();
 
-            if (!listProdutos.Any()) return null;
+            if (!listProdutos.Any()) throw new NotFoundException("Serviço Não Encontrado");
 
             var servico = _mapper.Map<Servico>(dto);
             servico.Produtos = listProdutos;
@@ -53,12 +52,11 @@ namespace Mecanica_Automotiva.Services
         {
             var servicoList = await _context.Servicos
                 .Include(s => s.Produtos)
-                .ThenInclude(sp => sp.MarcaProduto)
+                    .ThenInclude(sp => sp.MarcaProduto)
                 //este include faz voltar de marca produto pra  produto
                 .Include(s => s.Produtos)
-                
-
                 .ToListAsync();
+
             return servicoList;
         }
 
@@ -67,25 +65,25 @@ namespace Mecanica_Automotiva.Services
             var servico = await _context.Servicos
                 .Include(s => s.Produtos)
                 //inclui um atributo de include tipo inclui a marca do produto 
-                .ThenInclude(sp1 => sp1.MarcaProduto)
+                    .ThenInclude(sp1 => sp1.MarcaProduto)
                 .FirstOrDefaultAsync(s => s.Id == id);
-            if (servico == null) return null;
+            if (servico == null) throw new NotFoundException("Serviço Não Encontrado");
 
             return servico;
         }
 
-        public async Task<(Servico, CodigoResult)> UpdateAsync(ServicoDto dto, Guid id)
+        public async Task<Servico> UpdateAsync(ServicoDto dto, Guid id)
         {
             var servico = await _context.Servicos.FindAsync(id);
-            if (servico == null) return (null, CodigoResult.ServicoNaoEncontrado);
+            if (servico == null)  throw new NotFoundException("Serviço Não Encontrado");
 
             var ProdutoList = await _context.Produtos.Where(pl => dto.ProdutosId.Contains(pl.Id)).ToListAsync();
-            if (ProdutoList == null) return (null, CodigoResult.ProdutoNaoEncontrado);
+            if (ProdutoList == null) throw new NotFoundException(" Produtos de Serviço Não Encontrado");
 
             servico = _mapper.Map(dto, servico);
             servico.Produtos = ProdutoList;
 
-            return (servico, CodigoResult.Sucesso);
+            return servico;
         }
     }
 }

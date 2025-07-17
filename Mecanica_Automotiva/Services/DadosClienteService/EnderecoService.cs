@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtoCliente;
+using Mecanica_Automotiva.Exception;
 using Mecanica_Automotiva.Interface.IDadosCliente;
 using Mecanica_Automotiva.Models.DadosCliente;
 using Microsoft.EntityFrameworkCore;
@@ -28,15 +29,14 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
                           .Include(e => e.Cliente)
                           .FirstOrDefaultAsync(e=> e.Id == id);
 
-            if (endereco == null) return null;
+            if (endereco == null) throw new NotFoundException("Endererco Não Encontrado");
 
-            
             return endereco;
         }
         public async Task<Endereco> AddAsync(EnderecoDto dto)
         {
             var cliente = await _context.Clientes.FindAsync(dto.ClienteId);
-            if (cliente == null) return null;
+            if (cliente == null) throw new NotFoundException("Endererco Não Encontrado");
 
             var endereco = _mapper.Map<Endereco>(dto);
             endereco.Cliente = cliente;
@@ -49,7 +49,7 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
         public async Task<Endereco> UpdateAsync(EnderecoDto dto, Guid id)
         {
             var endereco = await _context.Enderecos.FindAsync(id);
-            if (endereco == null) return null;
+            if (endereco == null) throw new NotFoundException("Endererco Não Encontrado");
 
             endereco = _mapper.Map(dto,endereco);
             //nao tem pq botar o cliente na atualizacao mas se tirar da dto da ruim arruma mais tarde
@@ -60,7 +60,7 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
         public async Task<bool> DeleteAsync(Guid id)
         {
             Endereco endereco = await _context.Enderecos.FindAsync(id);
-            if (endereco == null) return false;
+            if (endereco == null) throw new NotFoundException("Endererco Não Encontrado");
 
             _context.Enderecos.Remove(endereco);
 

@@ -2,8 +2,8 @@
 using AutoMapper;
 using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos;
+using Mecanica_Automotiva.Exception;
 using Mecanica_Automotiva.Interface;
-using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,23 +41,23 @@ namespace Mecanica_Automotiva.Services
                 .Include(a => a.Veiculo)
                 .FirstOrDefaultAsync(a => a.Id == id);
 
-            if (agendamento == null) return null;
+            if (agendamento == null) throw new NotFoundException("Agendamento Não Encontrado");
 
             return agendamento;
         }
-        public async Task<(Agenda, CodigoResult)> AddAsync(AgendarDto dto)
+        public async Task<Agenda> AddAsync(AgendarDto dto)
         {
             var servicoList = await _context.Servicos
                 .Where(s => dto.ServicosId
                 .Contains(s.Id))
                 .ToListAsync();
-            if (!servicoList.Any()) return (null, CodigoResult.ServicoNaoEncontrado);
+            if (!servicoList.Any()) throw new NotFoundException("Serviço Não Encontrado");
 
             var cliente = await _context.Clientes.FindAsync(dto.ClienteId);
-            if (cliente == null) return (null, CodigoResult.ClienteNaoEncontrado);
+            if (cliente == null) throw new NotFoundException("Cliente Não Encontrado");
 
             var veiculo = await _context.Veiculos.FindAsync(dto.VeiculoId);
-            if (veiculo == null) return (null, CodigoResult.VeiculoNaoEncontrado);
+            if (veiculo == null) throw new NotFoundException("Veiculo Não Encontrado");
 
             var TempoServiçoTotal = TimeSpan.Zero;
             foreach (var item in servicoList)
@@ -81,26 +81,26 @@ namespace Mecanica_Automotiva.Services
             await _context.Agendamentos.AddAsync(agendar);
 
             await _context.SaveChangesAsync();
-            return (agendar, CodigoResult.Sucesso);
+            return agendar;
         }
-        public async Task<(Agenda, CodigoResult)> UpdateAsync(AgendarDto dto, Guid id)
+        public async Task<Agenda> UpdateAsync(AgendarDto dto, Guid id)
         {
             var agendamento = await _context.Agendamentos
                 .Include(a => a.Servicos) // use include na hora de acahar quando for atualizar classes que tenham colecoes
                 .FirstOrDefaultAsync(a => a.Id == id);
-            if (agendamento == null) return (null, CodigoResult.AgendamentoNaoEncontrado);
+            if (agendamento == null) throw new NotFoundException("Agendamento Não Encontrado");
 
             var servicoList = await _context.Servicos
                .Where(s => dto.ServicosId
                .Contains(s.Id))
                .ToListAsync();
-            if (!servicoList.Any()) return (null, CodigoResult.ServicoNaoEncontrado);
+            if (!servicoList.Any()) throw new NotFoundException("Serviço Não Encontrado");
 
             var cliente = await _context.Clientes.FindAsync(dto.ClienteId);
-            if (cliente == null) return (null, CodigoResult.ClienteNaoEncontrado);
+            if (cliente == null)  throw new NotFoundException("Cliente Não Encontrado");
 
             var veiculo = await _context.Veiculos.FindAsync(dto.VeiculoId);
-            if (veiculo == null) return (null, CodigoResult.VeiculoNaoEncontrado);
+            if (veiculo == null) throw new NotFoundException("Veículo Não Encontrado");
 
             var tempoServiçoTotal = TimeSpan.Zero;
             foreach (var item in servicoList)
@@ -126,12 +126,12 @@ namespace Mecanica_Automotiva.Services
             agendamento.ValorTotal = valorTotal;
 
             await _context.SaveChangesAsync();
-            return (agendamento, CodigoResult.Sucesso);
+            return agendamento;
         }
         public async Task<bool> DeleteAsync(Guid id)
         {
             var agendamento = await _context.Agendamentos.FindAsync(id);
-            if (agendamento == null) return false;
+            if (agendamento == null) throw new NotFoundException("Agendamento Não Encontrado");
 
             _context.Agendamentos.Remove(agendamento);
 

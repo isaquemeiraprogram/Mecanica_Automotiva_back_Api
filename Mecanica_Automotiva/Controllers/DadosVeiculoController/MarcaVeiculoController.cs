@@ -22,6 +22,7 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
         public async Task<ActionResult<List<MarcaVeiculo>>> GetAllAsync()
         {
             var marcaList = await _service.GetAllAsync();
+
             return Ok(marcaList);
         }
 
@@ -29,7 +30,6 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
         public async Task<ActionResult<MarcaVeiculo>> GetByIdAsync(Guid id)
         {
             var marca = await _service.GetByIdAsync(id);
-            if (marca == null) return NotFound("Marca Não Encontrada"); 
 
             return Ok(marca);
         }
@@ -38,6 +38,7 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
         public async Task<ActionResult<MarcaVeiculo>> AddAsync([FromBody] MarcaVeiculoDto dto)
         {
             var marca = await _service.AddAsync(dto);
+
             return Ok(marca);
         }
 
@@ -45,7 +46,6 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
         public async Task<ActionResult<MarcaVeiculo>> UpdateAsync([FromBody] MarcaVeiculoDto dto, Guid id)
         {
             var marca = await _service.UpdateAsync(dto, id);
-            if (marca == null) return NotFound("Marca Não Encontrada");
 
             return Ok(marca);
         }
@@ -54,7 +54,6 @@ namespace Mecanica_Automotiva.Controllers.DadosVeiculoController
         public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
             var marca = await _service.DeleteAsync(id);
-            if (marca == false) return NotFound("Marca Não Encontrada");
 
             return Ok(marca);
         }

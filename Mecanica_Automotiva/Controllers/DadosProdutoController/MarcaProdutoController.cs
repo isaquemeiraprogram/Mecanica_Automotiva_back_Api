@@ -22,6 +22,7 @@ namespace Mecanica_Automotiva.Controllers.DadosProdutoController
         public async Task<ActionResult<List<MarcaProduto>>> GetAllAsync()
         {
             var marca = await _service.GetAllAsync();
+
             return Ok(marca);
         }
 
@@ -29,7 +30,6 @@ namespace Mecanica_Automotiva.Controllers.DadosProdutoController
         public async Task<ActionResult<MarcaProduto>> GetByIdAsync(Guid id)
         {
             var marca = await _service.GetByIdAsync(id);
-            if (marca == null) return NotFound("A marca do produto nao foi encontrada");
 
             return Ok(marca);
         }
@@ -38,6 +38,7 @@ namespace Mecanica_Automotiva.Controllers.DadosProdutoController
         public async Task<ActionResult<MarcaProduto>> AddAsync([FromBody] MarcaProdutoDto dto)
         {
             var marca = await _service.AddAsync(dto);
+
             return Ok(marca);
         }
 
@@ -45,7 +46,6 @@ namespace Mecanica_Automotiva.Controllers.DadosProdutoController
         public async Task<ActionResult<MarcaProduto>> UpdateAsync([FromBody] MarcaProdutoDto dto, Guid id)
         {
             var marca = await _service.UpdateAsync(dto, id);
-            if (marca == null) return NotFound("A marca do produto nao foi encontrada");
 
             return Ok(marca);
         }
@@ -53,7 +53,6 @@ namespace Mecanica_Automotiva.Controllers.DadosProdutoController
         public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
             var marca = await _service.DeleteAsync(id);
-            if (marca == false) return NotFound("A marca do produto nao foi encontrada");
 
             return Ok(marca);
         }

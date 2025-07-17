@@ -3,7 +3,6 @@ using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos;
 using Mecanica_Automotiva.Exception;
 using Mecanica_Automotiva.Interface;
-using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models;
 using Mecanica_Automotiva.Models.Produtos;
 using Microsoft.EntityFrameworkCore;
@@ -50,7 +49,7 @@ namespace Mecanica_Automotiva.Services
             return Produto;
         }
 
-        public async Task<(Produto, CodigoResult)> AddAsync(ProdutoDto dto)
+        public async Task<Produto> AddAsync(ProdutoDto dto)
         {
             var subCategoriaProduto = await _context.SubCategoriasProdutos
                 .Include(subcat => subcat.CategoriaProduto)
@@ -77,10 +76,10 @@ namespace Mecanica_Automotiva.Services
             await _context.Produtos.AddAsync(Produto);
 
             await _context.SaveChangesAsync();
-            return (Produto, CodigoResult.Sucesso);
+            return Produto;
         }
 
-        public async Task<(Produto, CodigoResult)> UpdateAsync(ProdutoDto dto, Guid id)
+        public async Task<Produto> UpdateAsync(ProdutoDto dto, Guid id)
         {
             var Produto = await _context.Produtos.FindAsync(id);
             if (Produto == null)  throw new NotFoundException("Produto não encontrado");
@@ -89,10 +88,10 @@ namespace Mecanica_Automotiva.Services
                 .Include(subcat => subcat.CategoriaProduto)
                 .FirstOrDefaultAsync(subcat => dto.SubCategoriaProdutoId == subcat.Id);
 
-            if (subCategoriaProduto == null) return (null, CodigoResult.SubCategoriaNaoEncontrada);
+            if (subCategoriaProduto == null) throw new NotFoundException("Subcategoria Do Produto Não Encontrada");
 
             var marcaProduto = await _context.MarcaProdutos.FindAsync(dto.MarcaProdutoId);
-            if (marcaProduto == null) return (null, CodigoResult.MarcaProdutoNaoEncontrada);
+            if (marcaProduto == null) throw new NotFoundException("Marca Do Produto Não Encontrada");
 
             var modeloVeiculoList = await _context.ModeloVeiculos
                 .Include(modv => modv.MarcaVeiculo)
@@ -100,8 +99,8 @@ namespace Mecanica_Automotiva.Services
                 .Contains(modv.Id)).ToListAsync();
 
             //any verifica se tem item na lista !any se nao tiver
-            if (!modeloVeiculoList.Any()) return (null, CodigoResult.ModeloNaoEncontrado);
-            
+            if (!modeloVeiculoList.Any())  throw new NotFoundException("Nenhum Modelo De Produto Foi Encontrado Na Lista");
+
             Produto = _mapper.Map(dto, Produto);
             Produto.SubCategoriaProduto = subCategoriaProduto;
             Produto.MarcaProduto = marcaProduto;
@@ -109,13 +108,13 @@ namespace Mecanica_Automotiva.Services
             Produto.ModelosVeiculos = modeloVeiculoList;
 
             await _context.SaveChangesAsync();
-            return (Produto, CodigoResult.Sucesso);
+            return Produto;
         }
 
         public async Task<bool> DeleteAsync(Guid id)
         {
             var Produto = await _context.Produtos.FindAsync(id);
-            if (Produto == null) return false;
+            if (Produto == null) throw new NotFoundException("Produto Não Encontrado");
 
             _context.Produtos.Remove(Produto);
 

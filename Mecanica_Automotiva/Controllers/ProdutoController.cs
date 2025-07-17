@@ -1,6 +1,5 @@
 ﻿using Mecanica_Automotiva.Dtos;
 using Mecanica_Automotiva.Interface;
-using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models;
 using Mecanica_Automotiva.Services;
 using Microsoft.AspNetCore.Http;
@@ -30,49 +29,22 @@ namespace Mecanica_Automotiva.Controllers
         public async Task<ActionResult<Produto>> GetByIdAsync(Guid id)
         {
             var produto = await _service.GetByIdAsync(id);
-            if (produto == null) return NotFound("Produto não encontrada.");
 
             return Ok(produto);
         }
 
         [HttpPost]
-        public async Task<ActionResult<(Produto, CodigoResult)>> AddAsync([FromBody] ProdutoDto dto)
+        public async Task<ActionResult<Produto>> AddAsync([FromBody] ProdutoDto dto)
         {
-            var (produto,codigo) = await _service.AddAsync(dto);
-
-            switch (codigo)
-            {
-                case CodigoResult.SubCategoriaNaoEncontrada:
-                    return NotFound("SubCategoria Do Produto Não Encontrada");
-                case CodigoResult.MarcaProdutoNaoEncontrada:
-                    return NotFound("Marca Do Produto Não Encontrada");
-                case CodigoResult.MarcaVeiculoNaoEncontrada:
-                    return NotFound("Marca Veiculo Do Produto Não Encontrada");
-                case CodigoResult.ModeloNaoEncontrado:
-                    return NotFound("Modelo Veiculo Do Produto Nao Encontrado");
-            }
+            var produto = await _service.AddAsync(dto);
 
             return Ok(produto);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<(Produto, CodigoResult)>> UpdateAsync([FromBody] ProdutoDto dto, Guid id)
+        public async Task<ActionResult<Produto>> UpdateAsync([FromBody] ProdutoDto dto, Guid id)
         {
-            var (produto, codigo) = await _service.UpdateAsync(dto, id);
-
-            switch (codigo)
-            {
-                case CodigoResult.ProdutoNaoEncontrado:
-                    return NotFound("Produto não encontrada.");
-                case CodigoResult.SubCategoriaNaoEncontrada:
-                    return NotFound("Subcategoria da produto não encontrada.");
-                case CodigoResult.MarcaProdutoNaoEncontrada:
-                    return NotFound("Marca Do Produto Não Encontrada");
-                case CodigoResult.MarcaVeiculoNaoEncontrada:
-                    return NotFound("Marca Veiculo Do Produto Não Encontrada");
-                case CodigoResult.ModeloNaoEncontrado:
-                    return NotFound("Modelo Veiculo Do Produto Nao Encontrado");
-            }
+            var produto = await _service.UpdateAsync(dto, id);
 
             return Ok(produto);
         }
@@ -81,7 +53,6 @@ namespace Mecanica_Automotiva.Controllers
         public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
             var produto = await _service.DeleteAsync(id);
-            if (produto == false) return NotFound("Produto não encontrada.");
 
             return Ok(produto);
         }

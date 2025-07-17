@@ -1,9 +1,7 @@
 ﻿using Mecanica_Automotiva.Dtos.DtosDadosPescas;
 using Mecanica_Automotiva.Interface.IDadosPeca;
-using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models.Produtos;
 using Mecanica_Automotiva.Services.DadosPecaService;
-using Mecanica_Automotiva.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +22,7 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         public async Task<ActionResult<List<SubCategoriaProduto>>> GetAllAsync()
         {
             var subcategoriaList = await _Service.GetAllAsync();
+
             return Ok(subcategoriaList);
         }
 
@@ -31,7 +30,6 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         public async Task<ActionResult<SubCategoriaProduto>> GetByIdAsync(Guid id)
         {
             var subCategoria = await _Service.GetByIdAsync(id);
-            if (subCategoria == null) return NotFound("SubCategoria não encontrada");
 
             return Ok(subCategoria);
         }
@@ -43,7 +41,6 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         public async Task<ActionResult<List<SubCategoriaProduto>>> GetFiltroSubcategoriaAsync(Guid id)
         {
             var subcategoriaList = await _Service.GetFiltroSubcategoriaAsync(id);
-            if (subcategoriaList == null) return NotFound("Categoria não encontrada");
 
             return Ok(subcategoriaList);
         }
@@ -52,32 +49,23 @@ namespace Mecanica_Automotiva.Controllers.DadosPecaController
         public async Task<ActionResult<SubCategoriaProduto>> AddAsync([FromBody] SubCategoriaProdutoDto dto)
         {
             var subCategoriaPeca = await _Service.AddAsync(dto);
-            if (subCategoriaPeca == null) return NotFound("Categoria da subcategoria não encontrada");
+
             return Ok(subCategoriaPeca);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<(SubCategoriaProduto, CodigoResult)>> UpdateAsync([FromBody] SubCategoriaProdutoDto dto, Guid id)
+        public async Task<ActionResult<SubCategoriaProduto>> UpdateAsync([FromBody] SubCategoriaProdutoDto dto, Guid id)
         {
             //cria duas var pra dividir   subicategoria e codigo de erro
-            var (subCategoria, codigo) = await _Service.UpdateAsync(dto, id);
-
-            if (codigo == CodigoResult.SubCategoriaNaoEncontrada)
-                return NotFound("SubCategoria não encontrada");
-
-            if (codigo == CodigoResult.CategoriaNaoEncontrada)
-                return NotFound("Categoria da subcategoria não encontrada");
+            var subCategoria = await _Service.UpdateAsync(dto, id);
 
             return Ok(subCategoria);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<(bool, CodigoResult)>> DeleteAsync(Guid id)
+        public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
-            var (subCategoria, codigo) = await _Service.DeleteAsync(id);
-
-            if (codigo == CodigoResult.SubCategoriaNaoEncontrada)
-                return NotFound("SubCategoria não encontrada");
+            var subCategoria = await _Service.DeleteAsync(id);
 
             return Ok(subCategoria);
         }

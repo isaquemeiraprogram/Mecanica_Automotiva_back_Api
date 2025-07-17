@@ -1,6 +1,5 @@
 ﻿using Mecanica_Automotiva.Dtos;
 using Mecanica_Automotiva.Interface;
-using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,24 +28,13 @@ namespace Mecanica_Automotiva.Controllers
         public async Task<ActionResult<Agenda>> GetByIdAsync(Guid id)
         {
             var agendamento = await _service.GetByIdAsync(id);
-            if (agendamento == null) return NotFound("Agendamento não encontrado");
             return agendamento;
         }
 
         [HttpPost]
         public async Task<ActionResult<Agenda>> AddAsync([FromBody] AgendarDto dto)
         {
-            var (agendamento,codigo) = await _service.AddAsync(dto);
-
-            switch (codigo)
-            {
-                case CodigoResult.ServicoNaoEncontrado:
-                    return NotFound("Servico não encontrado");
-                case CodigoResult.ClienteNaoEncontrado:
-                    return NotFound("Cliente nao encontrado");
-                case CodigoResult.VeiculoNaoEncontrado:
-                    return NotFound("Veiculo não encontrado");
-            }
+            var agendamento = await _service.AddAsync(dto);
 
             return Ok(agendamento);
         }
@@ -54,19 +42,8 @@ namespace Mecanica_Automotiva.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<Agenda>> UpdateAsync([FromBody] AgendarDto dto, Guid id)
         {
-            var (agendamento,codigo) = await _service.UpdateAsync(dto, id);
+            var agendamento = await _service.UpdateAsync(dto, id);
 
-            switch (codigo)
-            {
-                case CodigoResult.AgendamentoNaoEncontrado:
-                    return NotFound("Agendamento não encontrado");
-                case CodigoResult.ServicoNaoEncontrado:
-                    return NotFound("Servico não encontrado");
-                case CodigoResult.ClienteNaoEncontrado:
-                    return NotFound("Cliente nao encontrado");
-                case CodigoResult.VeiculoNaoEncontrado:
-                    return NotFound("Veiculo não encontrado");
-            }
             return Ok(agendamento);
         }
 
@@ -74,7 +51,6 @@ namespace Mecanica_Automotiva.Controllers
         public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
             var agendamento = _service.DeleteAsync(id);
-            if (agendamento != null) return NotFound("Agendamento não encontrado");
 
             return Ok(agendamento);
         }

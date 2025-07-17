@@ -1,5 +1,4 @@
 ﻿using Mecanica_Automotiva.Dtos;
-using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models;
 
 namespace Mecanica_Automotiva.Interface
@@ -8,8 +7,8 @@ namespace Mecanica_Automotiva.Interface
     {
         Task<List<Agenda>> GetAllAsync();
         Task<Agenda> GetByIdAsync(Guid id);
-        Task<(Agenda, CodigoResult)> AddAsync(AgendarDto dto);
-        Task<(Agenda, CodigoResult)> UpdateAsync(AgendarDto dto, Guid id);
+        Task<Agenda> AddAsync(AgendarDto dto);
+        Task<Agenda> UpdateAsync(AgendarDto dto, Guid id);
         Task<bool> DeleteAsync(Guid id);
     }
 }

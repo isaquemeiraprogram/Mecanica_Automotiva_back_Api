@@ -2,6 +2,7 @@
 using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DadosProdutosDtos;
 using Mecanica_Automotiva.Dtos.DtosDadosVeiculo;
+using Mecanica_Automotiva.Exception;
 using Mecanica_Automotiva.Interface.IDadosProdutos;
 using Mecanica_Automotiva.Models.DadosPeca;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +33,7 @@ namespace Mecanica_Automotiva.Services.DadosProdutoService
         public async Task<bool> DeleteAsync(Guid id)
         {
             var marca = await _context.MarcaProdutos.FindAsync(id);
-            if (marca == null) return false;
+            if (marca == null) throw new NotFoundException("Marca Do Produto Não Encontrado");
             
             _context.MarcaProdutos.Remove(marca);
 
@@ -43,21 +44,22 @@ namespace Mecanica_Automotiva.Services.DadosProdutoService
         public async Task<List<MarcaProduto>> GetAllAsync()
         {
             var marcaPList = await _context.MarcaProdutos.ToListAsync();
+
             return marcaPList;
         }
 
         public async Task<MarcaProduto> GetByIdAsync(Guid id)
         {
-            var marcap = await _context.MarcaProdutos.FindAsync(id);
-            if (marcap == null) return null;
+            var marcaP = await _context.MarcaProdutos.FindAsync(id);
+            if (marcaP == null) throw new NotFoundException("Marca Do Produto Não Encontrada");
             
-            return marcap;
+            return marcaP;
         }
 
         public async Task<MarcaProduto> UpdateAsync(MarcaProdutoDto dto, Guid id)
         {
             var marcaP = await _context.MarcaProdutos.FindAsync(id);
-            if (marcaP == null) return null;
+            if (marcaP == null) throw new NotFoundException("Marca Do Produto Não Encontrada");
 
             marcaP = _mapper.Map(dto,marcaP);
 

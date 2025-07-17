@@ -32,8 +32,6 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
         {
             //fazer assim deixa mais facil de ler o retorno
             var cliente = await _service.GetByIdAsync(id);
-            if (cliente == null) return NotFound("Cliente não encontrado");
-
             return Ok(cliente);
         }
 
@@ -48,8 +46,6 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
         public async Task<ActionResult<Cliente>> UpdateAsync([FromBody] ClienteDto dto, Guid id)
         {
             var cliente = await _service.UpdateAsync(dto,id);
-            if (cliente == null) return NotFound("Cliente não encontrado");
-
             return Ok(cliente);
         }
 
@@ -57,7 +53,6 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
         public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
             var cliente = await _service.DeleteAsync(id);
-            if (cliente == false) return NotFound();
             return Ok(cliente);
         }
     }

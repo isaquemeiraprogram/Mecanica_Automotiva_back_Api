@@ -1,6 +1,5 @@
 ﻿using Mecanica_Automotiva.Dtos;
 using Mecanica_Automotiva.Interface;
-using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models;
 using Mecanica_Automotiva.Services;
 using Microsoft.AspNetCore.Http;
@@ -30,43 +29,22 @@ namespace Mecanica_Automotiva.Controllers
         public async Task<ActionResult<Veiculo>> GetByIdAsync(Guid id)
         {
             var veiculo = await _service.GetByIdAsync(id);
-            if (veiculo == null) return NotFound("Veículo não encontrado.");
 
             return Ok(veiculo);
         }
 
         [HttpPost]
-        public async Task<ActionResult<(Veiculo, CodigoResult)>> AddAsync([FromBody] VeiculoDto dto)
+        public async Task<ActionResult<Veiculo>> AddAsync([FromBody] VeiculoDto dto)
         {
-            var (veiculo, codigo) = await _service.AddAsync(dto);
+            var veiculo = await _service.AddAsync(dto);
 
-            switch (codigo)
-            {
-                case CodigoResult.MarcaVeiculoNaoEncontrada:
-                    return NotFound("Marca  do veiculo não encontrada.");
-                case CodigoResult.ModeloNaoEncontrado:
-                    return NotFound("Modelo não encontrado.");
-
-            }
             return Ok(veiculo);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<(Veiculo, CodigoResult)>> UpdateAsync(Guid id, [FromBody] VeiculoDto dto)
+        public async Task<ActionResult<Veiculo>> UpdateAsync(Guid id, [FromBody] VeiculoDto dto)
         {
-            var (veiculo, codigo) = await _service.UpdateAsync(id, dto);
-
-            switch (codigo)
-            {
-                case CodigoResult.VeiculoNaoEncontrado:
-                    return NotFound("Veículo não encontrado.");
-
-                case CodigoResult.MarcaVeiculoNaoEncontrada:
-                    return NotFound("Marca do veiculo não encontrada.");
-
-                case CodigoResult.ModeloNaoEncontrado:
-                    return NotFound("Modelo não encontrado.");
-            }
+            var veiculo = await _service.UpdateAsync(id, dto);
 
             return Ok(veiculo);
         }
@@ -75,7 +53,6 @@ namespace Mecanica_Automotiva.Controllers
         public async Task<ActionResult<bool>> DeleteAsync(Guid id)
         {
             var veiculo = await _service.DeleteAsync(id);
-            if (veiculo == false) return NotFound("Veículo não encontrado.");
 
             return Ok(veiculo);
         }
