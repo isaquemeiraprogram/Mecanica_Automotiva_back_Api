@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtosDadosVeiculo;
+using Mecanica_Automotiva.Exception;
 using Mecanica_Automotiva.Interface.IDadosVeiculo;
 using Mecanica_Automotiva.Models.DadosVeiculo;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
         public async Task<MarcaVeiculo> GetByIdAsync(Guid id)
         {
             var marca = await _context.MarcaVeiculos.FindAsync(id);
-            if (marca == null) return null;
+            if (marca == null) throw new NotFoundException("Marca De Veíclo Não Encontrada");
 
             return marca;
         }
@@ -44,7 +45,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
         public async Task<MarcaVeiculo> UpdateAsync(MarcaVeiculoDto dto, Guid id)
         {
             var marca = await _context.MarcaVeiculos.FindAsync(id);
-            if (marca == null) return null;
+            if (marca == null) throw new NotFoundException("Marca De Veíclo Não Encontrada");
 
             marca = _mapper.Map(dto, marca);
 
@@ -55,7 +56,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
         public async Task<bool> DeleteAsync(Guid id)
         {
             var marca = await _context.MarcaVeiculos.FindAsync(id);
-            if (marca == null) return false;
+            if (marca == null) throw new NotFoundException("Marca De Veíclo Não Encontrada");
 
             _context.MarcaVeiculos.Remove(marca);
 

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Mecanica_Automotiva.Context;
 using Mecanica_Automotiva.Dtos.DtosDadosVeiculo;
+using Mecanica_Automotiva.Exception;
 using Mecanica_Automotiva.Interface.IDadosVeiculo;
-using Mecanica_Automotiva.Middleware;
 using Mecanica_Automotiva.Models.DadosVeiculo;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,7 +36,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
                 .Include(mod=> mod.MarcaVeiculo)
                 .FirstOrDefaultAsync(mod => mod.Id == id);
 
-            if (modelo == null) return null;
+            if (modelo == null) throw new NotFoundException("Modelo Do Veíclo Não Encontrado");
 
             return modelo;
         }
@@ -44,7 +44,7 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
         public async Task<ModeloVeiculo> AddAsync(ModeloVeiculoDto dto)
         {
             var marca = await _context.MarcaVeiculos.FindAsync(dto.MarcaId);
-            if (marca == null) return null;
+            if (marca == null) throw new NotFoundException("Marca Do Veíclo Não Encontrado");
 
             var modelo = _mapper.Map<ModeloVeiculo>(dto);
             modelo.MarcaVeiculo = marca;
@@ -55,25 +55,25 @@ namespace Mecanica_Automotiva.Services.DadosVeiculoService
             return modelo;
         }
 
-        public async Task<(ModeloVeiculo,CodigoResult)> UpdateAsync(ModeloVeiculoDto dto, Guid id)
+        public async Task<ModeloVeiculo> UpdateAsync(ModeloVeiculoDto dto, Guid id)
         {
             var modelo = await _context.ModeloVeiculos.FindAsync(id);
-            if (modelo == null) return (null,CodigoResult.ModeloNaoEncontrado);
+            if (modelo == null) throw new NotFoundException("Modelo Do Veíclo Não Encontrado");
 
             var marca = await _context.MarcaVeiculos.FindAsync(dto.MarcaId);
-            if (marca == null) return (null, CodigoResult.MarcaVeiculoNaoEncontrada);
+            if (marca == null) throw new NotFoundException("Marca Do Veíclo Não Encontrada");
 
             modelo = _mapper.Map(dto, modelo);
             modelo.MarcaVeiculo = marca;
 
             await _context.SaveChangesAsync();
-            return (modelo,CodigoResult.Sucesso);
+            return modelo;
         }
 
         public async Task<bool> DeleteAsync(Guid id)
         {
             var modelo = await _context.ModeloVeiculos.FindAsync(id);
-            if (modelo == null) return false;
+            if (modelo == null) throw new NotFoundException("Modelo Do Veíclo Não Encontrado");
 
             _context.ModeloVeiculos.Remove(modelo);
 
