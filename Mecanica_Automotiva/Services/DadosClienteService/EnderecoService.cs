@@ -19,20 +19,6 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             _mapper = mapper;
         }
 
-
-
-        //nao precisa de getAll quando pega cliente ja vem getbyid pode precisar pra descobrir de quem é o endereco
-
-        public async Task<Endereco> GetByIdAsync(Guid id)
-        {
-            var endereco = await _context.Enderecos
-                          .Include(e => e.Cliente)
-                          .FirstOrDefaultAsync(e=> e.Id == id);
-
-            if (endereco == null) throw new NotFoundException("Endererco Não Encontrado");
-
-            return endereco;
-        }
         public async Task<Endereco> AddAsync(EnderecoDto dto)
         {
             var cliente = await _context.Clientes.FindAsync(dto.ClienteId);
