@@ -27,11 +27,11 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
             return Ok(clienteList);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Cliente>> GetByIdAsync(Guid id)
+        [HttpGet("cpf/{cpf}")]
+        public async Task<ActionResult<Cliente>> GetByIdAsync(string cpf)
         {
             //fazer assim deixa mais facil de ler o retorno
-            var cliente = await _service.GetByIdAsync(id);
+            var cliente = await _service.GetByCpfAsync(cpf);
             return Ok(cliente);
         }
 
@@ -42,17 +42,17 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
             return Ok(cliente);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Cliente>> UpdateAsync([FromBody] ClienteDto dto, Guid id)
+        [HttpPut("cpf/{cpf}")]
+        public async Task<ActionResult<Cliente>> UpdateAsync([FromBody] ClienteDto dto, string cpf)
         {
-            var cliente = await _service.UpdateAsync(dto,id);
+            var cliente = await _service.UpdateAsync(dto, cpf);
             return Ok(cliente);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> DeleteAsync(Guid id)
+        [HttpDelete("cpf/{cpf}")]
+        public async Task<ActionResult<bool>> DeleteAsync(string cpf)
         {
-            var cliente = await _service.DeleteAsync(id);
+            var cliente = await _service.DeleteAsync(cpf);
             return Ok(cliente);
         }
     }

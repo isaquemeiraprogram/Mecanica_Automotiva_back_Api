@@ -27,11 +27,11 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
 
             return clienteList;
         }
-        public async Task<Cliente> GetByIdAsync(Guid id)
+        public async Task<Cliente> GetByCpfAsync(string cpf)
         {
             var cliente = await _context.Clientes
                 .Include(c => c.Endereco)
-                .FirstOrDefaultAsync(c => c.Id == id);
+                .FirstOrDefaultAsync(c => c.Cpf == cpf);
 
             if (cliente == null) throw new NotFoundException("Cliente Não Encontrado");
 
@@ -48,9 +48,9 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             await _context.SaveChangesAsync();
             return cliente;
         }
-        public async Task<Cliente> UpdateAsync(ClienteDto dto, Guid id)
+        public async Task<Cliente> UpdateAsync(ClienteDto dto, string cpf)
         {
-            var cliente = await _context.Clientes.FindAsync(id);
+            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Cpf == cpf);
             if (cliente == null) throw new NotFoundException("Cliente Não Encontrado");
 
             cliente = _mapper.Map(dto, cliente);
@@ -58,9 +58,9 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             await _context.SaveChangesAsync();
             return cliente;
         }
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(string cpf)
         {
-            var cliente = await _context.Clientes.FindAsync(id);
+            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Cpf == cpf);
             if (cliente == null) throw new NotFoundException("Cliente Não Encontrado");
 
             _context.Clientes.Remove(cliente);
@@ -68,6 +68,5 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             await _context.SaveChangesAsync();
             return true;
         }
-
     }
 }

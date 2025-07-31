@@ -6,9 +6,9 @@ namespace Mecanica_Automotiva.Interface.IDadosCliente
     public interface ICliente
     {
         Task<List<Cliente>> GetAllAsync();
-        Task<Cliente> GetByIdAsync(Guid id);
+        Task<Cliente> GetByCpfAsync(string cpf);
         Task<Cliente> AddAsync(ClienteDto dto);
-        Task<Cliente> UpdateAsync(ClienteDto dto, Guid id);
-        Task<bool> DeleteAsync(Guid id);
+        Task<Cliente> UpdateAsync(ClienteDto dto, string cpf);
+        Task<bool> DeleteAsync(string cpf);
     }
 }
