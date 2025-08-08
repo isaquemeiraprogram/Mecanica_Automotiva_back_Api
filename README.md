@@ -184,19 +184,21 @@ Descrição: Retorna uma lista de clientes.
 
 </details>
 
-#### 🔹 GET `/api/Cliente/{id}`
+#### 🔹 GET `/api/Cliente/cpf/{cpf}`
 
-Descrição: Retorna um Cliente apartir de um id.
+Descrição: Retorna um Cliente apartir de um cpf.
 
-**Parametro de rota:** id
+**Parametro de rota:** cpf
 
-- **Ex de rota:** <https://localhost:7190/api/Cliente/08ddcbd0-ab70-495d-8ecc-601def1584e4>
+- **Ex de rota:** <https://localhost:7190/api/Cliente/cpf/000.000.000-00>
 
  **Entrada (request):** Sem corpo
 
  **Saída (response):**
 
  <details><summary>Visualizar saída teste</summary>
+
+- cliente sem endereço
 
 ```json
 {
@@ -206,6 +208,27 @@ Descrição: Retorna um Cliente apartir de um id.
     "cpf": "string",
     "endereco": []
   }
+}
+```
+
+- cliente com endereço
+
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "nome": "string",
+  "cpf": "string",
+  "endereco": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "cep": "string",
+      "estado": "string",
+      "cidade": "string",
+      "bairro": "string",
+      "rua": "string",
+      "numero": "string"
+    }
+  ]
 }
 ```
 
@@ -238,23 +261,33 @@ Descrição:Adiciona um Cliente.
 
 ```json
 {
-  "id": "08ddcd71-b582-4bae-87a6-b8ffad550391",
-  "nome": "marcelo",
-  "cpf": "49845154187",
-  "endereco": []
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "nome": "string",
+  "cpf": "string",
+  "endereco": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "cep": "string",
+      "estado": "string",
+      "cidade": "string",
+      "bairro": "string",
+      "rua": "string",
+      "numero": "string"
+    }
+  ]
 }
 ```
 
 </details>
 ```
 
-#### 🔹 PUT `/api/Cliente/{id}`
+#### 🔹 PUT `/api/Cliente/cpf/{cpf}`
 
-Descrição: atualiza um Cliente apartir de um id
+Descrição: atualiza um Cliente apartir de um cpf
 
-**Parametro de rota:** id
+**Parametro de rota:** cpf
 
-- **Ex de rota:** <https://localhost:7190/api/Cliente/3fa85f64-5717-4562-b3fc-2c963f66afa6>
+- **Ex de rota:** <https://localhost:7190/api/Cliente/cpf/000.000.000-00>
 
 - **Entrada (request):**
 
@@ -279,19 +312,29 @@ Descrição: atualiza um Cliente apartir de um id
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "nome": "string",
   "cpf": "string",
-  "endereco": []
+  "endereco": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "cep": "string",
+      "estado": "string",
+      "cidade": "string",
+      "bairro": "string",
+      "rua": "string",
+      "numero": "string"
+    }
+  ]
 }
 ```
 
 </details>
 
-#### 🔹 DELETE `/api/Cliente/{id}`
+#### 🔹 DELETE `/api/Cliente/cpf/{cpf}`
 
-Descrição: Deleta um Cliente apartir de um id
+Descrição: Deleta um Cliente apartir de um cpf
 
-**Parametro de rota:** id
+**Parametro de rota:** cpf
 
-- **Ex de rota:** <https://localhost:7190/api/Cliente/3fa85f64-5717-4562-b3fc-2c963f66afa6>
+- **Ex de rota:** <https://localhost:7190/api/Cliente/cpf/000.000.000-00>
 - **Entrada (request):** Sem corpo
 
 - **Saída (response):**
