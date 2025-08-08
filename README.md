@@ -377,7 +377,8 @@ Descrição:Adiciona um Endereco.
   "bairro": "string",
   "rua": "string",
   "numero": "string",
-  "clienteId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  "complemento": "string",
+  "clienteCpf": "string"
 }
 ```
 
@@ -395,7 +396,8 @@ Descrição:Adiciona um Endereco.
   "cidade": "string",
   "bairro": "string",
   "rua": "string",
-  "numero": "string"
+  "numero": "string",
+  "complemento": "string"
 }
 ```
 
@@ -421,7 +423,8 @@ Descrição: atualiza um Endereco apartir de um id
   "bairro": "string",
   "rua": "string",
   "numero": "string",
-  "clienteId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  "complemento": "string",
+  "clienteCpf": "string"
 }
 ```
 
@@ -439,7 +442,8 @@ Descrição: atualiza um Endereco apartir de um id
   "cidade": "string",
   "bairro": "string",
   "rua": "string",
-  "numero": "string"
+  "numero": "string",
+  "complemento": "string"
 }
 ```
 
