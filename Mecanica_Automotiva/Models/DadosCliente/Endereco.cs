@@ -12,6 +12,7 @@ namespace Mecanica_Automotiva.Models.DadosCliente
         public string Bairro { get; set; }
         public string Rua { get; set; }
         public string Numero { get; set; }
+        public string Complemento { get; set; }
 
         [JsonIgnore]
         public Cliente Cliente { get; set; }

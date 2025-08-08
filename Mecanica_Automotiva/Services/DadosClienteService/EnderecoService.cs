@@ -21,8 +21,8 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
 
         public async Task<Endereco> AddAsync(EnderecoDto dto)
         {
-            var cliente = await _context.Clientes.FindAsync(dto.ClienteId);
-            if (cliente == null) throw new NotFoundException("Endererco Não Encontrado");
+            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => dto.ClienteCpf == c.Cpf);
+            if (cliente == null) throw new NotFoundException("cliente Não Encontrado");
 
             var endereco = _mapper.Map<Endereco>(dto);
             endereco.Cliente = cliente;
@@ -35,9 +35,9 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
         public async Task<Endereco> UpdateAsync(EnderecoDto dto, Guid id)
         {
             var endereco = await _context.Enderecos.FindAsync(id);
-            if (endereco == null) throw new NotFoundException("Endererco Não Encontrado");
+            if (endereco == null) throw new NotFoundException("Endereco Não Encontrado");
 
-            endereco = _mapper.Map(dto,endereco);
+            endereco = _mapper.Map(dto, endereco);
             //nao tem pq botar o cliente na atualizacao mas se tirar da dto da ruim arruma mais tarde
 
             await _context.SaveChangesAsync();

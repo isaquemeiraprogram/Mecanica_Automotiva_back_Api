@@ -10,8 +10,8 @@ namespace Mecanica_Automotiva.Dtos.DtoCliente
         public string Bairro { get; set; }
         public string Rua { get; set; }
         public string Numero { get; set; }
-
-        public Guid ClienteId { get; set; }
+        public string Complemento { get; set; }// apto 502, bloco B	Informações extras (apartamento)
+        public string ClienteCpf { get; set; }
 
     }
 }

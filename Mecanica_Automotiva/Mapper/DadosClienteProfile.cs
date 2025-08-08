@@ -15,7 +15,7 @@ namespace Mecanica_Automotiva.Mapper
                 .ForMember(dest => dest.Agendamentos, opt => opt.Ignore()); 
 
             CreateMap<Endereco, EnderecoDto>()
-                .ForMember(dest => dest.ClienteId, opt => opt.Ignore());
+                .ForMember(dest => dest.ClienteCpf, opt => opt.Ignore());
 
             CreateMap<EnderecoDto, Endereco>()
                 .ForMember(dest => dest.Cliente, opt => opt.Ignore());
