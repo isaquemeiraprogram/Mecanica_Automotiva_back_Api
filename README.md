@@ -175,8 +175,7 @@ Descrição: Retorna uma lista de clientes.
     {
       "id": "08ddcbd0-ab70-495d-8ecc-601def1584e4",
       "nome": "string",
-      "cpf": "string",
-      "endereco": []
+      "cpf": "string"
     }
   ]
 }
@@ -198,37 +197,13 @@ Descrição: Retorna um Cliente apartir de um cpf.
 
  <details><summary>Visualizar saída teste</summary>
 
-- cliente sem endereço
-
 ```json
 {
   {
     "id": "08ddcbd0-ab70-495d-8ecc-601def1584e4",
     "nome": "string",
-    "cpf": "string",
-    "endereco": []
+    "cpf": "string"
   }
-}
-```
-
-- cliente com endereço
-
-```json
-{
-  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "nome": "string",
-  "cpf": "string",
-  "endereco": [
-    {
-      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      "cep": "string",
-      "estado": "string",
-      "cidade": "string",
-      "bairro": "string",
-      "rua": "string",
-      "numero": "string"
-    }
-  ]
 }
 ```
 
@@ -264,17 +239,6 @@ Descrição:Adiciona um Cliente.
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "nome": "string",
   "cpf": "string",
-  "endereco": [
-    {
-      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      "cep": "string",
-      "estado": "string",
-      "cidade": "string",
-      "bairro": "string",
-      "rua": "string",
-      "numero": "string"
-    }
-  ]
 }
 ```
 
@@ -312,17 +276,6 @@ Descrição: atualiza um Cliente apartir de um cpf
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "nome": "string",
   "cpf": "string",
-  "endereco": [
-    {
-      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      "cep": "string",
-      "estado": "string",
-      "cidade": "string",
-      "bairro": "string",
-      "rua": "string",
-      "numero": "string"
-    }
-  ]
 }
 ```
 
@@ -357,6 +310,45 @@ Descrição: Deleta um Cliente apartir de um cpf
 <details><summary><h3>📂Visualizar metodos</h3></summary>
 
 - **Nota:** É necessario haver um `Cliente` cadastrado para poder gerar um `Endereco`.
+
+#### 🔹 GET `/api/Endereco/cpf/{cpf}`
+
+Descrição: Retorna todos os enderecos de um cliente apartir de um cpf.
+
+**Parametro de rota:** cpf
+
+- **Ex de rota:** <https://localhost:7190/api/Endereco/cpf/00000000000>
+
+**Entrada (request):** Sem corpo
+
+**Saída (response):**
+
+<details><summary>Visualizar saída</summary>
+
+```json
+{
+  [
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "cep": "string",
+    "estado": "string",
+    "cidade": "string",
+    "bairro": "string",
+    "rua": "string",
+    "numero": "string",
+    "complemento": "string",
+    "cliente": {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "nome": "string",
+      "cpf": "string"
+    }
+  }
+]
+}
+
+```
+
+</details>
 
 #### 🔹 POST `/api/Endereco`
 
