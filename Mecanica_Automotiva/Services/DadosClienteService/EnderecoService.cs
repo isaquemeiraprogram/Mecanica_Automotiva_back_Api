@@ -5,6 +5,7 @@ using Mecanica_Automotiva.Exception;
 using Mecanica_Automotiva.Interface.IDadosCliente;
 using Mecanica_Automotiva.Models.DadosCliente;
 using Microsoft.EntityFrameworkCore;
+using Slugify;
 
 namespace Mecanica_Automotiva.Services.DadosClienteService
 {
@@ -19,8 +20,23 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             _mapper = mapper;
         }
 
+        public async Task<List<Endereco>> GetByCpfAsync(string cpf)
+        {
+            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Cpf == cpf);
+            if (cliente == null) throw new NotFoundException("Cliente Não Encontrado");
+
+            var enderecoList = await _context.Enderecos
+                .Include(e => e.Cliente)
+                .Where(e => e.Cliente.Cpf == cpf)
+                .ToListAsync();
+            if (enderecoList == null) throw new NotFoundException("Cliente sem endereco");
+
+            return enderecoList;
+        }
+
         public async Task<Endereco> AddAsync(EnderecoDto dto)
         {
+
             var cliente = await _context.Clientes.FirstOrDefaultAsync(c => dto.ClienteCpf == c.Cpf);
             if (cliente == null) throw new NotFoundException("cliente Não Encontrado");
 
@@ -34,7 +50,7 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
         }
         public async Task<Endereco> UpdateAsync(EnderecoDto dto, Guid id)
         {
-            var endereco = await _context.Enderecos.FindAsync(id);
+            var endereco = await _context.Enderecos.Include(e => e.Cliente).FirstOrDefaultAsync(e => e.Id == id);
             if (endereco == null) throw new NotFoundException("Endereco Não Encontrado");
 
             endereco = _mapper.Map(dto, endereco);
@@ -53,5 +69,7 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             await _context.SaveChangesAsync();
             return true;
         }
+
+
     }
 }

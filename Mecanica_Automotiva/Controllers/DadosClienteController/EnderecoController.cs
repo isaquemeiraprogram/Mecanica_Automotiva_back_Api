@@ -18,6 +18,13 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
             this._service = _service;
         }
 
+        [HttpGet("cpf/{cpf}")]
+        public async Task<ActionResult<List<Endereco>>> GetByCpfAsync(string cpf)
+        {
+            var enderecoList = await _service.GetByCpfAsync(cpf);
+            return enderecoList;
+        }
+
         [HttpPost]
         public async Task<ActionResult<Endereco>> AddAsync([FromBody] EnderecoDto dto)
         {
@@ -27,9 +34,9 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Endereco>> UpdateAsync([FromBody] EnderecoDto dto,Guid id)
+        public async Task<ActionResult<Endereco>> UpdateAsync([FromBody] EnderecoDto dto, Guid id)
         {
-            var endereco = await _service.UpdateAsync(dto,id);
+            var endereco = await _service.UpdateAsync(dto, id);
 
             return Ok(endereco);
         }

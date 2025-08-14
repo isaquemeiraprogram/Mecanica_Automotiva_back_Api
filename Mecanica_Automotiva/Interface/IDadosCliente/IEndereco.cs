@@ -5,6 +5,7 @@ namespace Mecanica_Automotiva.Interface.IDadosCliente
 {
     public interface IEndereco
     {
+        Task<List<Endereco>> GetByCpfAsync(string cpf);
         Task<Endereco> AddAsync(EnderecoDto dto);
         Task<Endereco> UpdateAsync(EnderecoDto dto, Guid id);
         Task<bool> DeleteAsync(Guid id);

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Mecanica_Automotiva.Services.DadosClienteService
 {
-    public class ClienteService: ICliente
+    public class ClienteService : ICliente
     {
         private readonly DataBase _context;
         private readonly IMapper _mapper;
@@ -21,28 +21,24 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
 
         public async Task<List<Cliente>> GetAllAsync()
         {
-            var clienteList = await _context.Clientes
-                .Include(c => c.Endereco)
-                .ToListAsync();
+            var clienteList = await _context.Clientes.ToListAsync();
 
             return clienteList;
         }
         public async Task<Cliente> GetByCpfAsync(string cpf)
         {
-            var cliente = await _context.Clientes
-                .Include(c => c.Endereco)
-                .FirstOrDefaultAsync(c => c.Cpf == cpf);
+            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Cpf == cpf);
 
             if (cliente == null) throw new NotFoundException("Cliente Não Encontrado");
 
             return cliente;
         }
 
-       // fazer ele botar endereco tambem quando cria cliente
+        // fazer ele botar endereco tambem quando cria cliente
         public async Task<Cliente> AddAsync(ClienteDto dto)
         {
             var cliente = _mapper.Map<Cliente>(dto);
-            
+
             await _context.Clientes.AddAsync(cliente);
 
             await _context.SaveChangesAsync();
