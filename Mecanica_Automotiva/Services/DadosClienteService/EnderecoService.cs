@@ -42,6 +42,7 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
 
             var endereco = _mapper.Map<Endereco>(dto);
             endereco.Cliente = cliente;
+            cliente.QtdEnderecosCadastrados += 1;
 
             await _context.Enderecos.AddAsync(endereco);
 

@@ -7,6 +7,7 @@ namespace Mecanica_Automotiva.Models.DadosCliente
         public Guid Id { get; set; }
         public string Nome { get; set; }
         public string Cpf { get; set; }//email e tel?
+        public int QtdEnderecosCadastrados { get; set; }
 
         [JsonIgnore]
         public ICollection<Endereco> Endereco { get; set; } = new List<Endereco>();

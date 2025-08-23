@@ -59,6 +59,13 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Cpf == cpf);
             if (cliente == null) throw new NotFoundException("Cliente Não Encontrado");
 
+            //endereco list recebe todos os enderecos do cliente
+            List<Endereco> enderecoList = cliente.Endereco.ToList();
+            
+            for (var i = 0; i < enderecoList.Count; i++) { 
+                _context.Enderecos.Remove(enderecoList[i]);
+            }
+
             _context.Clientes.Remove(cliente);
 
             await _context.SaveChangesAsync();
