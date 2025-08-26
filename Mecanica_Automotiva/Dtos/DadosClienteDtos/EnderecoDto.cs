@@ -6,6 +6,8 @@ namespace Mecanica_Automotiva.Dtos.DtoCliente
     public class EnderecoDto
     {
         //usado pra proteger a api caso fizerem requisições direto nao confie so no front-end
+        //valida o que entra antes de enviar pra dentro e envia mensagem caso nao passe na validacao
+        //balida tamanho formato e se é obrigatorio
         [Required(ErrorMessage = "Campo obrigatório")]
         [RegularExpression(@"^\d{8}$", ErrorMessage = "CEP deve conter exatamente 8 números.")]
         public string Cep { get; set; }
