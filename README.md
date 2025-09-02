@@ -153,9 +153,6 @@ update-database
 
 ### Cliente `/api/Cliente`
 
-<!-- markdownlint-disable MD033 -->
-<details><summary><h3>📂Visualizar metodos</h3></summary>
-
 - **Nota:** O modelo `Cliente` não inclui endereço por padrão. Endereços são adicionados separadamente, e uma vez vinculados a um cliente, o modelo `Endereco` retorna os dados do cliente relacionado.
 
 #### 🔹 GET `/api/Cliente`
@@ -167,21 +164,16 @@ Descrição: Retorna uma lista de clientes.
 - **Entrada (request):**  Sem corpo
 - **Saída (response):**
 
-<details><summary>Visualizar saída</summary>
-
 ```json
-{
-  [
-    {
-      "id": "08ddcbd0-ab70-495d-8ecc-601def1584e4",
-      "nome": "string",
-      "cpf": "string"
-    }
-  ]
-}
+[
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "nome": "string",
+    "cpf": "string",
+    "qtdEnderecosCadastrados": 0
+  }
+]
 ```
-
-</details>
 
 #### 🔹 GET `/api/Cliente/cpf/{cpf}`
 
@@ -195,19 +187,14 @@ Descrição: Retorna um Cliente apartir de um cpf.
 
  **Saída (response):**
 
- <details><summary>Visualizar saída teste</summary>
-
 ```json
 {
-  {
-    "id": "08ddcbd0-ab70-495d-8ecc-601def1584e4",
-    "nome": "string",
-    "cpf": "string"
-  }
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "nome": "string",
+  "cpf": "string",
+  "qtdEnderecosCadastrados": 0
 }
 ```
-
-</details>
 
 #### 🔹 POST `/api/Cliente`
 
@@ -218,31 +205,22 @@ Descrição:Adiciona um Cliente.
 
 - **Entrada (request):**
 
- <details><summary>Visualizar Entrada</summary>
-
 ```json
 {
   "nome": "string",
-  "cpf": "string"
+  "cpf": "01451708332"
 }
 ```
 
-</details>
-
 **Saída (response):**
-
- <details>
- <summary>Visualizar saída</summary>
 
 ```json
 {
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "nome": "string",
   "cpf": "string",
+  "qtdEnderecosCadastrados": 0
 }
-```
-
-</details>
 ```
 
 #### 🔹 PUT `/api/Cliente/cpf/{cpf}`
@@ -255,8 +233,6 @@ Descrição: atualiza um Cliente apartir de um cpf
 
 - **Entrada (request):**
 
- <details><summary>Visualizar Entrada</summary>
-
 ```json
 {
   "nome": "string",
@@ -264,22 +240,16 @@ Descrição: atualiza um Cliente apartir de um cpf
 }
 ```
 
-</details>
-
 **Saída (response):**
-
- <details>
- <summary>Visualizar saída</summary>
 
 ```json
 {
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "nome": "string",
   "cpf": "string",
+  "qtdEnderecosCadastrados": 0
 }
 ```
-
-</details>
 
 #### 🔹 DELETE `/api/Cliente/cpf/{cpf}`
 
@@ -292,22 +262,13 @@ Descrição: Deleta um Cliente apartir de um cpf
 
 - **Saída (response):**
 
-<details><summary>📤 Visualizar saída</summary>
-
 ```json
 {
   true
 }
 ```
 
-</details>
-
-</details> <!-- markdownlint-enable MD033 --> ``
-
 ### Endereco `/api/Endereco`
-
-<!-- markdownlint-disable MD033 -->
-<details><summary><h3>📂Visualizar metodos</h3></summary>
 
 - **Nota:** É necessario haver um `Cliente` cadastrado para poder gerar um `Endereco`.
 
@@ -323,28 +284,26 @@ Descrição: Retorna todos os enderecos de um cliente apartir de um cpf.
 
 **Saída (response):**
 
-<details><summary>Visualizar saída</summary>
-
 ```json
-{
-  [
+[
   {
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "enderecoSlug": "string",
     "cep": "string",
     "estado": "string",
     "cidade": "string",
     "bairro": "string",
     "rua": "string",
-    "numero": "string",
+    "numero": "strin",
     "complemento": "string",
     "cliente": {
       "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "nome": "string",
-      "cpf": "string"
+      "cpf": "string",
+      "qtdEnderecosCadastrados": 0
     }
   }
 ]
-}
 
 ```
 
@@ -359,46 +318,40 @@ Descrição:Adiciona um Endereco.
 
 - **Entrada (request):**
 
- <details><summary>Visualizar Entrada</summary>
-
 ```json
 {
-  "cep": "string",
+  "cep": "01886191",
   "estado": "string",
   "cidade": "string",
   "bairro": "string",
   "rua": "string",
-  "numero": "string",
+  "numero": "1561",
   "complemento": "string",
-  "clienteCpf": "string"
+  "clienteCpf": "25385550031"
 }
 ```
 
-</details>
-
 **Saída (response):**
-
- <details><summary>Visualizar saída teste</summary>
 
 ```json
 {
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "enderecoSlug": "string",
   "cep": "string",
   "estado": "string",
   "cidade": "string",
   "bairro": "string",
   "rua": "string",
-  "numero": "string",
+  "numero": "strin",
   "complemento": "string",
   "cliente": {
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "nome": "string",
-    "cpf": "string"
+    "cpf": "string",
+    "qtdEnderecosCadastrados": 0
   }
 }
 ```
-
-</details>
 
 #### 🔹 PUT `/api/Endereco/{id}`
 
@@ -410,46 +363,40 @@ Descrição: atualiza um Endereco apartir de um id
 
 - **Entrada (request):**
 
- <details><summary>Visualizar Entrada</summary>
-
 ```json
 {
-  "cep": "string",
+  "cep": "99629584",
   "estado": "string",
   "cidade": "string",
   "bairro": "string",
   "rua": "string",
-  "numero": "string",
+  "numero": "60",
   "complemento": "string",
-  "clienteCpf": "string"
+  "clienteCpf": "60300297755"
 }
 ```
 
-</details>
-
 **Saída (response):**
-
- <details><summary>Visualizar saída</summary>
 
 ```json
 {
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "enderecoSlug": "string",
   "cep": "string",
   "estado": "string",
   "cidade": "string",
   "bairro": "string",
   "rua": "string",
-  "numero": "string",
+  "numero": "strin",
   "complemento": "string",
   "cliente": {
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "nome": "string",
-    "cpf": "string"
+    "cpf": "string",
+    "qtdEnderecosCadastrados": 0
   }
 }
 ```
-
-</details>
 
 #### 🔹 DELETE `/api/Endereco/{id}`
 
@@ -462,17 +409,11 @@ Descrição: Deleta um Endereco apartir de um id
 
 - **Saída (response):**
 
-<details><summary>Visualizar saída</summary>
-
 ```json
 {
   true
 }
 ```
-
-</details>
-
-</details> <!-- markdownlint-enable MD033 --> ``
 
 ### MarcaProduto `/api/MarcaProduto`
 
