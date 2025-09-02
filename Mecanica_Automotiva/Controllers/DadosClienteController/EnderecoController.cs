@@ -33,18 +33,18 @@ namespace Mecanica_Automotiva.Controllers.DadosClienteController
             return Ok(endereco);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Endereco>> UpdateAsync([FromBody] EnderecoDto dto, Guid id)
+        [HttpPut("slug/{slug}")]
+        public async Task<ActionResult<Endereco>> UpdateAsync([FromBody] EnderecoDto dto, string slug)
         {
-            var endereco = await _service.UpdateAsync(dto, id);
+            var endereco = await _service.UpdateAsync(dto, slug);
 
             return Ok(endereco);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> DeleteAsync(Guid id)
+        [HttpDelete("slug/{slug}")]
+        public async Task<ActionResult<bool>> DeleteAsync(string slug)
         {
-            var endereco = await _service.DeleteAsync(id);
+            var endereco = await _service.DeleteAsync(slug);
 
             return Ok(endereco);
         }

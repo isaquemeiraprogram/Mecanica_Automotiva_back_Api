@@ -12,6 +12,10 @@ namespace Mecanica_Automotiva.Models.DadosCliente
         public Guid Id { get; set; }
 
         [Required]
+        [MaxLength(20)]//cpf mais numero do endereco tipo 1endereco 2 endereco deste cpf(cpfE1)
+        public string EnderecoSlug { get; set; } // slug = codigo unico amigavel
+
+        [Required]
         [MaxLength(8)]
         public string Cep { get; set; }
         [Required]

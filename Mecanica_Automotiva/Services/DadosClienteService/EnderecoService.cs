@@ -5,7 +5,6 @@ using Mecanica_Automotiva.Exception;
 using Mecanica_Automotiva.Interface.IDadosCliente;
 using Mecanica_Automotiva.Models.DadosCliente;
 using Microsoft.EntityFrameworkCore;
-using Slugify;
 
 namespace Mecanica_Automotiva.Services.DadosClienteService
 {
@@ -29,7 +28,8 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
                 .Include(e => e.Cliente)
                 .Where(e => e.Cliente.Cpf == cpf)
                 .ToListAsync();
-            if (enderecoList == null) throw new NotFoundException("Cliente sem endereco");
+
+            if (!enderecoList.Any()) throw new NotFoundException("Cliente sem endereco");
 
             return enderecoList;
         }
@@ -44,14 +44,16 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             endereco.Cliente = cliente;
             cliente.QtdEnderecosCadastrados += 1;
 
+
+            endereco.EnderecoSlug = $"{cliente.Cpf}-{cliente.QtdEnderecosCadastrados}";
             await _context.Enderecos.AddAsync(endereco);
 
             await _context.SaveChangesAsync();
             return endereco;
         }
-        public async Task<Endereco> UpdateAsync(EnderecoDto dto, Guid id)
+        public async Task<Endereco> UpdateAsync(EnderecoDto dto, string slug)
         {
-            var endereco = await _context.Enderecos.Include(e => e.Cliente).FirstOrDefaultAsync(e => e.Id == id);
+            var endereco = await _context.Enderecos.Include(e => e.Cliente).FirstOrDefaultAsync(e => e.EnderecoSlug == slug);
             if (endereco == null) throw new NotFoundException("Endereco Não Encontrado");
 
             endereco = _mapper.Map(dto, endereco);
@@ -60,9 +62,9 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
             await _context.SaveChangesAsync();
             return endereco;
         }
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(string slug)
         {
-            Endereco endereco = await _context.Enderecos.FindAsync(id);
+            Endereco endereco = await _context.Enderecos.FirstOrDefaultAsync(e => e.EnderecoSlug == slug);
             if (endereco == null) throw new NotFoundException("Endererco Não Encontrado");
 
             _context.Enderecos.Remove(endereco);

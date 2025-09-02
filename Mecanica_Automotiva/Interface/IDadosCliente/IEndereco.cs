@@ -7,7 +7,7 @@ namespace Mecanica_Automotiva.Interface.IDadosCliente
     {
         Task<List<Endereco>> GetByCpfAsync(string cpf);
         Task<Endereco> AddAsync(EnderecoDto dto);
-        Task<Endereco> UpdateAsync(EnderecoDto dto, Guid id);
-        Task<bool> DeleteAsync(Guid id);
+        Task<Endereco> UpdateAsync(EnderecoDto dto, string slug);
+        Task<bool> DeleteAsync(string slug);
     }
 }
