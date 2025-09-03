@@ -37,15 +37,21 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
         public async Task<Endereco> AddAsync(EnderecoDto dto)
         {
 
-            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => dto.ClienteCpf == c.Cpf);
+            var cliente = await _context.Clientes.Include(c=>c.Endereco).FirstOrDefaultAsync(c => dto.ClienteCpf == c.Cpf);
             if (cliente == null) throw new NotFoundException("cliente Não Encontrado");
 
             var endereco = _mapper.Map<Endereco>(dto);
             endereco.Cliente = cliente;
             cliente.QtdEnderecosCadastrados += 1;
 
+            var contador = 1;
+            //any verifica uma lista e retorna true ou false com base em uma condicao - quase um if
+            while (cliente.Endereco.Any(e=> e.EnderecoSlug == $"{cliente.Cpf}-{contador}"))
+            {
+                contador++;
+            }
+            endereco.EnderecoSlug = $"{cliente.Cpf}-{contador}";
 
-            endereco.EnderecoSlug = $"{cliente.Cpf}-{cliente.QtdEnderecosCadastrados}";
             await _context.Enderecos.AddAsync(endereco);
 
             await _context.SaveChangesAsync();
@@ -64,8 +70,13 @@ namespace Mecanica_Automotiva.Services.DadosClienteService
         }
         public async Task<bool> DeleteAsync(string slug)
         {
-            Endereco endereco = await _context.Enderecos.FirstOrDefaultAsync(e => e.EnderecoSlug == slug);
+            Endereco endereco = await _context.Enderecos
+                .Include(e => e.Cliente)
+                .FirstOrDefaultAsync(e => e.EnderecoSlug == slug);
+
             if (endereco == null) throw new NotFoundException("Endererco Não Encontrado");
+
+            endereco.Cliente.QtdEnderecosCadastrados -= 1;
 
             _context.Enderecos.Remove(endereco);
 
