@@ -1,4 +1,5 @@
 using Mecanica_Automotiva.Context;
+using Mecanica_Automotiva.Exception;
 using Mecanica_Automotiva.Interface;
 using Mecanica_Automotiva.Interface.IDadosCliente;
 using Mecanica_Automotiva.Interface.IDadosPeca;
@@ -18,6 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddControllers(options => options.Filters.Add<HttpExceptionFilter>());
 
 builder.Services.AddAutoMapper(config =>
 {
@@ -52,7 +54,6 @@ builder.Services.AddScoped<IProduto, ProdutoService>();
 builder.Services.AddScoped<IVeiculo, VeiculoService>();
 builder.Services.AddScoped<IServico, ServicoService>();
 builder.Services.AddScoped<IAgenda, AgendaService>();
-
 
 
 //conect front
