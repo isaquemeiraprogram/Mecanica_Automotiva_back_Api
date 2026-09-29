@@ -10,19 +10,21 @@ namespace Mecanica_Automotiva.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "EnderecoAmigavel",
+            migrationBuilder.AddColumn<string>(
+                name: "EnderecoSlug",
                 table: "Enderecos",
-                newName: "EnderecoSlug");
+                type: "varchar(20)",
+                maxLength: 20,
+                nullable: false,
+                defaultValue: "");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
+            migrationBuilder.DropColumn(
                 name: "EnderecoSlug",
-                table: "Enderecos",
-                newName: "EnderecoAmigavel");
+                table: "Enderecos");
         }
     }
 }
